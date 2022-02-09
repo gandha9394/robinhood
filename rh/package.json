@@ -1,0 +1,22 @@
+{
+  "name": "rh",
+  "version": "1.0.0",
+  "description": "Command-line interface for Robinhood to share resources",
+  "main": "index.js",
+  "bin": {
+    "rh": "./index.js"
+  },
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.0.0",
+    "node-pty": "^0.10.1",
+    "pm2": "^5.1.2",
+    "winston": "^3.5.1",
+    "yargs": "^17.3.1"
+  }
+}

@@ -1,7 +1,7 @@
 import express from "express";
 import http from "http";
 import signalingserver from "webrtc.io";
-import {Log} from "../utils/log.js";
+import Log from "./src/utils/log.js";
 
 const DEFAULT = {
   PORT: 8080,

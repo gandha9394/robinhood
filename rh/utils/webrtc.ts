@@ -72,7 +72,6 @@ class Peer {
       this.on("receive_offer", (data:any)=>{
 
       })
-
   }
 
   //category:util
