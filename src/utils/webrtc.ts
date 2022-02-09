@@ -1,78 +1,117 @@
 import { pipe } from "ramda";
-import { Log } from "./log";
-
+import { WebSocket } from "ws";
+import pkg from "wrtc";
 const {
   RTCPeerConnection,
   RTCSessionDescription,
-  RTCIceCandidate,
-} = require("wrtc");
-const { WebSocket } = require("ws");
-const chalk = require("chalk");
+  RTCIceCandidate
+} = pkg;
+import logger, { Deferred } from "./log.js";
 
 /**--------CONFIG & SETUP--------------------- */
-const CONFIG = {
-  SIGNALING_SERVER: "ws://55e3-35-198-245-229.ngrok.io/",
-  ICE_SERVER: "stun:stun.l.google.com:19302",
-  DEFAULT_ROOM: "trafalgar",
-};
-let initiator = process.argv.some((cmdLineArg) => cmdLineArg === "-init");
 
-type Candidate = any;
 type SocketId = string;
-type RTCPeerConnectionType = any;
-type DataChannelType = any;
-type PeerEvent = string;
-type Config = any;
-type SDP = any;
+type EventName = string;
+type StrictConfig = {
+  signalingServer: string | URL;
+  iceServer: string;
+  roomName: string;
+  sendOffer?: (socketId: SocketId) => void;
+  sendAnswer?: (socketId: SocketId) => void;
+  receiveOffer?: (socketId: SocketId, offer: RTCSessionDescription) => void;
+  receiveAnswer?: (socketId: SocketId, answer: RTCSessionDescription) => void;
+};
+type Config = Partial<StrictConfig>;
+type PeerHandle = {
+  peerConnection: RTCPeerConnectionErrorCallback;
+  dataChannel: RTCDataChannel;
+};
+declare namespace Command {
+  interface getPeers {
+    you: SocketId;
+    connections: Array<SocketId>;
+  }
+  interface Cmd {
+    eventName: string;
+    data: {
+      socketId: SocketId;
+    };
+  }
+  interface newPeerConnected extends Cmd {}
+  interface removePeerConnected extends Cmd{}
+  interface sendOffer extends Cmd {
+    data: Cmd["data"] & {
+      sdp: RTCSessionDescription;
+    };
+  }
+  interface receiveOffer extends sendOffer {}
+  interface sendAnswer extends sendOffer {}
+  interface receiveAnswer extends receiveOffer {}
+  interface receiveIceCandidate extends Cmd {
+    data: Cmd["data"] & {
+      label: string;
+      candidate: RTCIceCandidate;
+    };
+  }
+  interface sendIceCandidate extends receiveIceCandidate {}
+}
+
+const defaultConfig: Partial<Config> = {
+  signalingServer: "ws://localhost:8080",
+  iceServer: "stun:stun.l.google.com:19302",
+  roomName: "lorem",
+};
 
 class Peer {
-  Q: Array<Candidate> = [];
+  Q: Array<RTCIceCandidate> = [];
   connections: Array<SocketId> = [];
-  peerConnections: Record<SocketId, RTCPeerConnectionType> = {};
-  dataChannels: Record<SocketId, DataChannelType> = {};
-  callbacks: Record<PeerEvent, Array<Function>> = {};
+  peerConnections: Record<SocketId, RTCPeerConnection> = {};
+  dataChannels: Record<SocketId, RTCDataChannel> = {};
+  callbacks: Record<EventName, Array<Function>> = {};
   socket: WebSocket | null = null;
   config: Config;
-  whoAmI:null = null;
+  whoAmI: SocketId = "";
+  _: Record<any, any> = {};
 
   constructor(config: Config) {
-    this.config = config;
-    this.socket = new WebSocket(config.signaling_server);
-    if (this.socket)
+    this.config = {
+      ...defaultConfig,
+      ...config,
+    };
+    this.socket = new WebSocket(config.signalingServer as string);
+    if (this.socket) {
       this.socket.onopen = () => {
-        pipe(this.register, this.handleError, this.handleClose, this.handleCommandsFromCentralServer)(this.socket);
+        pipe(
+          this.register,
+          this.handleError,
+          this.handleClose,
+          this.handleCommandsFromCentralServer
+        )(this.socket);
       };
+      this.on("remove_peer_connected", ({data}: Command.removePeerConnected) => {
+        logger.debug("rrrr"+JSON.stringify(data));
+        if(data && data.socketId)
+        delete this.peerConnections[data.socketId];
+        else
+        logger.debug("rrrr"+JSON.stringify(data));
+      });
+    this.register = this.register.bind(this);
+    this.fire = this.fire.bind(this)
+    this.on = this.on.bind(this);
+    this.handleCommandsFromCentralServer = this.handleCommandsFromCentralServer.bind(this)
+    this.getSocketIdForPeerConnection = this.getSocketIdForPeerConnection.bind(this);
+    }
   }
 
   //category: interfacing with centralserver
-  fire(commandName:string, ...args:Array<any>){
-  (this.callbacks[commandName] || []).map((cb) => cb(...args));
+  fire(commandName: string, ...args: Array<any>) {
+    (this.callbacks[commandName] || []).map((cb) => cb(...args));
   }
 
   //category: interfacing with centralserver
-  on(commandName:string, callback:Function ){
-  this.callbacks[commandName] = this.callbacks[commandName] || [];
-  this.callbacks[commandName].push(callback);
-  }
-
-  setupCallbacksToCommandsFromCentralServer(){
-      this.on("get_peers", (data:any) =>{
-        this.whoAmI = data.you;
-        //this is pointless. can safely delete
-        this.connections = data.connections;
-        this.connections
-      })
-      this.on("new_peer_connected", (data:any)=>{
-
-      })
-      this.on("remove_peer_connected", (data:any)=>{
-          delete this.peerConnections[data.socketId];
-          //TODO: cleanup and destructor
-      })
-      this.on("receive_offer", (data:any)=>{
-
-      })
-
+  on(commandName: string, callback: Function) {
+    this.callbacks[commandName] = this.callbacks[commandName] || [];
+    this.callbacks[commandName].push(callback);
   }
 
   //category:util
@@ -86,7 +125,7 @@ class Peer {
 
   //category:util
   handleError(socket: WebSocket | null) {
-    if (socket) socket.onerror = Log.error;
+    if (socket) socket.onerror = logger.error;
     return socket;
   }
 
@@ -95,211 +134,293 @@ class Peer {
     if (socket)
       socket.onclose = () => {
         //TODO: destructor and cleanup
-        Log.info(
+        logger.info(
           "Socket closed, Peer killed. I will no longer listen to any commands or REST API calls"
         );
       };
     return socket;
   }
   //category:util
-  getSocketIdForPeerConnection(peerConnection:RTCPeerConnectionType){
-      for(let socketId in this.peerConnections)
-      if(peerConnection===this.peerConnections[socketId]) return socketId;
-      Log.error("SocketID not found for given peerConnection. Seems like you messed up.")
-      process.exit(1);
+  getSocketIdForPeerConnection(peerConnection: RTCPeerConnection) {
+    for (let socketId in this.peerConnections)
+      if (peerConnection === this.peerConnections[socketId]) return socketId;
+    logger.error(
+      "SocketID not found for given peerConnection. Seems like you messed up."
+    );
+    process.exit(1);
   }
   //category:util
-  getSocketIdForDataChannel(dataChannel :DataChannelType){
-      for(let socketId in this.dataChannels)
-      if(dataChannel===this.dataChannels[socketId]) return socketId;
-      Log.error("SocketID not found for given dataChannel. Seems like you messed up.")
-      process.exit(1);
+  getSocketIdForDataChannel(dataChannel: RTCDataChannel) {
+    for (let socketId in this.dataChannels)
+      if (dataChannel === this.dataChannels[socketId]) return socketId;
+    logger.error(
+      "SocketID not found for given dataChannel. Seems like you messed up."
+    );
+    process.exit(1);
   }
-  handleCommandsFromCentralServer(socket:WebSocket|null){
-      if(socket)
-      socket.onmessage = ({data}:any) =>{
-          data  = JSON.parse(data);
-          fire(data.eventName, data.data);
-      }
+  handleCommandsFromCentralServer(socket: WebSocket | null) {
+    if (socket)
+      socket.onmessage = ({ data }: any) => {
+        data = JSON.parse(data);
+        logger.debug(data.eventName, data.data);
+        this.fire(data.eventName, data.data);
+      };
   }
-  sendMessageToCentralServer(msg:any){
-      if(this.socket && this.socket.readyState == this.socket.OPEN){
+  sendMessageToCentralServer(msg: any) {
+    if (this.socket && this.socket.readyState == this.socket.OPEN) {
       this.socket.send(JSON.stringify(msg));
-      Log.info(`Sending MSG to central server:${JSON.stringify(msg)}`)
+      logger.silly(`Sending MSG to central server:${JSON.stringify(msg)}`);
+    }
+  }
+  relayMessageThroughCentralServer(msg: any) {
+    this.sendMessageToCentralServer(msg); //L.O.L
+  }
+}
+
+class RTCPeer extends Peer {
+  peerHandle: PeerHandle | null = null;
+  cerberus: Deferred = new Deferred();
+  constructor(config: Config) {
+    super(config);
+    this.on(
+      "receive_ice_candidate",
+      ({ data }: Command.receiveIceCandidate) => {
+        this.onReceiveIceCandidate(data.socketId, data.candidate);
       }
+    );
+    this.peerConnectionOnIceCandidate = this.peerConnectionOnIceCandidate.bind(this);
+    this.createPeerHandle = this.createPeerHandle.bind(this);
+    this.dataChannelOnMessage = this.dataChannelOnMessage.bind(this);
   }
-  relayMessageThroughCentralServer(msg:any){
-    this.sendMessageToCentralServer(msg) //L.O.L
+  send(msg: any) {
+    if (!this.peerHandle || this.peerHandle.dataChannel.readyState !== "open")
+      logger.debug(
+        `DataChannel not yet ready. Unable to send msg: ${JSON.stringify(msg)}`
+      );
+    else {
+      this.peerHandle.dataChannel.send(JSON.stringify(msg));
+    }
+  }
+  set onmessage(callback: Function) {
+    if (!this.peerHandle) {
+      this._["onmessage"] = callback;
+    } else {
+      this.peerHandle.dataChannel.onmessage = ({ data }) => callback(data);
+    }
+  }
+  connectedToPeer() {
+    return this.cerberus.promise;
+  }
+
+  createPeerHandle(socketId: SocketId) {
+    const peerConnection = this.createRTCPeerConnection(socketId);
+    const dataChannel = this.createDataChannel(socketId);
+    return { peerConnection, dataChannel };
+  }
+
+  onReceiveIceCandidate(socketId: SocketId, candidate: RTCIceCandidate) {
+    if (!this.peerConnections[socketId]) {
+      logger.error("You fucked up the flow. Gon kill myself. Bye...");
+      process.exit(1);
+    }
+    logger.silly("Received an ICE candidate from:" + socketId);
+    const rtcIceCandidate = new RTCIceCandidate(candidate);
+    const pc = this.peerConnections[socketId];
+    if (pc.remoteDescription) pc.addIceCandidate(rtcIceCandidate);
+    else this.Q.push(rtcIceCandidate);
+  }
+  sendIceCandidate(socketId: SocketId, candidate: RTCIceCandidate) {
+    this.relayMessageThroughCentralServer({
+      eventName: "send_ice_candidate",
+      data: {
+        label: this.config.roomName,
+        candidate,
+        socketId,
+      },
+    });
+  }
+  createRTCPeerConnection(socketId: SocketId) {
+    if (socketId in this.peerConnections) {
+      logger.debug("RTCPeerConnection already exists for socketID:" + socketId);
+      return;
+    }
+    const pc = (this.peerConnections[socketId] = new RTCPeerConnection({
+      iceServers: [{ urls: [this.config.iceServer] }],
+    }));
+    pipe(
+      this.peerConnectionOnDataChannel,
+      this.peerConnectionOnIceCandidate
+    )(pc);
+    return pc;
+  }
+  createDataChannel(socketId: SocketId) {
+    if (socketId in this.dataChannels) {
+      logger.debug("DataChannel already exists for socketID:" + socketId);
+      return;
+    }
+    const pc = this.peerConnections[socketId];
+    if (!pc) {
+      logger.error("RTCPeerConnection not found for socketID:" + socketId);
+      process.exit(1);
+    }
+    const dc = (this.dataChannels[socketId] = pc.createDataChannel("whatevs"));
+    pipe(
+      this.dataChannelOnOpen,
+      this.dataChannelOnClose,
+      this.dataChannelOnError,
+      this.dataChannelOnMessage
+    )(dc);
+    return dc;
+  }
+  peerConnectionOnDataChannel(peerConnection: RTCPeerConnection) {
+    peerConnection.ondatachannel = ({ channel }) => {
+      //not sure what to do with the received data channel
+      logger.info(
+        "PeerConnection ondatachannel::Choosing not to do anything with this datachannel"
+      );
+    };
+    return peerConnection;
+  }
+  peerConnectionOnIceCandidate(peerConnection: RTCPeerConnection) {
+    const socketId = this.getSocketIdForPeerConnection(peerConnection);
+    peerConnection.onicecandidate = ({ candidate }) => {
+      logger.info("PeerConnection onicecandidate");
+      if (candidate) this.sendIceCandidate(socketId, candidate);
+      else logger.info('ICE "Gathering" done!..');
+    };
+    return peerConnection;
+  }
+  //@Dhruv
+  dataChannelOnOpen(dataChannel: RTCDataChannel) {
+    dataChannel.onopen = () => {
+      logger.info("DataChannel opened");
+      this.fire("connection_established");
+      this.cerberus.resolve(null);
+    };
+    return dataChannel;
+  }
+  dataChannelOnClose(dataChannel: RTCDataChannel) {
+    dataChannel.onclose = () => logger.info("DataChannel closed");
+    return dataChannel;
+  }
+  dataChannelOnMessage(dataChannel: RTCDataChannel) {
+    dataChannel.onmessage = ({data}) => {
+      logger.info(`DataChannel recv msg:${data}`);
+      this.fire("recv", data);
+    };
+    if(typeof this._['onmessage'] === "function"){
+      dataChannel.onmessage = ({data}) =>{
+        this.fire("recv", data);
+        this._['onmessage'](data);
+      }
+    }
+    return dataChannel;
+  }
+  dataChannelOnError(dataChannel: any) {
+    dataChannel.onerror = (err: any) =>
+      logger.error(`DataChannel error:${err.toString()}`);
+    return dataChannel;
   }
 }
 
-class RTCPeer extends Peer{
-    constructor(config:Config){
-        super(config);
-
-    }
-
-    onReceiveIceCandidate(socketId:SocketId, candidate:Candidate){
-        if(!this.peerConnections[socketId]){
-            Log.error("You fucked up the flow. Gon kill myself. Bye...")
-            process.exit(1);
+export class RTCDonorPeer extends RTCPeer {
+  //@Dhruv
+  count: number = 0;
+  constructor(config: Config) {
+    super(config);
+    this.on(
+      "new_peer_connected",
+      async ({ data }: Command.newPeerConnected) => {
+        if (++this.count > 1) {
+          //@Dhruv
+          logger.error("This Donor supports only single Donee. Exiting..");
+          process.exit(1);
         }
-        Log.info("Received an ICE candidate from:"+socketId);
-        const rtcIceCandidate = new RTCIceCandidate(candidate);
-        const pc = this.peerConnections[socketId];
-        if(pc.remoteDescription) pc.addIceCandidate(rtcIceCandidate);
-        else this.Q.push(rtcIceCandidate);
+        this.createPeerHandle(data.socketId);
+        await this.sendOffer(data.socketId);
+      }
+    );
+    this.on("receive_answer", async ({ data }: Command.receiveAnswer) => {
+      this.receiveAnswer(data.socketId, data.sdp);
+    });
+  }
+  async sendOffer(socketId: SocketId) {
+    if (!this.peerConnections[socketId]) {
+      logger.error(
+        "Cannot send offer as peerConnection not found for socketID:" + socketId
+      );
+      process.exit(1);
     }
-    sendIceCandidate(socketId:SocketId, candidate:Candidate){
-        this.relayMessageThroughCentralServer({
-            eventName:'send_ice_candidate',
-            data:{
-                label:this.config.roomName,
-                candidate,
-                socketId
-            }
-        })    
+    const pc = this.peerConnections[socketId];
+    const offer = await pc.createOffer();
+    await pc.setLocalDescription(offer);
+    this.relayMessageThroughCentralServer({
+      eventName: "send_offer",
+      data: {
+        socketId,
+        sdp: pc.localDescription,
+      },
+    });
+  }
+  async receiveAnswer(socketId: SocketId, answer: any) {
+    if (!this.peerConnections[socketId]) {
+      logger.error(
+        "Cannot recieve answer as peerConnection not found for socketID:" +
+          socketId
+      );
+      process.exit(1);
     }
-    createRTCPeerConnection(socketId:SocketId){
-        if(socketId in this.peerConnections){
-            Log.warn("RTCPeerConnection already exists for socketID:"+socketId);
-            return;
-        }
-        const pc = this.peerConnections[socketId] = new RTCPeerConnection({
-            iceServers:[{urls:[this.config.iceServer]}]
-        })
-    }
-    createDataChannel(socketId:SocketId){
-        if(socketId in this.dataChannels){
-            Log.warn("DataChannel already exists for socketID:"+socketId);
-            return;
-        }
-        const pc = this.peerConnections[socketId];
-        if(!pc){
-            Log.error("RTCPeerConnection not found for socketID:"+socketId);
-            process.exit(1);
-        }
-        const dc = this.dataChannels[socketId] = pc.createDataChannel();
-        pipe(
-            this.dataChannelOnOpen,
-            this.dataChannelOnClose,
-            this.dataChannelOnError,
-            this.dataChannelOnMessage
-        )(dc);
-
-    }
-    peerConnectionOnOpen(peerConnection:any){
-        peerConnection.onopen = () => Log.info("PeerConnection opened");
-        return peerConnection;
-    }
-    peerConnectionOnClose(peerConnection:any){
-        peerConnection.onclose = () => Log.info("PeerConnection closed");
-        return peerConnection;
-    }
-    peerConnectionOnDataChannel(peerConnection:any){
-        peerConnection.ondatachannel = ({channel}:any) => {
-            //not sure what to do with the received data channel
-            Log.info("PeerConnection ondatachannel::Choosing not to do anything with this datachannel");
-        }
-        return peerConnection;
-    }
-    peerConnectionOnIceCandidate(peerConnection:any){
-        const socketId = this.getSocketIdForPeerConnection(peerConnection);
-        peerConnection.onicecandidate= ({candidate}:any) => {
-            Log.info("PeerConnection onicecandidate");
-            if(candidate) this.sendIceCandidate(socketId,candidate)
-            else Log.info("ICE \"Gathering\" done!..")
-        }
-        return peerConnection;
-    }
-    dataChannelOnOpen(dataChannel:any){
-        dataChannel.onopen = () => Log.info("DataChannel opened");
-        return dataChannel;
-    }
-    dataChannelOnClose(dataChannel:any){
-        dataChannel.onclose = () => Log.info("DataChannel closed");
-        return dataChannel;
-    }
-    dataChannelOnMessage(dataChannel:any){
-        dataChannel.onmessage = (message:any) => Log.info(`DataChannel recv msg:${message.data}`);
-        return dataChannel;
-    }
-    dataChannelOnError(dataChannel:any){
-        dataChannel.onerror = (err:any) => Log.error(`DataChannel error:${err.toString()}`);
-        return dataChannel;
-    }
+    const pc = this.peerConnections[socketId];
+    await pc.setRemoteDescription(new RTCSessionDescription(answer));
+    while (this.Q.length) pc.addIceCandidate(this.Q.shift());
+  }
 }
-
-class RTCDonorPeer extends RTCPeer{
-    constructor(config:Config){
-        super(config);
+export class RTCDoneePeer extends RTCPeer {
+  constructor(config: Config) {
+    super(config);
+    this.on("receive_offer", async ({ data }: Command.receiveOffer) => {
+      await this.receiveOffer(data.socketId, data.sdp);
+      await this.sendAnswer(data.socketId);
+    });
+    this.on("get_peers", (data: Command.getPeers) => {
+      //@Dhruv
+      if (data.connections.length > 1) {
+        logger.error(
+          "Looks like someone else joined the room. Only Donor and me(Donee) were supposed to be there. Exiting..."
+        );
+        process.exit(1);
+      }
+      this.createPeerHandle(data.connections[0]);
+    });
+  }
+  async receiveOffer(socketId: SocketId, offer: any) {
+    if (!this.peerConnections[socketId]) {
+      logger.error(
+        "Cannot receive offer as peerConnection not found for socketID:" +
+          socketId
+      );
+      process.exit(1);
     }
-    async sendOffer(socketId:SocketId){
-        if(!this.peerConnections[socketId]){
-            Log.error("Cannot send offer as peerConnection not found for socketID:"+socketId);
-            process.exit(1);
-        }
-        const pc = this.peerConnections[socketId];
-        const offer = await pc.createOffer()
-        await pc.setLocalDescription(offer);
-        this.relayMessageThroughCentralServer({
-            eventName:'send_offer',
-            data:{
-                socketId,
-                sdp:pc.localDescription
-            }
-        })
+    const pc = this.peerConnections[socketId];
+    await pc.setRemoteDescription(new RTCSessionDescription(offer));
+  }
+  async sendAnswer(socketId: SocketId) {
+    if (!this.peerConnections[socketId]) {
+      logger.error(
+        "Cannot send answer as peerConnection not found for socketID:" +
+          socketId
+      );
+      process.exit(1);
     }
-    async receiveAnswer(socketId:SocketId, answer:any){
-        if(!this.peerConnections[socketId]){
-            Log.error("Cannot recieve answer as peerConnection not found for socketID:"+socketId);
-            process.exit(1);
-        }
-        const pc = this.peerConnections[socketId];
-        await pc.setRemoteDescription(new RTCSessionDescription(answer));
-        while(this.Q.length)
-        pc.addIceCandidate(this.Q.shift())
-    }
+    const pc = this.peerConnections[socketId];
+    const answer = await pc.createAnswer();
+    pc.setLocalDescription(answer);
+    this.relayMessageThroughCentralServer({
+      eventName: "send_answer",
+      data: {
+        socketId,
+        sdp: pc.localDescription,
+      },
+    });
+  }
 }
-class RTCDoneePeer extends RTCPeer{
-    constructor(config:Config){
-        super(config);
-    }
-    async receiveOffer(socketId:SocketId, offer:any){
-        if(!this.peerConnections[socketId]){
-            Log.error("Cannot receive offer as peerConnection not found for socketID:"+socketId);
-            process.exit(1);
-        }
-        const pc = this.peerConnections[socketId];
-        await pc.setRemoteDescription(new RTCSessionDescription(offer));
-        await this.sendAnswer(socketId);
-
-    }
-    async sendAnswer(socketId:SocketId){
-        if(!this.peerConnections[socketId]){
-            Log.error("Cannot send answer as peerConnection not found for socketID:"+socketId);
-            process.exit(1);
-        }
-        const pc = this.peerConnections[socketId];
-        const answer = await pc.createAnswer();
-        pc.setLocalDescription(answer);
-        this.relayMessageThroughCentralServer({
-            eventName:'send_answer',
-            data:{
-                socketId,
-                sdp:pc.localDescription
-            }
-        })
-    }
-}
-
-
-
-// async function send(socketId, data) {
-//   let dc = _dataChannels[socketId];
-//   while (dc.readyState != "open") {
-//     console.log("zzz");
-//     await delay(1);
-//   }
-//   dc.send(jsons(data));
-// }

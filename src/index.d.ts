@@ -1,7 +1,7 @@
 
 declare module 'webrtc.io'{
     import { Server } from "http";
-    import { WebSocketServer } from "ws";
+    import {WebSocketServer} from "ws";
     type RoomName = string;
     type SocketId = string;
     type EventName = string;
@@ -17,3 +17,5 @@ declare module 'webrtc.io'{
     }
     function listen(server:Server):SignalingServerManager
 }
+
+declare module 'wrtc';

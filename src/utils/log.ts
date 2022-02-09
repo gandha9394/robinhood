@@ -1,11 +1,18 @@
-import chalk from "chalk";
-import { compose } from "ramda";
+import winston from "winston";
 
-export const Log = {
-  info: compose(console.log, chalk.greenBright),
-  error: compose(console.log, chalk.redBright),
-  warn: compose(console.log, chalk.yellowBright),
-};
+const logger = winston.createLogger({
+  level: "silly",
+  levels:winston.config.syslog.levels,
+  silent: false, //set this to true later
+  transports: [new winston.transports.Console()],
+});
 
-export const delay = (seconds: number = 3) =>
-  new Promise((res) => setTimeout(res, seconds * 1000));
+export default logger;
+
+export class Deferred {
+  promise: Promise<null>;
+  resolve: Function = () => logger.debug("The Watchdog of the underworld");
+  constructor() {
+    this.promise = new Promise((res) => {this.resolve = res});
+  }
+}
