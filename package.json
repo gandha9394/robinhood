@@ -1,0 +1,43 @@
+{
+  "name": "robinhood",
+  "version": "1.0.0",
+  "description": "terminal sharing from wherever, whenever",
+  "main": "dist/signaling_server/index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start:signaling": "concurrently \"tsc -w\" \"nodemon dist/signaling_server\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gandha9394/robinhood.git"
+  },
+  "keywords": [
+    "ssh",
+    "pty",
+    "webterminal",
+    "webrtc",
+    "sockets"
+  ],
+  "author": "Dhiraj Bhakta",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/gandha9394/robinhood/issues"
+  },
+  "homepage": "https://github.com/gandha9394/robinhood#readme",
+  "dependencies": {
+    "chalk": "^5.0.0",
+    "express": "^4.17.2",
+    "ramda": "^0.28.0",
+    "webrtc.io": "^0.0.4",
+    "wrtc": "^0.4.7"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.13",
+    "@types/node": "^17.0.16",
+    "@types/ramda": "^0.27.64",
+    "@types/ws": "^8.2.2",
+    "concurrently": "^7.0.0",
+    "nodemon": "^2.0.15"
+  }
+}
