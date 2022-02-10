@@ -256,8 +256,8 @@ class RTCPeer extends Peer {
     pipe(
       this.peerConnectionOnDataChannel,
       this.peerConnectionOnIceCandidate,
-      this.peerConnectionOnIceConnectionStateChange,
-      this.peerConnectionOnNegotiationNeeded
+      // this.peerConnectionOnIceConnectionStateChange,
+      // this.peerConnectionOnNegotiationNeeded
     )(pc);
     return pc;
   }
