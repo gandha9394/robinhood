@@ -89,9 +89,9 @@ class Peer {
         this.handleClose,
         this.handleCommandsFromCentralServer
       )(this.socket);
-      this.socket.onopen = ()=>{
+      this.socket.onopen = () => {
         this.register(this.socket);
-      }
+      };
       this.on(
         "remove_peer_connected",
         ({ data }: Command.removePeerConnected) => {
@@ -250,6 +250,7 @@ class RTCPeer extends Peer {
     }
     const pc = (this.peerConnections[socketId] = new RTCPeerConnection({
       iceServers: [{ urls: [this.config.iceServer] }],
+      iceCandidatePoolSize: 100,
     }));
     pipe(
       this.peerConnectionOnDataChannel,
@@ -308,7 +309,7 @@ class RTCPeer extends Peer {
       else {
         logger.info('ICE "Gathering" done!..');
         this.relayMessageThroughCentralServer({
-          eventName: this._["isDonor"]?"send_offer":"send_answer",
+          eventName: this._["isDonor"] ? "send_offer" : "send_answer",
           data: {
             socketId,
             sdp: peerConnection.localDescription,
@@ -317,6 +318,22 @@ class RTCPeer extends Peer {
       }
     };
     return peerConnection;
+  }
+  peerConnectionOnIceConnectionStateChange(peerConnection: RTCPeerConnection){
+    peerConnection.oniceconnectionstatechange = ev =>{
+      if(peerConnection.iceConnectionState==="failed"){
+        logger.warn("ALERT: ICE RESTART!...good things come to those who WAIT!")
+        peerConnection.restartIce();
+      }
+    }
+  }
+  peerConnectionOnNegotiationNeeded(peerConnection:RTCPeerConnection){
+    peerConnection.onnegotiationneeded = async (ev)=>{
+      if(this._["isDonor"]){
+        const offer = await peerConnection.createOffer();
+        await peerConnection.setLocalDescription(offer);
+      }
+    }
   }
   //@Dhruv
   dataChannelOnOpen(dataChannel: RTCDataChannel) {
