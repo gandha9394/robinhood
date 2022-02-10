@@ -3,12 +3,14 @@ import { RTCDoneePeer } from "../utils/webrtc.js";
 
 const peer = new RTCDoneePeer({
   roomName: "my_room_001",
-  signalingServer: "ws://34.133.251.43:8080",
+  signalingServer: process.env["RHSS"]
+    ? process.env["RHSS"]
+    : "ws://localhost:8080",
 });
 
-peer.onmessage = (msg:any) =>{
-    logger.info(`recieved message:${msg}`)
-}
+peer.onmessage = (msg: any) => {
+  logger.info(`recieved message:${msg}`);
+};
 peer.connectedToPeer().then(() => {
-    peer.send("Kaizoku ou ni ...orewa naru!")
+  peer.send("Kaizoku ou ni ...orewa naru!");
 });

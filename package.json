@@ -5,7 +5,7 @@
   "main": "dist/signaling_server/index.js",
   "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "./test.sh",
     "start": "npm run start:signaling",
     "start:signaling": "concurrently \"tsc -w\" \"nodemon dist/signaling_server -debug\"",
     "start:donee": "concurrently \"tsc -w\" \"nodemon dist/donee\"",
