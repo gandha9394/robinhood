@@ -16,7 +16,7 @@ type StrictConfig = {
 type Config = Partial<StrictConfig>;
 type PeerHandle = {
   socketId: SocketId;
-  peerConnection?: RTCPeerConnection;
+  peerConnection: RTCPeerConnection;
   dataChannel?: RTCDataChannel;
 };
 declare namespace Command {
@@ -79,14 +79,11 @@ class Peer {
     this.getSocketIdForPeerConnection =
       this.getSocketIdForPeerConnection.bind(this);
     try {
-      logger.warn(config.signalingServer);
       this.socket = new WebSocket(config.signalingServer as string);
-      logger.warn("ohooo");
     } catch (err) {
       logger.error(err);
     }
     if (this.socket) {
-      logger.warn("hoe");
       pipe(
         this.handleError,
         this.handleClose,
@@ -310,7 +307,13 @@ class RTCPeer extends Peer {
       if (candidate) this.sendIceCandidate(socketId, candidate);
       else {
         logger.info('ICE "Gathering" done!..');
-        this.peerHandle!.dataChannel = this.createDataChannel(socketId);
+        this.relayMessageThroughCentralServer({
+          eventName: this._["isDonor"]?"send_offer":"send_answer",
+          data: {
+            socketId,
+            sdp: peerConnection.localDescription,
+          },
+        });
       }
     };
     return peerConnection;
@@ -353,6 +356,7 @@ export class RTCDonorPeer extends RTCPeer {
   count: number = 0;
   constructor(config: Config) {
     super(config);
+    this._["isDonor"] = true;
     this.on("new_peer_connected", async (data: any) => {
       if (++this.count > 1) {
         //@Dhruv
@@ -361,31 +365,15 @@ export class RTCDonorPeer extends RTCPeer {
       }
       this.peerHandle = this.createPeerHandle(data.socketId);
       this.peerHandle.dataChannel = this.createDataChannel(data.socketId);
-      await this.sendOffer(data.socketId);
+      const offer = await this.peerHandle.peerConnection.createOffer();
+      await this.peerHandle.peerConnection.setLocalDescription(offer);
     });
     this.on("receive_answer", async (data: any) => {
       this.receiveAnswer(data.socketId, data.sdp);
     });
     this.receiveAnswer = this.receiveAnswer.bind(this);
   }
-  async sendOffer(socketId: SocketId) {
-    if (!this.peerConnections[socketId]) {
-      logger.error(
-        "Cannot send offer as peerConnection not found for socketID:" + socketId
-      );
-      process.exit(1);
-    }
-    const pc = this.peerConnections[socketId];
-    const offer = await pc.createOffer();
-    await pc.setLocalDescription(offer);
-    this.relayMessageThroughCentralServer({
-      eventName: "send_offer",
-      data: {
-        socketId,
-        sdp: pc.localDescription,
-      },
-    });
-  }
+
   async receiveAnswer(socketId: SocketId, answer: any) {
     if (!this.peerConnections[socketId]) {
       logger.error(
@@ -402,9 +390,11 @@ export class RTCDonorPeer extends RTCPeer {
 export class RTCDoneePeer extends RTCPeer {
   constructor(config: Config) {
     super(config);
+    this._["isDonor"] = false;
     this.on("receive_offer", async (data: any) => {
       await this.receiveOffer(data.socketId, data.sdp);
-      await this.sendAnswer(data.socketId);
+      const answer = await this.peerHandle?.peerConnection.createAnswer();
+      await this.peerHandle?.peerConnection.setLocalDescription(answer);
     });
     this.on("get_peers", (data: Command.getPeers) => {
       //@Dhruv
@@ -434,24 +424,6 @@ export class RTCDoneePeer extends RTCPeer {
     }
     const pc = this.peerConnections[socketId];
     await pc.setRemoteDescription(new RTCSessionDescription(offer));
-  }
-  async sendAnswer(socketId: SocketId) {
-    if (!this.peerConnections[socketId]) {
-      logger.error(
-        "Cannot send answer as peerConnection not found for socketID:" +
-          socketId
-      );
-      process.exit(1);
-    }
-    const pc = this.peerConnections[socketId];
-    const answer = await pc.createAnswer();
-    pc.setLocalDescription(answer);
-    this.relayMessageThroughCentralServer({
-      eventName: "send_answer",
-      data: {
-        socketId,
-        sdp: pc.localDescription,
-      },
-    });
+    while (this.Q.length > 0) pc.addIceCandidate(this.Q.shift());
   }
 }
