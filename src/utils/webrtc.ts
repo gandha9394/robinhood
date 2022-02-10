@@ -250,11 +250,12 @@ class RTCPeer extends Peer {
     }
     const pc = (this.peerConnections[socketId] = new RTCPeerConnection({
       iceServers: [{ urls: [this.config.iceServer] }],
-      iceCandidatePoolSize: 100,
     }));
     pipe(
       this.peerConnectionOnDataChannel,
-      this.peerConnectionOnIceCandidate
+      this.peerConnectionOnIceCandidate,
+      this.peerConnectionOnIceConnectionStateChange,
+      this.peerConnectionOnNegotiationNeeded
     )(pc);
     return pc;
   }
@@ -326,6 +327,7 @@ class RTCPeer extends Peer {
         peerConnection.restartIce();
       }
     }
+    return peerConnection;
   }
   peerConnectionOnNegotiationNeeded(peerConnection:RTCPeerConnection){
     peerConnection.onnegotiationneeded = async (ev)=>{
@@ -334,6 +336,7 @@ class RTCPeer extends Peer {
         await peerConnection.setLocalDescription(offer);
       }
     }
+    return peerConnection;
   }
   //@Dhruv
   dataChannelOnOpen(dataChannel: RTCDataChannel) {
@@ -400,7 +403,11 @@ export class RTCDonorPeer extends RTCPeer {
       process.exit(1);
     }
     const pc = this.peerConnections[socketId];
+    try{
     await pc.setRemoteDescription(new RTCSessionDescription(answer));
+    }catch(err){
+      logger.error(err);
+    }
     while (this.Q.length > 0) pc.addIceCandidate(this.Q.shift());
   }
 }

@@ -3,7 +3,8 @@ import { RTCDonorPeer } from "../utils/webrtc.js";
 
 const peer = new RTCDonorPeer({
     roomName:'my_room_001',
-    signalingServer:"ws://localhost:8080"
+    signalingServer:"ws://34.133.251.43"
+
 });
 
 

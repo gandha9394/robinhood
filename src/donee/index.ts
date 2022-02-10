@@ -3,7 +3,7 @@ import { RTCDoneePeer } from "../utils/webrtc.js";
 
 const peer = new RTCDoneePeer({
   roomName: "my_room_001",
-  signalingServer: "ws://localhost:8080",
+  signalingServer: "ws://34.133.251.43:8080",
 });
 
 peer.onmessage = (msg:any) =>{
