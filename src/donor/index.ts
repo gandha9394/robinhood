@@ -6,10 +6,11 @@ const peer = new RTCDonorPeer({
     signalingServer:'ws://0.0.0.0:8080',
 })
 
+peer.onmessage = (msg:any) =>{
+    logger.info(`recieved message:${msg}`)
+    peer.send("Kyuuzan hakkai kirenu mono nashi 2")
+}
+
 peer.connectedToPeer().then(() => {
     peer.send("Kyuuzan hakkai kirenu mono nashi");
-    peer.onmessage = (msg:any) =>{
-        logger.http(`recieved message:${msg}`)
-        peer.send("Kyuuzan hakkai kirenu mono nashi")
-    }
 });

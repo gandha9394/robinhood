@@ -6,10 +6,10 @@ const peer = new RTCDoneePeer({
   signalingServer: "ws://0.0.0.0:8080",
 });
 
+peer.onmessage = (msg:any) =>{
+    logger.info(`recieved message:${msg}`)
+    peer.send("Kaizoku ou ni ...orewa naru! 2")
+}
 peer.connectedToPeer().then(() => {
     peer.send("Kaizoku ou ni ...orewa naru!")
-    peer.onmessage = (msg:any) =>{
-        logger.http(`recieved message:${msg}`)
-        peer.send("Kaizoku ou ni ...orewa naru!")
-    }
 });
