@@ -40,7 +40,7 @@ export function run(port = DEFAULT.PORT) {
       logger.info(`Signaling server started on ${address}`);
     else logger.info(`Signaling server started on ${address.address}:${address.port}`);
   });
-  httpServer.listen(port, "0.0.0.0");
+  httpServer.listen(port);
 }
 
 run();
