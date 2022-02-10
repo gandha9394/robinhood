@@ -71,29 +71,36 @@ class Peer {
       ...defaultConfig,
       ...config,
     };
-    this.socket = new WebSocket(config.signalingServer as string);
+    this.register = this.register.bind(this);
+    this.fire = this.fire.bind(this);
+    this.on = this.on.bind(this);
+    this.handleCommandsFromCentralServer =
+      this.handleCommandsFromCentralServer.bind(this);
+    this.getSocketIdForPeerConnection =
+      this.getSocketIdForPeerConnection.bind(this);
+    try {
+      logger.warn(config.signalingServer);
+      this.socket = new WebSocket(config.signalingServer as string);
+      logger.warn("ohooo");
+    } catch (err) {
+      logger.error(err);
+    }
     if (this.socket) {
-      this.socket.onopen = () => {
-        pipe(
-          this.register,
-          this.handleError,
-          this.handleClose,
-          this.handleCommandsFromCentralServer
-        )(this.socket);
-      };
+      logger.warn("hoe");
+      pipe(
+        this.handleError,
+        this.handleClose,
+        this.handleCommandsFromCentralServer
+      )(this.socket);
+      this.socket.onopen = ()=>{
+        this.register(this.socket);
+      }
       this.on(
         "remove_peer_connected",
         ({ data }: Command.removePeerConnected) => {
           if (data && data.socketId) delete this.peerConnections[data.socketId];
         }
       );
-      this.register = this.register.bind(this);
-      this.fire = this.fire.bind(this);
-      this.on = this.on.bind(this);
-      this.handleCommandsFromCentralServer =
-        this.handleCommandsFromCentralServer.bind(this);
-      this.getSocketIdForPeerConnection =
-        this.getSocketIdForPeerConnection.bind(this);
     }
   }
 
