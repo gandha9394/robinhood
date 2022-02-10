@@ -1,11 +1,13 @@
 import winston from "winston";
 
 const logger = winston.createLogger({
-  level: "silly",
-  levels:winston.config.syslog.levels,
+  level: "info",
   silent: false, //set this to true later
-  transports: [new winston.transports.Console()],
+  transports: [new winston.transports.Console({level:'silly'})],
 });
+winston.format.combine(
+  winston.format.colorize()
+)
 
 export default logger;
 

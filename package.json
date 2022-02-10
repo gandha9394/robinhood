@@ -6,11 +6,11 @@
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start":"npm run start:signaling",
+    "start": "npm run start:signaling",
     "start:signaling": "concurrently \"tsc -w\" \"nodemon dist/signaling_server -debug\"",
     "start:donee": "concurrently \"tsc -w\" \"nodemon dist/donee\"",
     "start:donor": "concurrently \"tsc -w\" \"nodemon dist/donor\"",
-    "dev:signaling": "node dist/signaling_server",
+    "dev:signaling": "node dist/signaling_server -debug",
     "dev:donee": "node dist/donee",
     "dev:donor": "node dist/donor"
   },

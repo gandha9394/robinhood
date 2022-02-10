@@ -7,9 +7,9 @@ const peer = new RTCDonorPeer({
 })
 
 peer.connectedToPeer().then(() => {
-    peer.send("Kyuuzan hakkai kirenu mono nashi")
+    peer.send("Kyuuzan hakkai kirenu mono nashi");
     peer.onmessage = (msg:any) =>{
-        logger.verbose(`recieved message:${msg}`)
+        logger.http(`recieved message:${msg}`)
         peer.send("Kyuuzan hakkai kirenu mono nashi")
     }
 });
