@@ -11,8 +11,8 @@ const DEFAULT = {
 export function run(port = DEFAULT.PORT) {
   const expressApp = express();
   const httpServer = http.createServer(expressApp);
-  signalingserver.listen(httpServer);
-
+  const mgr = signalingserver.listen(httpServer);
+  
   expressApp.set("json spaces", DEFAULT.JSON_INDENTATION);
 
   /**----- specify all exposed REST endpoints here------- */
@@ -20,6 +20,10 @@ export function run(port = DEFAULT.PORT) {
     res.json({ message: "Hello, World!" });
   });
   /**---------------------------------------------------- */
+  mgr.rtc.on('send_ice_candidate',(data:any)=>{
+    logger.info(data.socketId);
+  })
+
   httpServer.on("error", (e: Error) => {
     //TODO: test this. e.code or e.name?? no clue
     if (e.name === "EADDRINUSE") {

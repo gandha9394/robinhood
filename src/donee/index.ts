@@ -8,7 +8,6 @@ const peer = new RTCDoneePeer({
 
 peer.onmessage = (msg:any) =>{
     logger.info(`recieved message:${msg}`)
-    peer.send("Kaizoku ou ni ...orewa naru! 2")
 }
 peer.connectedToPeer().then(() => {
     peer.send("Kaizoku ou ni ...orewa naru!")

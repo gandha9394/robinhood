@@ -12,10 +12,6 @@ type StrictConfig = {
   signalingServer: string | URL;
   iceServer: string;
   roomName: string;
-  sendOffer?: (socketId: SocketId) => void;
-  sendAnswer?: (socketId: SocketId) => void;
-  receiveOffer?: (socketId: SocketId, offer: RTCSessionDescription) => void;
-  receiveAnswer?: (socketId: SocketId, answer: RTCSessionDescription) => void;
 };
 type Config = Partial<StrictConfig>;
 type PeerHandle = {
@@ -219,8 +215,7 @@ class RTCPeer extends Peer {
 
   createPeerHandle(socketId: SocketId) {
     const peerConnection = this.createRTCPeerConnection(socketId);
-    const dataChannel = this.createDataChannel(socketId);
-    return { socketId, peerConnection, dataChannel };
+    return { socketId, peerConnection };
   }
 
   onReceiveIceCandidate(socketId: SocketId, candidate: RTCIceCandidate) {
@@ -306,7 +301,10 @@ class RTCPeer extends Peer {
     const socketId = this.getSocketIdForPeerConnection(peerConnection);
     peerConnection.onicecandidate = ({ candidate }) => {
       if (candidate) this.sendIceCandidate(socketId, candidate);
-      else logger.info('ICE "Gathering" done!..');
+      else {
+        logger.info('ICE "Gathering" done!..');
+        this.peerHandle!.dataChannel = this.createDataChannel(socketId);
+      }
     };
     return peerConnection;
   }
@@ -355,6 +353,7 @@ export class RTCDonorPeer extends RTCPeer {
         process.exit(1);
       }
       this.peerHandle = this.createPeerHandle(data.socketId);
+      this.peerHandle.dataChannel = this.createDataChannel(data.socketId);
       await this.sendOffer(data.socketId);
     });
     this.on("receive_answer", async (data: any) => {
@@ -410,9 +409,11 @@ export class RTCDoneePeer extends RTCPeer {
       }
       if (data.connections.length === 1) {
         this.peerHandle = this.createPeerHandle(data.connections[0]);
-      }
-      else{
-        logger.silly(`Ignore this event. connections=0. connections=${data.connections.length}`)
+        //no datachannel YET
+      } else {
+        logger.silly(
+          `Ignore this event. connections=0. connections=${data.connections.length}`
+        );
       }
     });
   }
