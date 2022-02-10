@@ -190,6 +190,8 @@ class RTCPeer extends Peer {
     this.onReceiveIceCandidate = this.onReceiveIceCandidate.bind(this);
     this.peerConnectionOnDataChannel =
       this.peerConnectionOnDataChannel.bind(this);
+    this.peerConnectionOnNegotiationNeeded = this.peerConnectionOnNegotiationNeeded.bind(this);
+    this.peerConnectionOnIceConnectionStateChange = this.peerConnectionOnIceConnectionStateChange.bind(this);
   }
   send(msg: any) {
     if (
