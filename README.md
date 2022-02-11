@@ -191,3 +191,19 @@ DONEE - commands list
 
 ### TODOs
 - log.error is massively fucked. one off cases which reach here will kill the process with some random untraceable error
+- fix spinner (or atleast a message)
+- fix logger.error
+- gracefully exit on `exit`
+- docker
+- copy files p2
+- figure out
+- Only Donor and me(Donee) were supposed to be there. Exiting... (p2 bug)
+- terminal extra line appears on enter
+- read arrow marks and execute the same
+- suggestion (p100)
+- user testing 
+- tab key messes up the terminal
+- if you are donor both stun and turn should be enabled
+- but a donee only stun
+- Only one donor can support only one donee (p2)
+  
