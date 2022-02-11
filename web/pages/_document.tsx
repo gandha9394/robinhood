@@ -34,6 +34,10 @@ export default class MyDocument extends Document {
       <Html>
          <Head>
             <link rel="icon" href="/setu-icon.png"></link>
+            <link rel="preconnect" href="https://fonts.googleapis.com"/>
+            <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous"/>
+            <link href="https://fonts.googleapis.com/css2?family=Anonymous+Pro:wght@700&display=swap" rel="stylesheet"/> 
+            <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600&display=swap" rel="stylesheet"/>
          </Head>
          <body>
             <Main />

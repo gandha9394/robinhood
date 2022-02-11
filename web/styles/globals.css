@@ -2,8 +2,7 @@ html,
 body {
   padding: 0;
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  font-family: 'Montserrat',sans-serif;
 }
 
 a {
@@ -33,3 +32,19 @@ a {
   width: 80%;
   overflow: scroll;
 }
+
+/** //////////// Helper classes /////////// **/
+.fit-content{
+  height: 100vh;
+}
+.font-monospace{
+  font-family: 'Anonymous Pro', Arial, Helvetica, sans-serif;
+}
+.font-default{
+  font-family: 'Montserrat', sans-serif;
+
+}
+.font-xl{
+font-size: 3rem;
+}
+

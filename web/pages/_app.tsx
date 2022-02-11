@@ -38,13 +38,14 @@ function MyApp({ Component, pageProps: { ...pageProps } }: AppProps) {
                 signIn()
             }
             else{
+                console.log(res)
                 setSession(res || undefined);
+                console.log("again",res)
             }
         });
     }, []);
     
-    return (
-        <>
+    return <>
             <Head>
                 <title>SETU</title>
                 <link rel="icon" href="/setu-icon.png"></link>
@@ -67,6 +68,5 @@ function MyApp({ Component, pageProps: { ...pageProps } }: AppProps) {
                 )}
             </ThemeProvider>
         </>
-    );
 }
 export default MyApp;
