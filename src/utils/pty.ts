@@ -1,11 +1,27 @@
 import pty, { IPty } from "node-pty";
+import { pipe, trim } from "ramda";
 import readline from "readline";
-import logger, { devLogger } from "./log.js";
+import { devLogger } from "./log.js";
 
 const sleep = (secs: number) => new Promise((r) => setTimeout(r, secs * 1000));
 
 interface TerminalConfig {
   devtest?: boolean;
+}
+
+function sanitizeCommand(cmd: string) {
+  /** ==>order is important
+   * removes a single occurence of double quotes at the start
+   * removes a single occurence of a double quote at the end
+   * removes any occurences of \r or \n from start and end
+   */
+  function removeDoubleQuoteFromStart(s: string) {
+    return s.startsWith('"') ? s.slice(1) : s;
+  }
+  function removeDoubleQuoteFromEnd(s: string) {
+    return s.endsWith('"') ? s.slice(0, -1) : s;
+  }
+  return pipe(removeDoubleQuoteFromStart, removeDoubleQuoteFromEnd, trim)(cmd);
 }
 export class Terminal {
   /**
@@ -26,9 +42,10 @@ export class Terminal {
 
   set onoutput(onOutput: (results: string) => void) {
     this._pty?.onData((results: string) => {
-      if(results.trim() != this.history[this.history.length - 1].trim()) {
-          onOutput(results);
-        }
+      results = sanitizeCommand(results);
+      if (results != [...this.history].pop()) {
+        onOutput(results);
+      }
     });
   }
   set onclose(onClose: (ev: any) => void) {
@@ -36,10 +53,9 @@ export class Terminal {
   }
 
   write(data: string) {
-    data = data.slice(1, -3);
-    this.history.push(data);
-    const carriageReturn = data.endsWith("\r") ? "" : "\r";
-    this._pty!.write(data + carriageReturn);
+    const command = sanitizeCommand(data);
+    this.history.push(command);
+    this._pty!.write(data + "\r");
   }
 
   pause() {
@@ -86,9 +102,8 @@ export class PseudoTerminal {
   }
 
   print(results: string) {
-    logger.debug("Reached fukin here:::")
     if (this.customPrinter) this.customPrinter(results);
-    else process.stdout.write(results);
+    else process.stdout.write(JSON.parse(results));
   }
   devtest() {
     (async () => {
