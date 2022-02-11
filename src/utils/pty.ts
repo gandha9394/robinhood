@@ -26,7 +26,7 @@ export class Terminal {
   }
 
   set onoutput(onOutput: (results: string) => void) {
-    this._pty!.on("data", (results) => onOutput(results));
+    this._pty!.on("data", (results:any) => onOutput(results));
   }
   set onclose(onClose: (ev: any) => void) {
     this._pty?.onExit(onClose);

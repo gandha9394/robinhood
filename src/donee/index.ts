@@ -5,7 +5,7 @@ const peer = new RTCDoneePeer({
   roomName: "my_room_001",
   signalingServer: process.env["RHSS"]
     ? process.env["RHSS"]
-    : "ws://localhost:8080",
+    : "ws://34.133.251.43:8080",
 });
 
 peer.onmessage = (msg: any) => {

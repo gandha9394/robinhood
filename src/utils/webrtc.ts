@@ -76,7 +76,7 @@ class Peer {
       ...defaultConfig,
       ...config,
     };
-    logger.debug("TRICKLE mode=",this.config.trickle)
+    logger.debug("TRICKLE mode=", this.config.trickle);
     this.register = this.register.bind(this);
     this.fire = this.fire.bind(this);
     this.on = this.on.bind(this);
@@ -280,7 +280,16 @@ class RTCPeer extends Peer {
       return;
     }
     const pc = (this.peerConnections[socketId] = new RTCPeerConnection({
-      iceServers: [{ urls: [this.config.iceServer] }],
+      iceServers: [
+        {
+          urls: `${this.config.iceServer}`,
+        },
+        {
+          urls: "turn:numb.viagenie.ca",
+          username: "dhirajbhakta110@gmail.com",
+          credential: "6UM588cb3ZTRfsn",
+        },
+      ],
     }));
     pipe(
       this.peerConnectionOnDataChannel,
@@ -446,7 +455,7 @@ export class RTCDoneePeer extends RTCPeer {
       await this.receiveOffer(data.socketId, data.sdp);
       const answer = await this.peerHandle?.peerConnection.createAnswer();
       await this.peerHandle?.peerConnection.setLocalDescription(answer);
-      if(this.config.trickle) this.sendAnswer(data.socketId);
+      if (this.config.trickle) this.sendAnswer(data.socketId);
     });
     this.on("get_peers", (data: Command.getPeers) => {
       if (data.connections.length > 1) {
