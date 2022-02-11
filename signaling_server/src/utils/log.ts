@@ -1,11 +1,33 @@
-import chalk from "chalk";
-import { compose } from "ramda";
+import { createLogger, format, transports } from "winston";
+const { combine, printf } = format;
 
-export const Log = {
-  info: compose(console.log, chalk.greenBright),
-  error: compose(console.log, chalk.redBright),
-  warn: compose(console.log, chalk.yellowBright),
-};
+const logFormat = printf(({ level, message, stack }) => {
+  return `[${level}]: ${stack || message}`;
+});
 
-export const delay = (seconds: number = 3) =>
-  new Promise((res) => setTimeout(res, seconds * 1000));
+const logger = createLogger({
+    level: "warn",
+    silent: false, //set this to true later
+    // format: combine(format.errors({ stack: true }), format.colorize({ all: true }), logFormat),
+    format: combine(format.errors({ stack: true }), logFormat),
+    // transports: [new transports.Console()],
+    transports: [new transports.File({filename:'combined.log'})],
+});
+
+export const devLogger = createLogger({
+    level: "silly",
+    silent: false, //set this to true later
+    format: combine(format.errors({ stack: true }), format.colorize({ all: true }), logFormat),
+    transports: [new transports.Console()],
+});
+export default logger;
+
+export class Deferred {
+    promise: Promise<null>;
+    resolve: Function = () => logger.debug("The Watchdog of the underworld");
+    constructor() {
+        this.promise = new Promise((res) => {
+            this.resolve = res;
+        });
+    }
+}
