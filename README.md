@@ -186,3 +186,8 @@ DONEE - commands list
  
 `any command I want`
 `exit`
+
+
+
+### TODOs
+- log.error is massively fucked. one off cases which reach here will kill the process with some random untraceable error

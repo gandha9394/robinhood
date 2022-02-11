@@ -1,6 +1,6 @@
 import pty, { IPty } from "node-pty";
 import readline from "readline";
-import { devLogger } from "./log.js";
+import logger, { devLogger } from "./log.js";
 
 const sleep = (secs: number) => new Promise((r) => setTimeout(r, secs * 1000));
 
@@ -84,6 +84,7 @@ export class PseudoTerminal {
   }
 
   print(results: string) {
+    logger.debug("Reached fukin here:::")
     if (this.customPrinter) this.customPrinter(results);
     else process.stdout.write(results);
   }

@@ -394,6 +394,7 @@ class RTCPeer extends Peer {
     };
     if (typeof this._["onmessage"] === "function") {
       dataChannel.onmessage = ({ data }) => {
+        logger.debug("Got called by an internal impl:::")
         this.fire("recv", data);
         this._["onmessage"](data);
       };
