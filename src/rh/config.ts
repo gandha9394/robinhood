@@ -11,10 +11,10 @@ export const DEFAULT_MAX_DISK = process.env.DEFAULT_MAX_DISK || "1G";
 
 export const DEFAULT_DAEMON_PORT = process.env.DEFAULT_DAEMON_PORT || "8080";
 
-export const DAEMON_PROCESS_SCRIPT = "./dist/rh/daemon";
+export const DAEMON_PROCESS_SCRIPT = "dist/rh/daemon/index.js";
 export const DAEMON_PROCESS_NAME = "rh-daemon";
 
-export const DAEMON_METRICS_PROCESS_SCRIPT = "./dist/rh/metrics";
+export const DAEMON_METRICS_PROCESS_SCRIPT = "dist/rh/metrics/index.js";
 export const DAEMON_METRICS_PROCESS_NAME = "rh-daemon-metrics";
 export const CONTAINER_PREFIX = "rh-container-";
 

@@ -4,6 +4,7 @@ import logger from "./log.js";
 
 interface TerminalConfig {
   devtest?: boolean;
+  ptyProcess?: IPty;
 }
 interface STDOUTdata {
   type: "CMD" | "RSLT";
@@ -26,18 +27,34 @@ export class Terminal {
   _pty?: IPty;
   history: Array<Command> = [];
 
-  constructor({ devtest }: TerminalConfig = {}) {
+  constructor({ devtest, ptyProcess }: TerminalConfig = {}) {
     if (devtest) this.devtest();
     else {
-      this._pty = pty.spawn("bash", [], {});
+      this._pty = ptyProcess;
     }
   }
 
   //https://github.com/microsoft/node-pty/issues/429
   isThisAnInputEcho(cmdStr: string) {
+    /* Docker output always contains user cli line
+    // Example:
+          pwd                                           
+│         /                                                           
+│         ]0;root@a52a3c0eaa27: /root@a52a3c0eaa27:/#
+      Splitting on "#" for now to get the actual cmdStr
+    */
+    // if(cmdStr.includes("#")) {
+    //   cmdStr = cmdStr.split("#")[1]
+    // }
+    console.log("cmdStr srray", Array.from(cmdStr))
+    cmdStr = cmdStr.split("\r\n")[0]
     let _1 = cmdStr.trim()
     let _2 = [...this.history].pop()?.data.trim()
+    console.log("cmdStr trimmed", _1)
+    console.log("history item trimmed", _2)
     _1 = _1.split('\n')[0].trim()
+    console.log("cmdStr modified", _1)
+    console.log("condition", _1 === _2)
     return _1 === _2;
   }
 

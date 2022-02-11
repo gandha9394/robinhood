@@ -3,7 +3,7 @@ import { Command } from "commander";
 import figlet from "figlet";
 import { yellowBright, bold } from "colorette";
 import { loginUser } from "./cli/auth.js";
-import { initializeDaemon, killDaemon } from "./cli/daemon.js";
+import { initializeDaemon, killDaemon, restartDaemon } from "./cli/daemon.js";
 
 const program = new Command();
 
@@ -32,6 +32,11 @@ program
     .command("kill")
     .description("Kill rh daemon")
     .action(killDaemon);
+
+program
+    .command("restart")
+    .description("Restart rh daemon")
+    .action(restartDaemon);
 
 
 const init = () => {

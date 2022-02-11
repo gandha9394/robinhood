@@ -2,7 +2,7 @@
   "name": "robinhood",
   "version": "1.0.0",
   "description": "terminal sharing from wherever, whenever",
-  "main": "dist/signaling_server/index.js",
+  "main": "./dist/rh/index.js",
   "type": "module",
   "bin": {
     "rh": "./dist/rh/index.js"
@@ -47,6 +47,7 @@
     "express": "^4.17.2",
     "figlet": "^1.5.2",
     "inquirer": "^8.2.0",
+    "minimist": "^1.2.5",
     "node-pty": "^0.10.1",
     "pm2": "^5.1.2",
     "ramda": "^0.28.0",
@@ -59,6 +60,7 @@
     "@types/express": "^4.17.13",
     "@types/figlet": "^1.5.4",
     "@types/inquirer": "^8.2.0",
+    "@types/minimist": "^1.2.2",
     "@types/node": "^17.0.16",
     "@types/ramda": "^0.27.64",
     "@types/winston": "^2.4.4",

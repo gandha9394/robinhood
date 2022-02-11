@@ -92,6 +92,14 @@ export const initializeDaemon = async (maxCpu: string, maxMemory: string, maxDis
     });
 };
 
+export const restartDaemon = async () => {
+    return new Promise<void>(async (resolve, reject) => {
+        await killDaemon()
+        const { maxCpu: savedMaxCpu, maxMemory: savedMaxMemory, maxDisk: savedMaxDisk } = getUserPreferences();
+        await initializeDaemon(savedMaxCpu, savedMaxMemory, savedMaxDisk)
+    });
+};
+
 export const killDaemon = async () => {
     return new Promise<void>(async (resolve, reject) => {
         const pm2: any = await connectToPM2();

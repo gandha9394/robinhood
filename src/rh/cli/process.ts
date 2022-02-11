@@ -3,7 +3,8 @@ import CLI from "clui";
 import pm2, { Proc, StartOptions } from "pm2";
 const { Spinner } = CLI;
 
-// Wish this was exported from PM2 library so I wouldn't have to redefine it :'(
+// TODO: Import type of pm2 instance (entire module)
+// Wish this was exported from PM2 library so I wouldn't have to redefine it :/
 export interface PM2Error {
     name: string;
     message: string;
@@ -54,9 +55,9 @@ export class PM2Process {
             const snipper = new Spinner(`Starting ${this.displayName} process...`);
             snipper.start();
             const startConfig: StartOptions = {
-                script: this.scriptPath,
+                script: "node",
                 name: this.processName,
-                args: this.args,
+                args: [this.scriptPath, ...this.args],
                 cron: this.cron,
             };
             this._pm2.start(startConfig, (err: PM2Error, proc: Proc) => {
