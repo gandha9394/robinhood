@@ -26,7 +26,9 @@ export class Terminal {
 
   set onoutput(onOutput: (results: string) => void) {
     this._pty?.onData((results: string) => {
-        onOutput(results);
+      if(results.trim() != this.history[this.history.length - 1].trim()) {
+          onOutput(results);
+        }
     });
   }
   set onclose(onClose: (ev: any) => void) {
@@ -34,10 +36,11 @@ export class Terminal {
   }
 
   write(data: string) {
-    data = data.substring(1).slice(0, -3);
+    data = data.slice(1, -3);
+    this.history.push(data);
+    logger.info("data.endswith rrrr: " + data.endsWith("\r"))
     const carriageReturn = data.endsWith("\r") ? "" : "\r";
     this._pty!.write(data + carriageReturn);
-    this.history.push(data + carriageReturn);
   }
 
   pause() {

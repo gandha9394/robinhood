@@ -458,3 +458,710 @@
 [silly]: Sending MSG to central server:{"eventName":"send_ice_candidate","data":{"label":"my_room_001","candidate":{"candidate":"candidate:453802058 1 udp 41754367 158.69.221.198 61757 typ relay raddr 49.37.185.59 rport 44486 generation 0 ufrag hYDq network-id 2 network-cost 50","sdpMid":"0","sdpMLineIndex":0,"foundation":"453802058","component":"rtp","priority":41754367,"address":"158.69.221.198","protocol":"udp","port":61757,"type":"relay","tcpType":null,"relatedAddress":"49.37.185.59","relatedPort":44486,"usernameFragment":"hYDq"},"socketId":"81493a6c-0956-2265-33ee-83b77e6ef333"}}
 [debug]: Received an ICE candidate from:81493a6c-0956-2265-33ee-83b77e6ef333
 [debug]: ICE "Gathering" done!..
+[debug]: TRICKLE mode=
+[silly]: Not attaching onmessage handler right away..
+[silly]: Finally attached onmessage handler!
+[silly]: Sending MSG to central server:{"eventName":"send_offer","data":{"socketId":"8360dae2-333a-7b0e-385f-5d3c8fbf1970","sdp":{"type":"offer","sdp":"v=0\r\no=- 6435467086749014408 2 IN IP4 127.0.0.1\r\ns=-\r\nt=0 0\r\na=group:BUNDLE 0\r\na=msid-semantic: WMS\r\nm=application 9 UDP/DTLS/SCTP webrtc-datachannel\r\nc=IN IP4 0.0.0.0\r\na=ice-ufrag:bhXa\r\na=ice-pwd:DCyINdwDBr9Svsw/pknHMeaL\r\na=ice-options:trickle\r\na=fingerprint:sha-256 9B:C1:18:1A:72:EE:2C:AA:72:0C:F7:1C:5A:F6:A8:34:D0:F9:D0:61:FD:DD:6D:58:AA:9D:CF:2D:D5:BE:47:B0\r\na=setup:actpass\r\na=mid:0\r\na=sctp-port:5000\r\na=max-message-size:262144\r\n"}}}
+[silly]: Sending MSG to central server:{"eventName":"send_ice_candidate","data":{"label":"my_room_001","candidate":{"candidate":"candidate:918459911 1 udp 2122260223 192.168.1.18 55789 typ host generation 0 ufrag bhXa network-id 1 network-cost 50","sdpMid":"0","sdpMLineIndex":0,"foundation":"918459911","component":"rtp","priority":2122260223,"address":"192.168.1.18","protocol":"udp","port":55789,"type":"host","tcpType":null,"relatedAddress":null,"relatedPort":null,"usernameFragment":"bhXa"},"socketId":"8360dae2-333a-7b0e-385f-5d3c8fbf1970"}}
+[silly]: Sending MSG to central server:{"eventName":"send_ice_candidate","data":{"label":"my_room_001","candidate":{"candidate":"candidate:559267639 1 udp 2122202367 ::1 53580 typ host generation 0 ufrag bhXa network-id 3","sdpMid":"0","sdpMLineIndex":0,"foundation":"559267639","component":"rtp","priority":2122202367,"address":"::1","protocol":"udp","port":53580,"type":"host","tcpType":null,"relatedAddress":null,"relatedPort":null,"usernameFragment":"bhXa"},"socketId":"8360dae2-333a-7b0e-385f-5d3c8fbf1970"}}
+[silly]: Sending MSG to central server:{"eventName":"send_ice_candidate","data":{"label":"my_room_001","candidate":{"candidate":"candidate:1510613869 1 udp 2122129151 127.0.0.1 58438 typ host generation 0 ufrag bhXa network-id 2","sdpMid":"0","sdpMLineIndex":0,"foundation":"1510613869","component":"rtp","priority":2122129151,"address":"127.0.0.1","protocol":"udp","port":58438,"type":"host","tcpType":null,"relatedAddress":null,"relatedPort":null,"usernameFragment":"bhXa"},"socketId":"8360dae2-333a-7b0e-385f-5d3c8fbf1970"}}
+[silly]: Sending MSG to central server:{"eventName":"send_ice_candidate","data":{"label":"my_room_001","candidate":{"candidate":"candidate:2017290999 1 tcp 1518280447 192.168.1.18 58898 typ host tcptype passive generation 0 ufrag bhXa network-id 1 network-cost 50","sdpMid":"0","sdpMLineIndex":0,"foundation":"2017290999","component":"rtp","priority":1518280447,"address":"192.168.1.18","protocol":"tcp","port":58898,"type":"host","tcpType":"passive","relatedAddress":null,"relatedPort":null,"usernameFragment":"bhXa"},"socketId":"8360dae2-333a-7b0e-385f-5d3c8fbf1970"}}
+[silly]: Sending MSG to central server:{"eventName":"send_ice_candidate","data":{"label":"my_room_001","candidate":{"candidate":"candidate:1876313031 1 tcp 1518222591 ::1 58899 typ host tcptype passive generation 0 ufrag bhXa network-id 3","sdpMid":"0","sdpMLineIndex":0,"foundation":"1876313031","component":"rtp","priority":1518222591,"address":"::1","protocol":"tcp","port":58899,"type":"host","tcpType":"passive","relatedAddress":null,"relatedPort":null,"usernameFragment":"bhXa"},"socketId":"8360dae2-333a-7b0e-385f-5d3c8fbf1970"}}
+[silly]: Sending MSG to central server:{"eventName":"send_ice_candidate","data":{"label":"my_room_001","candidate":{"candidate":"candidate:344579997 1 tcp 1518149375 127.0.0.1 58900 typ host tcptype passive generation 0 ufrag bhXa network-id 2","sdpMid":"0","sdpMLineIndex":0,"foundation":"344579997","component":"rtp","priority":1518149375,"address":"127.0.0.1","protocol":"tcp","port":58900,"type":"host","tcpType":"passive","relatedAddress":null,"relatedPort":null,"usernameFragment":"bhXa"},"socketId":"8360dae2-333a-7b0e-385f-5d3c8fbf1970"}}
+[silly]: Sending MSG to central server:{"eventName":"send_ice_candidate","data":{"label":"my_room_001","candidate":{"candidate":"candidate:3232690131 1 udp 1686052607 122.161.76.62 15910 typ srflx raddr 192.168.1.18 rport 55789 generation 0 ufrag bhXa network-id 1 network-cost 50","sdpMid":"0","sdpMLineIndex":0,"foundation":"3232690131","component":"rtp","priority":1686052607,"address":"122.161.76.62","protocol":"udp","port":15910,"type":"srflx","tcpType":null,"relatedAddress":"192.168.1.18","relatedPort":55789,"usernameFragment":"bhXa"},"socketId":"8360dae2-333a-7b0e-385f-5d3c8fbf1970"}}
+[debug]: Received an ICE candidate from:8360dae2-333a-7b0e-385f-5d3c8fbf1970
+[debug]: Received an ICE candidate from:8360dae2-333a-7b0e-385f-5d3c8fbf1970
+[debug]: Received an ICE candidate from:8360dae2-333a-7b0e-385f-5d3c8fbf1970
+[debug]: Received an ICE candidate from:8360dae2-333a-7b0e-385f-5d3c8fbf1970
+[debug]: Received an ICE candidate from:8360dae2-333a-7b0e-385f-5d3c8fbf1970
+[debug]: Received an ICE candidate from:8360dae2-333a-7b0e-385f-5d3c8fbf1970
+[silly]: Sending MSG to central server:{"eventName":"send_ice_candidate","data":{"label":"my_room_001","candidate":{"candidate":"candidate:453802058 1 udp 41885439 158.69.221.198 65354 typ relay raddr 122.161.76.62 rport 15910 generation 0 ufrag bhXa network-id 1 network-cost 50","sdpMid":"0","sdpMLineIndex":0,"foundation":"453802058","component":"rtp","priority":41885439,"address":"158.69.221.198","protocol":"udp","port":65354,"type":"relay","tcpType":null,"relatedAddress":"122.161.76.62","relatedPort":15910,"usernameFragment":"bhXa"},"socketId":"8360dae2-333a-7b0e-385f-5d3c8fbf1970"}}
+[debug]: Received an ICE candidate from:8360dae2-333a-7b0e-385f-5d3c8fbf1970
+[debug]: Received an ICE candidate from:8360dae2-333a-7b0e-385f-5d3c8fbf1970
+[debug]: Received an ICE candidate from:8360dae2-333a-7b0e-385f-5d3c8fbf1970
+[debug]: Received an ICE candidate from:8360dae2-333a-7b0e-385f-5d3c8fbf1970
+[debug]: Received an ICE candidate from:8360dae2-333a-7b0e-385f-5d3c8fbf1970
+[debug]: Received an ICE candidate from:8360dae2-333a-7b0e-385f-5d3c8fbf1970
+[debug]: Received an ICE candidate from:8360dae2-333a-7b0e-385f-5d3c8fbf1970
+[debug]: Received an ICE candidate from:8360dae2-333a-7b0e-385f-5d3c8fbf1970
+[debug]: Received an ICE candidate from:8360dae2-333a-7b0e-385f-5d3c8fbf1970
+[debug]: Received an ICE candidate from:8360dae2-333a-7b0e-385f-5d3c8fbf1970
+[debug]: Received an ICE candidate from:8360dae2-333a-7b0e-385f-5d3c8fbf1970
+[debug]: Received an ICE candidate from:8360dae2-333a-7b0e-385f-5d3c8fbf1970
+[debug]: Received an ICE candidate from:8360dae2-333a-7b0e-385f-5d3c8fbf1970
+[debug]: ICE "Gathering" done!..
+[debug]: Got called by an internal impl:::
+[info]: results
+[info]: pwd
+
+[info]: results
+[info]: /Users/dhruvmisra/Code/robinhood
+bash-3.2$ 
+[debug]: Got called by an internal impl:::
+[info]: results
+[info]: pwd
+
+[info]: results
+[info]: /Users/dhruvmisra/Code/robinhood
+bash-3.2$ 
+[debug]: TRICKLE mode=
+[silly]: Not attaching onmessage handler right away..
+[silly]: Finally attached onmessage handler!
+[silly]: Sending MSG to central server:{"eventName":"send_offer","data":{"socketId":"31c7d4eb-28cd-8b7b-7a17-1434263d8520","sdp":{"type":"offer","sdp":"v=0\r\no=- 7909222527995468377 2 IN IP4 127.0.0.1\r\ns=-\r\nt=0 0\r\na=group:BUNDLE 0\r\na=msid-semantic: WMS\r\nm=application 9 UDP/DTLS/SCTP webrtc-datachannel\r\nc=IN IP4 0.0.0.0\r\na=ice-ufrag:w6hW\r\na=ice-pwd:6F+bTDFcbFhm4a7AlYmc010J\r\na=ice-options:trickle\r\na=fingerprint:sha-256 89:8E:89:E2:68:90:94:D1:E2:82:26:D1:3C:AC:CE:6E:7E:4C:B9:7D:BF:8E:09:97:20:A7:EC:74:00:11:18:F5\r\na=setup:actpass\r\na=mid:0\r\na=sctp-port:5000\r\na=max-message-size:262144\r\n"}}}
+[silly]: Sending MSG to central server:{"eventName":"send_ice_candidate","data":{"label":"my_room_001","candidate":{"candidate":"candidate:918459911 1 udp 2122260223 192.168.1.18 64977 typ host generation 0 ufrag w6hW network-id 1 network-cost 50","sdpMid":"0","sdpMLineIndex":0,"foundation":"918459911","component":"rtp","priority":2122260223,"address":"192.168.1.18","protocol":"udp","port":64977,"type":"host","tcpType":null,"relatedAddress":null,"relatedPort":null,"usernameFragment":"w6hW"},"socketId":"31c7d4eb-28cd-8b7b-7a17-1434263d8520"}}
+[silly]: Sending MSG to central server:{"eventName":"send_ice_candidate","data":{"label":"my_room_001","candidate":{"candidate":"candidate:559267639 1 udp 2122202367 ::1 59127 typ host generation 0 ufrag w6hW network-id 3","sdpMid":"0","sdpMLineIndex":0,"foundation":"559267639","component":"rtp","priority":2122202367,"address":"::1","protocol":"udp","port":59127,"type":"host","tcpType":null,"relatedAddress":null,"relatedPort":null,"usernameFragment":"w6hW"},"socketId":"31c7d4eb-28cd-8b7b-7a17-1434263d8520"}}
+[silly]: Sending MSG to central server:{"eventName":"send_ice_candidate","data":{"label":"my_room_001","candidate":{"candidate":"candidate:1510613869 1 udp 2122129151 127.0.0.1 61804 typ host generation 0 ufrag w6hW network-id 2","sdpMid":"0","sdpMLineIndex":0,"foundation":"1510613869","component":"rtp","priority":2122129151,"address":"127.0.0.1","protocol":"udp","port":61804,"type":"host","tcpType":null,"relatedAddress":null,"relatedPort":null,"usernameFragment":"w6hW"},"socketId":"31c7d4eb-28cd-8b7b-7a17-1434263d8520"}}
+[silly]: Sending MSG to central server:{"eventName":"send_ice_candidate","data":{"label":"my_room_001","candidate":{"candidate":"candidate:2017290999 1 tcp 1518280447 192.168.1.18 59491 typ host tcptype passive generation 0 ufrag w6hW network-id 1 network-cost 50","sdpMid":"0","sdpMLineIndex":0,"foundation":"2017290999","component":"rtp","priority":1518280447,"address":"192.168.1.18","protocol":"tcp","port":59491,"type":"host","tcpType":"passive","relatedAddress":null,"relatedPort":null,"usernameFragment":"w6hW"},"socketId":"31c7d4eb-28cd-8b7b-7a17-1434263d8520"}}
+[silly]: Sending MSG to central server:{"eventName":"send_ice_candidate","data":{"label":"my_room_001","candidate":{"candidate":"candidate:1876313031 1 tcp 1518222591 ::1 59492 typ host tcptype passive generation 0 ufrag w6hW network-id 3","sdpMid":"0","sdpMLineIndex":0,"foundation":"1876313031","component":"rtp","priority":1518222591,"address":"::1","protocol":"tcp","port":59492,"type":"host","tcpType":"passive","relatedAddress":null,"relatedPort":null,"usernameFragment":"w6hW"},"socketId":"31c7d4eb-28cd-8b7b-7a17-1434263d8520"}}
+[silly]: Sending MSG to central server:{"eventName":"send_ice_candidate","data":{"label":"my_room_001","candidate":{"candidate":"candidate:344579997 1 tcp 1518149375 127.0.0.1 59493 typ host tcptype passive generation 0 ufrag w6hW network-id 2","sdpMid":"0","sdpMLineIndex":0,"foundation":"344579997","component":"rtp","priority":1518149375,"address":"127.0.0.1","protocol":"tcp","port":59493,"type":"host","tcpType":"passive","relatedAddress":null,"relatedPort":null,"usernameFragment":"w6hW"},"socketId":"31c7d4eb-28cd-8b7b-7a17-1434263d8520"}}
+[silly]: Sending MSG to central server:{"eventName":"send_ice_candidate","data":{"label":"my_room_001","candidate":{"candidate":"candidate:3232690131 1 udp 1686052607 122.161.76.62 12781 typ srflx raddr 192.168.1.18 rport 64977 generation 0 ufrag w6hW network-id 1 network-cost 50","sdpMid":"0","sdpMLineIndex":0,"foundation":"3232690131","component":"rtp","priority":1686052607,"address":"122.161.76.62","protocol":"udp","port":12781,"type":"srflx","tcpType":null,"relatedAddress":"192.168.1.18","relatedPort":64977,"usernameFragment":"w6hW"},"socketId":"31c7d4eb-28cd-8b7b-7a17-1434263d8520"}}
+[debug]: Received an ICE candidate from:31c7d4eb-28cd-8b7b-7a17-1434263d8520
+[debug]: Received an ICE candidate from:31c7d4eb-28cd-8b7b-7a17-1434263d8520
+[debug]: Received an ICE candidate from:31c7d4eb-28cd-8b7b-7a17-1434263d8520
+[debug]: Received an ICE candidate from:31c7d4eb-28cd-8b7b-7a17-1434263d8520
+[debug]: Received an ICE candidate from:31c7d4eb-28cd-8b7b-7a17-1434263d8520
+[debug]: Received an ICE candidate from:31c7d4eb-28cd-8b7b-7a17-1434263d8520
+[silly]: Sending MSG to central server:{"eventName":"send_ice_candidate","data":{"label":"my_room_001","candidate":{"candidate":"candidate:453802058 1 udp 41885439 158.69.221.198 62538 typ relay raddr 122.161.76.62 rport 12781 generation 0 ufrag w6hW network-id 1 network-cost 50","sdpMid":"0","sdpMLineIndex":0,"foundation":"453802058","component":"rtp","priority":41885439,"address":"158.69.221.198","protocol":"udp","port":62538,"type":"relay","tcpType":null,"relatedAddress":"122.161.76.62","relatedPort":12781,"usernameFragment":"w6hW"},"socketId":"31c7d4eb-28cd-8b7b-7a17-1434263d8520"}}
+[debug]: Received an ICE candidate from:31c7d4eb-28cd-8b7b-7a17-1434263d8520
+[debug]: Received an ICE candidate from:31c7d4eb-28cd-8b7b-7a17-1434263d8520
+[debug]: Received an ICE candidate from:31c7d4eb-28cd-8b7b-7a17-1434263d8520
+[debug]: Received an ICE candidate from:31c7d4eb-28cd-8b7b-7a17-1434263d8520
+[debug]: Received an ICE candidate from:31c7d4eb-28cd-8b7b-7a17-1434263d8520
+[debug]: Received an ICE candidate from:31c7d4eb-28cd-8b7b-7a17-1434263d8520
+[debug]: Received an ICE candidate from:31c7d4eb-28cd-8b7b-7a17-1434263d8520
+[debug]: Received an ICE candidate from:31c7d4eb-28cd-8b7b-7a17-1434263d8520
+[debug]: Received an ICE candidate from:31c7d4eb-28cd-8b7b-7a17-1434263d8520
+[debug]: Received an ICE candidate from:31c7d4eb-28cd-8b7b-7a17-1434263d8520
+[debug]: Received an ICE candidate from:31c7d4eb-28cd-8b7b-7a17-1434263d8520
+[debug]: Received an ICE candidate from:31c7d4eb-28cd-8b7b-7a17-1434263d8520
+[debug]: ICE "Gathering" done!..
+[debug]: Got called by an internal impl:::
+[info]: results
+[info]: pwd
+
+[info]: results
+[info]: /Users/dhruvmisra/Code/robinhood
+bash-3.2$ 
+[debug]: TRICKLE mode=
+[silly]: Not attaching onmessage handler right away..
+[silly]: Finally attached onmessage handler!
+[silly]: Sending MSG to central server:{"eventName":"send_offer","data":{"socketId":"fe9c04fa-bd9e-a22e-e8d9-aec07097fe21","sdp":{"type":"offer","sdp":"v=0\r\no=- 1467056316062680046 2 IN IP4 127.0.0.1\r\ns=-\r\nt=0 0\r\na=group:BUNDLE 0\r\na=msid-semantic: WMS\r\nm=application 9 UDP/DTLS/SCTP webrtc-datachannel\r\nc=IN IP4 0.0.0.0\r\na=ice-ufrag:Nvn7\r\na=ice-pwd:N7J61YoSkqWVS+SCfBYyZh4Z\r\na=ice-options:trickle\r\na=fingerprint:sha-256 C8:52:3D:57:25:62:CA:6D:DA:90:83:51:D8:56:A9:0A:2B:90:03:10:3F:C9:E2:00:46:8C:6D:7E:6C:15:03:7F\r\na=setup:actpass\r\na=mid:0\r\na=sctp-port:5000\r\na=max-message-size:262144\r\n"}}}
+[silly]: Sending MSG to central server:{"eventName":"send_ice_candidate","data":{"label":"my_room_001","candidate":{"candidate":"candidate:918459911 1 udp 2122260223 192.168.1.18 64781 typ host generation 0 ufrag Nvn7 network-id 1 network-cost 50","sdpMid":"0","sdpMLineIndex":0,"foundation":"918459911","component":"rtp","priority":2122260223,"address":"192.168.1.18","protocol":"udp","port":64781,"type":"host","tcpType":null,"relatedAddress":null,"relatedPort":null,"usernameFragment":"Nvn7"},"socketId":"fe9c04fa-bd9e-a22e-e8d9-aec07097fe21"}}
+[silly]: Sending MSG to central server:{"eventName":"send_ice_candidate","data":{"label":"my_room_001","candidate":{"candidate":"candidate:559267639 1 udp 2122202367 ::1 62461 typ host generation 0 ufrag Nvn7 network-id 3","sdpMid":"0","sdpMLineIndex":0,"foundation":"559267639","component":"rtp","priority":2122202367,"address":"::1","protocol":"udp","port":62461,"type":"host","tcpType":null,"relatedAddress":null,"relatedPort":null,"usernameFragment":"Nvn7"},"socketId":"fe9c04fa-bd9e-a22e-e8d9-aec07097fe21"}}
+[silly]: Sending MSG to central server:{"eventName":"send_ice_candidate","data":{"label":"my_room_001","candidate":{"candidate":"candidate:1510613869 1 udp 2122129151 127.0.0.1 57806 typ host generation 0 ufrag Nvn7 network-id 2","sdpMid":"0","sdpMLineIndex":0,"foundation":"1510613869","component":"rtp","priority":2122129151,"address":"127.0.0.1","protocol":"udp","port":57806,"type":"host","tcpType":null,"relatedAddress":null,"relatedPort":null,"usernameFragment":"Nvn7"},"socketId":"fe9c04fa-bd9e-a22e-e8d9-aec07097fe21"}}
+[silly]: Sending MSG to central server:{"eventName":"send_ice_candidate","data":{"label":"my_room_001","candidate":{"candidate":"candidate:2017290999 1 tcp 1518280447 192.168.1.18 59856 typ host tcptype passive generation 0 ufrag Nvn7 network-id 1 network-cost 50","sdpMid":"0","sdpMLineIndex":0,"foundation":"2017290999","component":"rtp","priority":1518280447,"address":"192.168.1.18","protocol":"tcp","port":59856,"type":"host","tcpType":"passive","relatedAddress":null,"relatedPort":null,"usernameFragment":"Nvn7"},"socketId":"fe9c04fa-bd9e-a22e-e8d9-aec07097fe21"}}
+[silly]: Sending MSG to central server:{"eventName":"send_ice_candidate","data":{"label":"my_room_001","candidate":{"candidate":"candidate:1876313031 1 tcp 1518222591 ::1 59857 typ host tcptype passive generation 0 ufrag Nvn7 network-id 3","sdpMid":"0","sdpMLineIndex":0,"foundation":"1876313031","component":"rtp","priority":1518222591,"address":"::1","protocol":"tcp","port":59857,"type":"host","tcpType":"passive","relatedAddress":null,"relatedPort":null,"usernameFragment":"Nvn7"},"socketId":"fe9c04fa-bd9e-a22e-e8d9-aec07097fe21"}}
+[silly]: Sending MSG to central server:{"eventName":"send_ice_candidate","data":{"label":"my_room_001","candidate":{"candidate":"candidate:344579997 1 tcp 1518149375 127.0.0.1 59858 typ host tcptype passive generation 0 ufrag Nvn7 network-id 2","sdpMid":"0","sdpMLineIndex":0,"foundation":"344579997","component":"rtp","priority":1518149375,"address":"127.0.0.1","protocol":"tcp","port":59858,"type":"host","tcpType":"passive","relatedAddress":null,"relatedPort":null,"usernameFragment":"Nvn7"},"socketId":"fe9c04fa-bd9e-a22e-e8d9-aec07097fe21"}}
+[silly]: Sending MSG to central server:{"eventName":"send_ice_candidate","data":{"label":"my_room_001","candidate":{"candidate":"candidate:3232690131 1 udp 1686052607 122.161.76.62 16474 typ srflx raddr 192.168.1.18 rport 64781 generation 0 ufrag Nvn7 network-id 1 network-cost 50","sdpMid":"0","sdpMLineIndex":0,"foundation":"3232690131","component":"rtp","priority":1686052607,"address":"122.161.76.62","protocol":"udp","port":16474,"type":"srflx","tcpType":null,"relatedAddress":"192.168.1.18","relatedPort":64781,"usernameFragment":"Nvn7"},"socketId":"fe9c04fa-bd9e-a22e-e8d9-aec07097fe21"}}
+[debug]: Received an ICE candidate from:fe9c04fa-bd9e-a22e-e8d9-aec07097fe21
+[debug]: Received an ICE candidate from:fe9c04fa-bd9e-a22e-e8d9-aec07097fe21
+[debug]: Received an ICE candidate from:fe9c04fa-bd9e-a22e-e8d9-aec07097fe21
+[debug]: Received an ICE candidate from:fe9c04fa-bd9e-a22e-e8d9-aec07097fe21
+[debug]: Received an ICE candidate from:fe9c04fa-bd9e-a22e-e8d9-aec07097fe21
+[debug]: Received an ICE candidate from:fe9c04fa-bd9e-a22e-e8d9-aec07097fe21
+[silly]: Sending MSG to central server:{"eventName":"send_ice_candidate","data":{"label":"my_room_001","candidate":{"candidate":"candidate:453802058 1 udp 41885439 158.69.221.198 63011 typ relay raddr 122.161.76.62 rport 16474 generation 0 ufrag Nvn7 network-id 1 network-cost 50","sdpMid":"0","sdpMLineIndex":0,"foundation":"453802058","component":"rtp","priority":41885439,"address":"158.69.221.198","protocol":"udp","port":63011,"type":"relay","tcpType":null,"relatedAddress":"122.161.76.62","relatedPort":16474,"usernameFragment":"Nvn7"},"socketId":"fe9c04fa-bd9e-a22e-e8d9-aec07097fe21"}}
+[debug]: Received an ICE candidate from:fe9c04fa-bd9e-a22e-e8d9-aec07097fe21
+[debug]: Received an ICE candidate from:fe9c04fa-bd9e-a22e-e8d9-aec07097fe21
+[debug]: Received an ICE candidate from:fe9c04fa-bd9e-a22e-e8d9-aec07097fe21
+[debug]: Received an ICE candidate from:fe9c04fa-bd9e-a22e-e8d9-aec07097fe21
+[debug]: Received an ICE candidate from:fe9c04fa-bd9e-a22e-e8d9-aec07097fe21
+[debug]: Received an ICE candidate from:fe9c04fa-bd9e-a22e-e8d9-aec07097fe21
+[debug]: Received an ICE candidate from:fe9c04fa-bd9e-a22e-e8d9-aec07097fe21
+[debug]: Received an ICE candidate from:fe9c04fa-bd9e-a22e-e8d9-aec07097fe21
+[debug]: Received an ICE candidate from:fe9c04fa-bd9e-a22e-e8d9-aec07097fe21
+[debug]: Received an ICE candidate from:fe9c04fa-bd9e-a22e-e8d9-aec07097fe21
+[debug]: Received an ICE candidate from:fe9c04fa-bd9e-a22e-e8d9-aec07097fe21
+[debug]: Received an ICE candidate from:fe9c04fa-bd9e-a22e-e8d9-aec07097fe21
+[debug]: Received an ICE candidate from:fe9c04fa-bd9e-a22e-e8d9-aec07097fe21
+[debug]: ICE "Gathering" done!..
+[debug]: Got called by an internal impl:::
+[info]: results
+[info]: pwd
+
+[info]: history
+[info]: >>START,pwd
+[info]: results
+[info]: /Users/dhruvmisra/Code/robinhood
+bash-3.2$ 
+[info]: history
+[info]: >>START,pwd
+[debug]: TRICKLE mode=
+[silly]: Not attaching onmessage handler right away..
+[silly]: Finally attached onmessage handler!
+[silly]: Sending MSG to central server:{"eventName":"send_offer","data":{"socketId":"4228c4fc-1fb7-afb7-a242-b26ee54be887","sdp":{"type":"offer","sdp":"v=0\r\no=- 2684923176018809860 2 IN IP4 127.0.0.1\r\ns=-\r\nt=0 0\r\na=group:BUNDLE 0\r\na=msid-semantic: WMS\r\nm=application 9 UDP/DTLS/SCTP webrtc-datachannel\r\nc=IN IP4 0.0.0.0\r\na=ice-ufrag:YkoE\r\na=ice-pwd:F7HxvVTa+Ay23JPpx7iR+DcB\r\na=ice-options:trickle\r\na=fingerprint:sha-256 C7:F5:2E:FA:91:CB:04:C8:B2:D5:B6:BF:17:DD:02:3C:57:78:7A:47:AE:53:2F:4D:55:57:37:94:4D:61:54:3B\r\na=setup:actpass\r\na=mid:0\r\na=sctp-port:5000\r\na=max-message-size:262144\r\n"}}}
+[silly]: Sending MSG to central server:{"eventName":"send_ice_candidate","data":{"label":"my_room_001","candidate":{"candidate":"candidate:918459911 1 udp 2122260223 192.168.1.18 53467 typ host generation 0 ufrag YkoE network-id 1 network-cost 50","sdpMid":"0","sdpMLineIndex":0,"foundation":"918459911","component":"rtp","priority":2122260223,"address":"192.168.1.18","protocol":"udp","port":53467,"type":"host","tcpType":null,"relatedAddress":null,"relatedPort":null,"usernameFragment":"YkoE"},"socketId":"4228c4fc-1fb7-afb7-a242-b26ee54be887"}}
+[silly]: Sending MSG to central server:{"eventName":"send_ice_candidate","data":{"label":"my_room_001","candidate":{"candidate":"candidate:559267639 1 udp 2122202367 ::1 55529 typ host generation 0 ufrag YkoE network-id 3","sdpMid":"0","sdpMLineIndex":0,"foundation":"559267639","component":"rtp","priority":2122202367,"address":"::1","protocol":"udp","port":55529,"type":"host","tcpType":null,"relatedAddress":null,"relatedPort":null,"usernameFragment":"YkoE"},"socketId":"4228c4fc-1fb7-afb7-a242-b26ee54be887"}}
+[silly]: Sending MSG to central server:{"eventName":"send_ice_candidate","data":{"label":"my_room_001","candidate":{"candidate":"candidate:1510613869 1 udp 2122129151 127.0.0.1 53591 typ host generation 0 ufrag YkoE network-id 2","sdpMid":"0","sdpMLineIndex":0,"foundation":"1510613869","component":"rtp","priority":2122129151,"address":"127.0.0.1","protocol":"udp","port":53591,"type":"host","tcpType":null,"relatedAddress":null,"relatedPort":null,"usernameFragment":"YkoE"},"socketId":"4228c4fc-1fb7-afb7-a242-b26ee54be887"}}
+[silly]: Sending MSG to central server:{"eventName":"send_ice_candidate","data":{"label":"my_room_001","candidate":{"candidate":"candidate:2017290999 1 tcp 1518280447 192.168.1.18 60193 typ host tcptype passive generation 0 ufrag YkoE network-id 1 network-cost 50","sdpMid":"0","sdpMLineIndex":0,"foundation":"2017290999","component":"rtp","priority":1518280447,"address":"192.168.1.18","protocol":"tcp","port":60193,"type":"host","tcpType":"passive","relatedAddress":null,"relatedPort":null,"usernameFragment":"YkoE"},"socketId":"4228c4fc-1fb7-afb7-a242-b26ee54be887"}}
+[silly]: Sending MSG to central server:{"eventName":"send_ice_candidate","data":{"label":"my_room_001","candidate":{"candidate":"candidate:1876313031 1 tcp 1518222591 ::1 60194 typ host tcptype passive generation 0 ufrag YkoE network-id 3","sdpMid":"0","sdpMLineIndex":0,"foundation":"1876313031","component":"rtp","priority":1518222591,"address":"::1","protocol":"tcp","port":60194,"type":"host","tcpType":"passive","relatedAddress":null,"relatedPort":null,"usernameFragment":"YkoE"},"socketId":"4228c4fc-1fb7-afb7-a242-b26ee54be887"}}
+[silly]: Sending MSG to central server:{"eventName":"send_ice_candidate","data":{"label":"my_room_001","candidate":{"candidate":"candidate:344579997 1 tcp 1518149375 127.0.0.1 60195 typ host tcptype passive generation 0 ufrag YkoE network-id 2","sdpMid":"0","sdpMLineIndex":0,"foundation":"344579997","component":"rtp","priority":1518149375,"address":"127.0.0.1","protocol":"tcp","port":60195,"type":"host","tcpType":"passive","relatedAddress":null,"relatedPort":null,"usernameFragment":"YkoE"},"socketId":"4228c4fc-1fb7-afb7-a242-b26ee54be887"}}
+[silly]: Sending MSG to central server:{"eventName":"send_ice_candidate","data":{"label":"my_room_001","candidate":{"candidate":"candidate:3232690131 1 udp 1686052607 122.161.76.62 15375 typ srflx raddr 192.168.1.18 rport 53467 generation 0 ufrag YkoE network-id 1 network-cost 50","sdpMid":"0","sdpMLineIndex":0,"foundation":"3232690131","component":"rtp","priority":1686052607,"address":"122.161.76.62","protocol":"udp","port":15375,"type":"srflx","tcpType":null,"relatedAddress":"192.168.1.18","relatedPort":53467,"usernameFragment":"YkoE"},"socketId":"4228c4fc-1fb7-afb7-a242-b26ee54be887"}}
+[debug]: Received an ICE candidate from:4228c4fc-1fb7-afb7-a242-b26ee54be887
+[debug]: Received an ICE candidate from:4228c4fc-1fb7-afb7-a242-b26ee54be887
+[debug]: Received an ICE candidate from:4228c4fc-1fb7-afb7-a242-b26ee54be887
+[debug]: Received an ICE candidate from:4228c4fc-1fb7-afb7-a242-b26ee54be887
+[debug]: Received an ICE candidate from:4228c4fc-1fb7-afb7-a242-b26ee54be887
+[debug]: Received an ICE candidate from:4228c4fc-1fb7-afb7-a242-b26ee54be887
+[silly]: Sending MSG to central server:{"eventName":"send_ice_candidate","data":{"label":"my_room_001","candidate":{"candidate":"candidate:453802058 1 udp 41885439 158.69.221.198 56992 typ relay raddr 122.161.76.62 rport 15375 generation 0 ufrag YkoE network-id 1 network-cost 50","sdpMid":"0","sdpMLineIndex":0,"foundation":"453802058","component":"rtp","priority":41885439,"address":"158.69.221.198","protocol":"udp","port":56992,"type":"relay","tcpType":null,"relatedAddress":"122.161.76.62","relatedPort":15375,"usernameFragment":"YkoE"},"socketId":"4228c4fc-1fb7-afb7-a242-b26ee54be887"}}
+[debug]: Received an ICE candidate from:4228c4fc-1fb7-afb7-a242-b26ee54be887
+[debug]: Received an ICE candidate from:4228c4fc-1fb7-afb7-a242-b26ee54be887
+[debug]: Received an ICE candidate from:4228c4fc-1fb7-afb7-a242-b26ee54be887
+[debug]: Received an ICE candidate from:4228c4fc-1fb7-afb7-a242-b26ee54be887
+[debug]: Received an ICE candidate from:4228c4fc-1fb7-afb7-a242-b26ee54be887
+[debug]: Received an ICE candidate from:4228c4fc-1fb7-afb7-a242-b26ee54be887
+[debug]: Received an ICE candidate from:4228c4fc-1fb7-afb7-a242-b26ee54be887
+[debug]: Received an ICE candidate from:4228c4fc-1fb7-afb7-a242-b26ee54be887
+[debug]: Received an ICE candidate from:4228c4fc-1fb7-afb7-a242-b26ee54be887
+[debug]: Received an ICE candidate from:4228c4fc-1fb7-afb7-a242-b26ee54be887
+[debug]: Received an ICE candidate from:4228c4fc-1fb7-afb7-a242-b26ee54be887
+[debug]: Received an ICE candidate from:4228c4fc-1fb7-afb7-a242-b26ee54be887
+[debug]: Received an ICE candidate from:4228c4fc-1fb7-afb7-a242-b26ee54be887
+[debug]: ICE "Gathering" done!..
+[debug]: Got called by an internal impl:::
+[info]: results
+[info]: curl icanhazip.com
+
+[info]: history
+[info]: >>START,curl icanhazip.com
+[info]: results
+[info]: 122.161.76.62
+
+[info]: history
+[info]: >>START,curl icanhazip.com
+[info]: results
+[info]: bash-3.2$ 
+[info]: history
+[info]: >>START,curl icanhazip.com
+[debug]: TRICKLE mode=
+[silly]: Not attaching onmessage handler right away..
+[silly]: Finally attached onmessage handler!
+[silly]: Sending MSG to central server:{"eventName":"send_offer","data":{"socketId":"ec8b125f-01e2-20cf-b8b5-5cffa808d369","sdp":{"type":"offer","sdp":"v=0\r\no=- 3665816675743669157 2 IN IP4 127.0.0.1\r\ns=-\r\nt=0 0\r\na=group:BUNDLE 0\r\na=msid-semantic: WMS\r\nm=application 9 UDP/DTLS/SCTP webrtc-datachannel\r\nc=IN IP4 0.0.0.0\r\na=ice-ufrag:Cl2I\r\na=ice-pwd:7el82tLSijQrtGI0fvrYWy4a\r\na=ice-options:trickle\r\na=fingerprint:sha-256 15:FD:F1:9E:9D:9C:D0:E5:1A:04:95:BE:BA:00:50:C1:82:22:84:02:7B:3D:9B:8B:DF:B2:BA:79:9A:3F:B7:41\r\na=setup:actpass\r\na=mid:0\r\na=sctp-port:5000\r\na=max-message-size:262144\r\n"}}}
+[silly]: Sending MSG to central server:{"eventName":"send_ice_candidate","data":{"label":"my_room_001","candidate":{"candidate":"candidate:918459911 1 udp 2122260223 192.168.1.18 63127 typ host generation 0 ufrag Cl2I network-id 1 network-cost 50","sdpMid":"0","sdpMLineIndex":0,"foundation":"918459911","component":"rtp","priority":2122260223,"address":"192.168.1.18","protocol":"udp","port":63127,"type":"host","tcpType":null,"relatedAddress":null,"relatedPort":null,"usernameFragment":"Cl2I"},"socketId":"ec8b125f-01e2-20cf-b8b5-5cffa808d369"}}
+[silly]: Sending MSG to central server:{"eventName":"send_ice_candidate","data":{"label":"my_room_001","candidate":{"candidate":"candidate:559267639 1 udp 2122202367 ::1 58179 typ host generation 0 ufrag Cl2I network-id 3","sdpMid":"0","sdpMLineIndex":0,"foundation":"559267639","component":"rtp","priority":2122202367,"address":"::1","protocol":"udp","port":58179,"type":"host","tcpType":null,"relatedAddress":null,"relatedPort":null,"usernameFragment":"Cl2I"},"socketId":"ec8b125f-01e2-20cf-b8b5-5cffa808d369"}}
+[silly]: Sending MSG to central server:{"eventName":"send_ice_candidate","data":{"label":"my_room_001","candidate":{"candidate":"candidate:1510613869 1 udp 2122129151 127.0.0.1 60414 typ host generation 0 ufrag Cl2I network-id 2","sdpMid":"0","sdpMLineIndex":0,"foundation":"1510613869","component":"rtp","priority":2122129151,"address":"127.0.0.1","protocol":"udp","port":60414,"type":"host","tcpType":null,"relatedAddress":null,"relatedPort":null,"usernameFragment":"Cl2I"},"socketId":"ec8b125f-01e2-20cf-b8b5-5cffa808d369"}}
+[silly]: Sending MSG to central server:{"eventName":"send_ice_candidate","data":{"label":"my_room_001","candidate":{"candidate":"candidate:2017290999 1 tcp 1518280447 192.168.1.18 62255 typ host tcptype passive generation 0 ufrag Cl2I network-id 1 network-cost 50","sdpMid":"0","sdpMLineIndex":0,"foundation":"2017290999","component":"rtp","priority":1518280447,"address":"192.168.1.18","protocol":"tcp","port":62255,"type":"host","tcpType":"passive","relatedAddress":null,"relatedPort":null,"usernameFragment":"Cl2I"},"socketId":"ec8b125f-01e2-20cf-b8b5-5cffa808d369"}}
+[silly]: Sending MSG to central server:{"eventName":"send_ice_candidate","data":{"label":"my_room_001","candidate":{"candidate":"candidate:1876313031 1 tcp 1518222591 ::1 62256 typ host tcptype passive generation 0 ufrag Cl2I network-id 3","sdpMid":"0","sdpMLineIndex":0,"foundation":"1876313031","component":"rtp","priority":1518222591,"address":"::1","protocol":"tcp","port":62256,"type":"host","tcpType":"passive","relatedAddress":null,"relatedPort":null,"usernameFragment":"Cl2I"},"socketId":"ec8b125f-01e2-20cf-b8b5-5cffa808d369"}}
+[silly]: Sending MSG to central server:{"eventName":"send_ice_candidate","data":{"label":"my_room_001","candidate":{"candidate":"candidate:344579997 1 tcp 1518149375 127.0.0.1 62257 typ host tcptype passive generation 0 ufrag Cl2I network-id 2","sdpMid":"0","sdpMLineIndex":0,"foundation":"344579997","component":"rtp","priority":1518149375,"address":"127.0.0.1","protocol":"tcp","port":62257,"type":"host","tcpType":"passive","relatedAddress":null,"relatedPort":null,"usernameFragment":"Cl2I"},"socketId":"ec8b125f-01e2-20cf-b8b5-5cffa808d369"}}
+[silly]: Sending MSG to central server:{"eventName":"send_ice_candidate","data":{"label":"my_room_001","candidate":{"candidate":"candidate:3232690131 1 udp 1686052607 122.161.76.62 27783 typ srflx raddr 192.168.1.18 rport 63127 generation 0 ufrag Cl2I network-id 1 network-cost 50","sdpMid":"0","sdpMLineIndex":0,"foundation":"3232690131","component":"rtp","priority":1686052607,"address":"122.161.76.62","protocol":"udp","port":27783,"type":"srflx","tcpType":null,"relatedAddress":"192.168.1.18","relatedPort":63127,"usernameFragment":"Cl2I"},"socketId":"ec8b125f-01e2-20cf-b8b5-5cffa808d369"}}
+[debug]: Received an ICE candidate from:ec8b125f-01e2-20cf-b8b5-5cffa808d369
+[debug]: Received an ICE candidate from:ec8b125f-01e2-20cf-b8b5-5cffa808d369
+[debug]: Received an ICE candidate from:ec8b125f-01e2-20cf-b8b5-5cffa808d369
+[debug]: Received an ICE candidate from:ec8b125f-01e2-20cf-b8b5-5cffa808d369
+[debug]: Received an ICE candidate from:ec8b125f-01e2-20cf-b8b5-5cffa808d369
+[debug]: Received an ICE candidate from:ec8b125f-01e2-20cf-b8b5-5cffa808d369
+[silly]: Sending MSG to central server:{"eventName":"send_ice_candidate","data":{"label":"my_room_001","candidate":{"candidate":"candidate:453802058 1 udp 41885439 158.69.221.198 55452 typ relay raddr 122.161.76.62 rport 27783 generation 0 ufrag Cl2I network-id 1 network-cost 50","sdpMid":"0","sdpMLineIndex":0,"foundation":"453802058","component":"rtp","priority":41885439,"address":"158.69.221.198","protocol":"udp","port":55452,"type":"relay","tcpType":null,"relatedAddress":"122.161.76.62","relatedPort":27783,"usernameFragment":"Cl2I"},"socketId":"ec8b125f-01e2-20cf-b8b5-5cffa808d369"}}
+[debug]: Received an ICE candidate from:ec8b125f-01e2-20cf-b8b5-5cffa808d369
+[debug]: Received an ICE candidate from:ec8b125f-01e2-20cf-b8b5-5cffa808d369
+[debug]: Received an ICE candidate from:ec8b125f-01e2-20cf-b8b5-5cffa808d369
+[debug]: Received an ICE candidate from:ec8b125f-01e2-20cf-b8b5-5cffa808d369
+[debug]: Received an ICE candidate from:ec8b125f-01e2-20cf-b8b5-5cffa808d369
+[debug]: Received an ICE candidate from:ec8b125f-01e2-20cf-b8b5-5cffa808d369
+[debug]: Received an ICE candidate from:ec8b125f-01e2-20cf-b8b5-5cffa808d369
+[debug]: Received an ICE candidate from:ec8b125f-01e2-20cf-b8b5-5cffa808d369
+[debug]: Received an ICE candidate from:ec8b125f-01e2-20cf-b8b5-5cffa808d369
+[debug]: Received an ICE candidate from:ec8b125f-01e2-20cf-b8b5-5cffa808d369
+[debug]: Received an ICE candidate from:ec8b125f-01e2-20cf-b8b5-5cffa808d369
+[debug]: Received an ICE candidate from:ec8b125f-01e2-20cf-b8b5-5cffa808d369
+[debug]: Received an ICE candidate from:ec8b125f-01e2-20cf-b8b5-5cffa808d369
+[debug]: ICE "Gathering" done!..
+[debug]: Got called by an internal impl:::
+[info]: data.endswith : false
+[info]: results.endswith : false
+[info]: results.endswith 
+: true
+[info]: results
+[info]: pwd
+
+[info]: history
+[info]: >>START,"pwd\n"
+[info]: results.endswith : false
+[info]: results.endswith 
+: false
+[info]: results
+[info]: /Users/dhruvmisra/Code/robinhood
+bash-3.2$ 
+[info]: history
+[info]: >>START,"pwd\n"
+[debug]: TRICKLE mode=
+[silly]: Not attaching onmessage handler right away..
+[silly]: Finally attached onmessage handler!
+[silly]: Sending MSG to central server:{"eventName":"send_offer","data":{"socketId":"606f2952-4668-2713-0d3f-535f0bf005dc","sdp":{"type":"offer","sdp":"v=0\r\no=- 92904689442199011 2 IN IP4 127.0.0.1\r\ns=-\r\nt=0 0\r\na=group:BUNDLE 0\r\na=msid-semantic: WMS\r\nm=application 9 UDP/DTLS/SCTP webrtc-datachannel\r\nc=IN IP4 0.0.0.0\r\na=ice-ufrag:Y92E\r\na=ice-pwd:RbSTP+2XC1AFTWTlm2wJED86\r\na=ice-options:trickle\r\na=fingerprint:sha-256 B8:72:34:3E:BA:94:B3:70:A3:DD:46:7B:9F:61:AF:F1:E0:E4:21:8F:FA:D2:5C:F8:3B:89:36:15:C3:38:5C:AE\r\na=setup:actpass\r\na=mid:0\r\na=sctp-port:5000\r\na=max-message-size:262144\r\n"}}}
+[silly]: Sending MSG to central server:{"eventName":"send_ice_candidate","data":{"label":"my_room_001","candidate":{"candidate":"candidate:918459911 1 udp 2122260223 192.168.1.18 50309 typ host generation 0 ufrag Y92E network-id 1 network-cost 50","sdpMid":"0","sdpMLineIndex":0,"foundation":"918459911","component":"rtp","priority":2122260223,"address":"192.168.1.18","protocol":"udp","port":50309,"type":"host","tcpType":null,"relatedAddress":null,"relatedPort":null,"usernameFragment":"Y92E"},"socketId":"606f2952-4668-2713-0d3f-535f0bf005dc"}}
+[silly]: Sending MSG to central server:{"eventName":"send_ice_candidate","data":{"label":"my_room_001","candidate":{"candidate":"candidate:559267639 1 udp 2122202367 ::1 60542 typ host generation 0 ufrag Y92E network-id 3","sdpMid":"0","sdpMLineIndex":0,"foundation":"559267639","component":"rtp","priority":2122202367,"address":"::1","protocol":"udp","port":60542,"type":"host","tcpType":null,"relatedAddress":null,"relatedPort":null,"usernameFragment":"Y92E"},"socketId":"606f2952-4668-2713-0d3f-535f0bf005dc"}}
+[silly]: Sending MSG to central server:{"eventName":"send_ice_candidate","data":{"label":"my_room_001","candidate":{"candidate":"candidate:1510613869 1 udp 2122129151 127.0.0.1 54984 typ host generation 0 ufrag Y92E network-id 2","sdpMid":"0","sdpMLineIndex":0,"foundation":"1510613869","component":"rtp","priority":2122129151,"address":"127.0.0.1","protocol":"udp","port":54984,"type":"host","tcpType":null,"relatedAddress":null,"relatedPort":null,"usernameFragment":"Y92E"},"socketId":"606f2952-4668-2713-0d3f-535f0bf005dc"}}
+[silly]: Sending MSG to central server:{"eventName":"send_ice_candidate","data":{"label":"my_room_001","candidate":{"candidate":"candidate:2017290999 1 tcp 1518280447 192.168.1.18 62846 typ host tcptype passive generation 0 ufrag Y92E network-id 1 network-cost 50","sdpMid":"0","sdpMLineIndex":0,"foundation":"2017290999","component":"rtp","priority":1518280447,"address":"192.168.1.18","protocol":"tcp","port":62846,"type":"host","tcpType":"passive","relatedAddress":null,"relatedPort":null,"usernameFragment":"Y92E"},"socketId":"606f2952-4668-2713-0d3f-535f0bf005dc"}}
+[silly]: Sending MSG to central server:{"eventName":"send_ice_candidate","data":{"label":"my_room_001","candidate":{"candidate":"candidate:1876313031 1 tcp 1518222591 ::1 62847 typ host tcptype passive generation 0 ufrag Y92E network-id 3","sdpMid":"0","sdpMLineIndex":0,"foundation":"1876313031","component":"rtp","priority":1518222591,"address":"::1","protocol":"tcp","port":62847,"type":"host","tcpType":"passive","relatedAddress":null,"relatedPort":null,"usernameFragment":"Y92E"},"socketId":"606f2952-4668-2713-0d3f-535f0bf005dc"}}
+[silly]: Sending MSG to central server:{"eventName":"send_ice_candidate","data":{"label":"my_room_001","candidate":{"candidate":"candidate:344579997 1 tcp 1518149375 127.0.0.1 62848 typ host tcptype passive generation 0 ufrag Y92E network-id 2","sdpMid":"0","sdpMLineIndex":0,"foundation":"344579997","component":"rtp","priority":1518149375,"address":"127.0.0.1","protocol":"tcp","port":62848,"type":"host","tcpType":"passive","relatedAddress":null,"relatedPort":null,"usernameFragment":"Y92E"},"socketId":"606f2952-4668-2713-0d3f-535f0bf005dc"}}
+[silly]: Sending MSG to central server:{"eventName":"send_ice_candidate","data":{"label":"my_room_001","candidate":{"candidate":"candidate:3232690131 1 udp 1686052607 122.161.76.62 25123 typ srflx raddr 192.168.1.18 rport 50309 generation 0 ufrag Y92E network-id 1 network-cost 50","sdpMid":"0","sdpMLineIndex":0,"foundation":"3232690131","component":"rtp","priority":1686052607,"address":"122.161.76.62","protocol":"udp","port":25123,"type":"srflx","tcpType":null,"relatedAddress":"192.168.1.18","relatedPort":50309,"usernameFragment":"Y92E"},"socketId":"606f2952-4668-2713-0d3f-535f0bf005dc"}}
+[debug]: Received an ICE candidate from:606f2952-4668-2713-0d3f-535f0bf005dc
+[debug]: Received an ICE candidate from:606f2952-4668-2713-0d3f-535f0bf005dc
+[debug]: Received an ICE candidate from:606f2952-4668-2713-0d3f-535f0bf005dc
+[debug]: Received an ICE candidate from:606f2952-4668-2713-0d3f-535f0bf005dc
+[debug]: Received an ICE candidate from:606f2952-4668-2713-0d3f-535f0bf005dc
+[debug]: Received an ICE candidate from:606f2952-4668-2713-0d3f-535f0bf005dc
+[debug]: Received an ICE candidate from:606f2952-4668-2713-0d3f-535f0bf005dc
+[debug]: Received an ICE candidate from:606f2952-4668-2713-0d3f-535f0bf005dc
+[silly]: Sending MSG to central server:{"eventName":"send_ice_candidate","data":{"label":"my_room_001","candidate":{"candidate":"candidate:453802058 1 udp 41885439 158.69.221.198 55986 typ relay raddr 122.161.76.62 rport 25123 generation 0 ufrag Y92E network-id 1 network-cost 50","sdpMid":"0","sdpMLineIndex":0,"foundation":"453802058","component":"rtp","priority":41885439,"address":"158.69.221.198","protocol":"udp","port":55986,"type":"relay","tcpType":null,"relatedAddress":"122.161.76.62","relatedPort":25123,"usernameFragment":"Y92E"},"socketId":"606f2952-4668-2713-0d3f-535f0bf005dc"}}
+[debug]: Received an ICE candidate from:606f2952-4668-2713-0d3f-535f0bf005dc
+[debug]: Received an ICE candidate from:606f2952-4668-2713-0d3f-535f0bf005dc
+[debug]: Received an ICE candidate from:606f2952-4668-2713-0d3f-535f0bf005dc
+[debug]: Received an ICE candidate from:606f2952-4668-2713-0d3f-535f0bf005dc
+[debug]: Received an ICE candidate from:606f2952-4668-2713-0d3f-535f0bf005dc
+[debug]: Received an ICE candidate from:606f2952-4668-2713-0d3f-535f0bf005dc
+[debug]: Received an ICE candidate from:606f2952-4668-2713-0d3f-535f0bf005dc
+[debug]: Received an ICE candidate from:606f2952-4668-2713-0d3f-535f0bf005dc
+[debug]: Received an ICE candidate from:606f2952-4668-2713-0d3f-535f0bf005dc
+[debug]: Received an ICE candidate from:606f2952-4668-2713-0d3f-535f0bf005dc
+[debug]: Received an ICE candidate from:606f2952-4668-2713-0d3f-535f0bf005dc
+[debug]: ICE "Gathering" done!..
+[debug]: Got called by an internal impl:::
+[info]: data.endswith rrrr: false
+[info]: results.endswith rrrr: false
+[info]: results.endswith nnnn: true
+[info]: results
+[info]: pwd
+
+[info]: history
+[info]: >>START,"pwd\n"
+[info]: results.endswith rrrr: false
+[info]: results.endswith nnnn: false
+[info]: results
+[info]: /Users/dhruvmisra/Code/robinhood
+bash-3.2$ 
+[info]: history
+[info]: >>START,"pwd\n"
+[debug]: TRICKLE mode=
+[silly]: Not attaching onmessage handler right away..
+[silly]: Finally attached onmessage handler!
+[silly]: Sending MSG to central server:{"eventName":"send_offer","data":{"socketId":"8be0ece8-90bd-d75c-1ff2-521cbcb3e7ea","sdp":{"type":"offer","sdp":"v=0\r\no=- 5113169219297776413 2 IN IP4 127.0.0.1\r\ns=-\r\nt=0 0\r\na=group:BUNDLE 0\r\na=msid-semantic: WMS\r\nm=application 9 UDP/DTLS/SCTP webrtc-datachannel\r\nc=IN IP4 0.0.0.0\r\na=ice-ufrag:K8FW\r\na=ice-pwd:6xproCrGWqyELEQA9VNPcuWA\r\na=ice-options:trickle\r\na=fingerprint:sha-256 57:68:FB:36:0B:72:ED:F1:CA:2A:86:09:1E:5A:C2:15:F2:8C:2B:67:E4:09:87:90:0A:E7:43:C6:80:31:BE:F8\r\na=setup:actpass\r\na=mid:0\r\na=sctp-port:5000\r\na=max-message-size:262144\r\n"}}}
+[silly]: Sending MSG to central server:{"eventName":"send_ice_candidate","data":{"label":"my_room_001","candidate":{"candidate":"candidate:918459911 1 udp 2122260223 192.168.1.18 60077 typ host generation 0 ufrag K8FW network-id 1 network-cost 50","sdpMid":"0","sdpMLineIndex":0,"foundation":"918459911","component":"rtp","priority":2122260223,"address":"192.168.1.18","protocol":"udp","port":60077,"type":"host","tcpType":null,"relatedAddress":null,"relatedPort":null,"usernameFragment":"K8FW"},"socketId":"8be0ece8-90bd-d75c-1ff2-521cbcb3e7ea"}}
+[silly]: Sending MSG to central server:{"eventName":"send_ice_candidate","data":{"label":"my_room_001","candidate":{"candidate":"candidate:559267639 1 udp 2122202367 ::1 57711 typ host generation 0 ufrag K8FW network-id 3","sdpMid":"0","sdpMLineIndex":0,"foundation":"559267639","component":"rtp","priority":2122202367,"address":"::1","protocol":"udp","port":57711,"type":"host","tcpType":null,"relatedAddress":null,"relatedPort":null,"usernameFragment":"K8FW"},"socketId":"8be0ece8-90bd-d75c-1ff2-521cbcb3e7ea"}}
+[silly]: Sending MSG to central server:{"eventName":"send_ice_candidate","data":{"label":"my_room_001","candidate":{"candidate":"candidate:1510613869 1 udp 2122129151 127.0.0.1 58482 typ host generation 0 ufrag K8FW network-id 2","sdpMid":"0","sdpMLineIndex":0,"foundation":"1510613869","component":"rtp","priority":2122129151,"address":"127.0.0.1","protocol":"udp","port":58482,"type":"host","tcpType":null,"relatedAddress":null,"relatedPort":null,"usernameFragment":"K8FW"},"socketId":"8be0ece8-90bd-d75c-1ff2-521cbcb3e7ea"}}
+[silly]: Sending MSG to central server:{"eventName":"send_ice_candidate","data":{"label":"my_room_001","candidate":{"candidate":"candidate:2017290999 1 tcp 1518280447 192.168.1.18 64007 typ host tcptype passive generation 0 ufrag K8FW network-id 1 network-cost 50","sdpMid":"0","sdpMLineIndex":0,"foundation":"2017290999","component":"rtp","priority":1518280447,"address":"192.168.1.18","protocol":"tcp","port":64007,"type":"host","tcpType":"passive","relatedAddress":null,"relatedPort":null,"usernameFragment":"K8FW"},"socketId":"8be0ece8-90bd-d75c-1ff2-521cbcb3e7ea"}}
+[silly]: Sending MSG to central server:{"eventName":"send_ice_candidate","data":{"label":"my_room_001","candidate":{"candidate":"candidate:1876313031 1 tcp 1518222591 ::1 64008 typ host tcptype passive generation 0 ufrag K8FW network-id 3","sdpMid":"0","sdpMLineIndex":0,"foundation":"1876313031","component":"rtp","priority":1518222591,"address":"::1","protocol":"tcp","port":64008,"type":"host","tcpType":"passive","relatedAddress":null,"relatedPort":null,"usernameFragment":"K8FW"},"socketId":"8be0ece8-90bd-d75c-1ff2-521cbcb3e7ea"}}
+[silly]: Sending MSG to central server:{"eventName":"send_ice_candidate","data":{"label":"my_room_001","candidate":{"candidate":"candidate:344579997 1 tcp 1518149375 127.0.0.1 64009 typ host tcptype passive generation 0 ufrag K8FW network-id 2","sdpMid":"0","sdpMLineIndex":0,"foundation":"344579997","component":"rtp","priority":1518149375,"address":"127.0.0.1","protocol":"tcp","port":64009,"type":"host","tcpType":"passive","relatedAddress":null,"relatedPort":null,"usernameFragment":"K8FW"},"socketId":"8be0ece8-90bd-d75c-1ff2-521cbcb3e7ea"}}
+[silly]: Sending MSG to central server:{"eventName":"send_ice_candidate","data":{"label":"my_room_001","candidate":{"candidate":"candidate:3232690131 1 udp 1686052607 122.161.76.62 9203 typ srflx raddr 192.168.1.18 rport 60077 generation 0 ufrag K8FW network-id 1 network-cost 50","sdpMid":"0","sdpMLineIndex":0,"foundation":"3232690131","component":"rtp","priority":1686052607,"address":"122.161.76.62","protocol":"udp","port":9203,"type":"srflx","tcpType":null,"relatedAddress":"192.168.1.18","relatedPort":60077,"usernameFragment":"K8FW"},"socketId":"8be0ece8-90bd-d75c-1ff2-521cbcb3e7ea"}}
+[debug]: Received an ICE candidate from:8be0ece8-90bd-d75c-1ff2-521cbcb3e7ea
+[debug]: Received an ICE candidate from:8be0ece8-90bd-d75c-1ff2-521cbcb3e7ea
+[debug]: Received an ICE candidate from:8be0ece8-90bd-d75c-1ff2-521cbcb3e7ea
+[debug]: Received an ICE candidate from:8be0ece8-90bd-d75c-1ff2-521cbcb3e7ea
+[debug]: Received an ICE candidate from:8be0ece8-90bd-d75c-1ff2-521cbcb3e7ea
+[debug]: Received an ICE candidate from:8be0ece8-90bd-d75c-1ff2-521cbcb3e7ea
+[silly]: Sending MSG to central server:{"eventName":"send_ice_candidate","data":{"label":"my_room_001","candidate":{"candidate":"candidate:453802058 1 udp 41885439 158.69.221.198 52011 typ relay raddr 122.161.76.62 rport 9203 generation 0 ufrag K8FW network-id 1 network-cost 50","sdpMid":"0","sdpMLineIndex":0,"foundation":"453802058","component":"rtp","priority":41885439,"address":"158.69.221.198","protocol":"udp","port":52011,"type":"relay","tcpType":null,"relatedAddress":"122.161.76.62","relatedPort":9203,"usernameFragment":"K8FW"},"socketId":"8be0ece8-90bd-d75c-1ff2-521cbcb3e7ea"}}
+[debug]: Received an ICE candidate from:8be0ece8-90bd-d75c-1ff2-521cbcb3e7ea
+[debug]: Received an ICE candidate from:8be0ece8-90bd-d75c-1ff2-521cbcb3e7ea
+[debug]: Received an ICE candidate from:8be0ece8-90bd-d75c-1ff2-521cbcb3e7ea
+[debug]: Received an ICE candidate from:8be0ece8-90bd-d75c-1ff2-521cbcb3e7ea
+[debug]: Received an ICE candidate from:8be0ece8-90bd-d75c-1ff2-521cbcb3e7ea
+[debug]: Received an ICE candidate from:8be0ece8-90bd-d75c-1ff2-521cbcb3e7ea
+[debug]: Received an ICE candidate from:8be0ece8-90bd-d75c-1ff2-521cbcb3e7ea
+[debug]: Received an ICE candidate from:8be0ece8-90bd-d75c-1ff2-521cbcb3e7ea
+[debug]: Received an ICE candidate from:8be0ece8-90bd-d75c-1ff2-521cbcb3e7ea
+[debug]: Received an ICE candidate from:8be0ece8-90bd-d75c-1ff2-521cbcb3e7ea
+[debug]: Received an ICE candidate from:8be0ece8-90bd-d75c-1ff2-521cbcb3e7ea
+[debug]: Received an ICE candidate from:8be0ece8-90bd-d75c-1ff2-521cbcb3e7ea
+[debug]: ICE "Gathering" done!..
+[debug]: Received an ICE candidate from:8be0ece8-90bd-d75c-1ff2-521cbcb3e7ea
+[debug]: Got called by an internal impl:::
+[info]: data.endswith rrrr: false
+[info]: results: "ls -la\r\n"
+[info]: this.history[this.history.length - 1]: "\"ls -la\\n\""
+[info]: results
+[info]: ls -la
+
+[info]: history
+[info]: >>START,"ls -la\n"
+[info]: results: "total 920\r\n"
+[info]: this.history[this.history.length - 1]: "\"ls -la\\n\""
+[info]: results
+[info]: total 920
+
+[info]: history
+[info]: >>START,"ls -la\n"
+[info]: results: "drwxr-xr-x   13 dhruvmisra  staff     416 Feb 11 16:45 .\r\ndrwxr-xr-x  108 dhruvmisra  staff    3456 Feb 10 21:09 ..\r\ndrwxr-xr-x   14 dhruvmisra  staff     448 Feb 11 16:45 .git\r\n-rw-r--r--    1 dhruvmisra  staff      29 Feb 11 12:29 .gitignore\r\n-rw-r--r--    1 dhruvmisra  staff    6100 Feb 11 16:45 README.md\r\n-rw-r--r--    1 dhruvmisra  staff  233238 Feb 11 17:06 combined.log\r\ndrwxr-xr-x    8 dhruvmisra  staff     256 Feb 11 14:01 dist\r\ndrwxr-xr-x  209 dhruvmisra  staff    6688 Feb 11 15:40 node_modules\r\n-rw-r--r--    1 dhruvmisra  staff  158183 Feb 11 15:52 package-lock.json\r\n-rw-r--r--    1 dhruvmisra  staff    1500 Feb 11 13:47 package.json\r\ndrwxr-xr-x   10 dhruvmisra  staff     320 Feb 11 13:44 src\r\n-rwxr-xr-x    1 dhruvmisra  staff     286 Feb 11 12:29 test.sh\r\n-rw-r--r--    1 dhruvmisra  staff   10854 Feb 11 12:29 tsconfig.json\r\n"
+[info]: this.history[this.history.length - 1]: "\"ls -la\\n\""
+[info]: results
+[info]: drwxr-xr-x   13 dhruvmisra  staff     416 Feb 11 16:45 .
+drwxr-xr-x  108 dhruvmisra  staff    3456 Feb 10 21:09 ..
+drwxr-xr-x   14 dhruvmisra  staff     448 Feb 11 16:45 .git
+-rw-r--r--    1 dhruvmisra  staff      29 Feb 11 12:29 .gitignore
+-rw-r--r--    1 dhruvmisra  staff    6100 Feb 11 16:45 README.md
+-rw-r--r--    1 dhruvmisra  staff  233238 Feb 11 17:06 combined.log
+drwxr-xr-x    8 dhruvmisra  staff     256 Feb 11 14:01 dist
+drwxr-xr-x  209 dhruvmisra  staff    6688 Feb 11 15:40 node_modules
+-rw-r--r--    1 dhruvmisra  staff  158183 Feb 11 15:52 package-lock.json
+-rw-r--r--    1 dhruvmisra  staff    1500 Feb 11 13:47 package.json
+drwxr-xr-x   10 dhruvmisra  staff     320 Feb 11 13:44 src
+-rwxr-xr-x    1 dhruvmisra  staff     286 Feb 11 12:29 test.sh
+-rw-r--r--    1 dhruvmisra  staff   10854 Feb 11 12:29 tsconfig.json
+
+[info]: history
+[info]: >>START,"ls -la\n"
+[info]: results: "bash-3.2$ "
+[info]: this.history[this.history.length - 1]: "\"ls -la\\n\""
+[info]: results
+[info]: bash-3.2$ 
+[info]: history
+[info]: >>START,"ls -la\n"
+[error]: This Donor supports only single Donee. Exiting..
+[debug]: TRICKLE mode=
+[silly]: Not attaching onmessage handler right away..
+[silly]: Finally attached onmessage handler!
+[silly]: Sending MSG to central server:{"eventName":"send_offer","data":{"socketId":"89f088ea-9a00-0260-8750-a1220d7dc41f","sdp":{"type":"offer","sdp":"v=0\r\no=- 2405754764634492556 2 IN IP4 127.0.0.1\r\ns=-\r\nt=0 0\r\na=group:BUNDLE 0\r\na=msid-semantic: WMS\r\nm=application 9 UDP/DTLS/SCTP webrtc-datachannel\r\nc=IN IP4 0.0.0.0\r\na=ice-ufrag:Svsl\r\na=ice-pwd:/jyIe7nIPKfn+efJLuZJDIAB\r\na=ice-options:trickle\r\na=fingerprint:sha-256 1B:F9:8D:FF:0B:4E:C6:34:D2:50:D9:06:9D:54:87:EA:72:B8:C3:CA:CD:EF:1F:CF:B8:D4:8F:3D:56:B7:FD:20\r\na=setup:actpass\r\na=mid:0\r\na=sctp-port:5000\r\na=max-message-size:262144\r\n"}}}
+[silly]: Sending MSG to central server:{"eventName":"send_ice_candidate","data":{"label":"my_room_001","candidate":{"candidate":"candidate:918459911 1 udp 2122260223 192.168.1.18 55118 typ host generation 0 ufrag Svsl network-id 1 network-cost 50","sdpMid":"0","sdpMLineIndex":0,"foundation":"918459911","component":"rtp","priority":2122260223,"address":"192.168.1.18","protocol":"udp","port":55118,"type":"host","tcpType":null,"relatedAddress":null,"relatedPort":null,"usernameFragment":"Svsl"},"socketId":"89f088ea-9a00-0260-8750-a1220d7dc41f"}}
+[silly]: Sending MSG to central server:{"eventName":"send_ice_candidate","data":{"label":"my_room_001","candidate":{"candidate":"candidate:559267639 1 udp 2122202367 ::1 49203 typ host generation 0 ufrag Svsl network-id 3","sdpMid":"0","sdpMLineIndex":0,"foundation":"559267639","component":"rtp","priority":2122202367,"address":"::1","protocol":"udp","port":49203,"type":"host","tcpType":null,"relatedAddress":null,"relatedPort":null,"usernameFragment":"Svsl"},"socketId":"89f088ea-9a00-0260-8750-a1220d7dc41f"}}
+[silly]: Sending MSG to central server:{"eventName":"send_ice_candidate","data":{"label":"my_room_001","candidate":{"candidate":"candidate:1510613869 1 udp 2122129151 127.0.0.1 57976 typ host generation 0 ufrag Svsl network-id 2","sdpMid":"0","sdpMLineIndex":0,"foundation":"1510613869","component":"rtp","priority":2122129151,"address":"127.0.0.1","protocol":"udp","port":57976,"type":"host","tcpType":null,"relatedAddress":null,"relatedPort":null,"usernameFragment":"Svsl"},"socketId":"89f088ea-9a00-0260-8750-a1220d7dc41f"}}
+[silly]: Sending MSG to central server:{"eventName":"send_ice_candidate","data":{"label":"my_room_001","candidate":{"candidate":"candidate:2017290999 1 tcp 1518280447 192.168.1.18 64654 typ host tcptype passive generation 0 ufrag Svsl network-id 1 network-cost 50","sdpMid":"0","sdpMLineIndex":0,"foundation":"2017290999","component":"rtp","priority":1518280447,"address":"192.168.1.18","protocol":"tcp","port":64654,"type":"host","tcpType":"passive","relatedAddress":null,"relatedPort":null,"usernameFragment":"Svsl"},"socketId":"89f088ea-9a00-0260-8750-a1220d7dc41f"}}
+[silly]: Sending MSG to central server:{"eventName":"send_ice_candidate","data":{"label":"my_room_001","candidate":{"candidate":"candidate:1876313031 1 tcp 1518222591 ::1 64655 typ host tcptype passive generation 0 ufrag Svsl network-id 3","sdpMid":"0","sdpMLineIndex":0,"foundation":"1876313031","component":"rtp","priority":1518222591,"address":"::1","protocol":"tcp","port":64655,"type":"host","tcpType":"passive","relatedAddress":null,"relatedPort":null,"usernameFragment":"Svsl"},"socketId":"89f088ea-9a00-0260-8750-a1220d7dc41f"}}
+[silly]: Sending MSG to central server:{"eventName":"send_ice_candidate","data":{"label":"my_room_001","candidate":{"candidate":"candidate:344579997 1 tcp 1518149375 127.0.0.1 64656 typ host tcptype passive generation 0 ufrag Svsl network-id 2","sdpMid":"0","sdpMLineIndex":0,"foundation":"344579997","component":"rtp","priority":1518149375,"address":"127.0.0.1","protocol":"tcp","port":64656,"type":"host","tcpType":"passive","relatedAddress":null,"relatedPort":null,"usernameFragment":"Svsl"},"socketId":"89f088ea-9a00-0260-8750-a1220d7dc41f"}}
+[silly]: Sending MSG to central server:{"eventName":"send_ice_candidate","data":{"label":"my_room_001","candidate":{"candidate":"candidate:3232690131 1 udp 1686052607 122.161.76.62 17710 typ srflx raddr 192.168.1.18 rport 55118 generation 0 ufrag Svsl network-id 1 network-cost 50","sdpMid":"0","sdpMLineIndex":0,"foundation":"3232690131","component":"rtp","priority":1686052607,"address":"122.161.76.62","protocol":"udp","port":17710,"type":"srflx","tcpType":null,"relatedAddress":"192.168.1.18","relatedPort":55118,"usernameFragment":"Svsl"},"socketId":"89f088ea-9a00-0260-8750-a1220d7dc41f"}}
+[debug]: Received an ICE candidate from:89f088ea-9a00-0260-8750-a1220d7dc41f
+[debug]: Received an ICE candidate from:89f088ea-9a00-0260-8750-a1220d7dc41f
+[debug]: Received an ICE candidate from:89f088ea-9a00-0260-8750-a1220d7dc41f
+[debug]: Received an ICE candidate from:89f088ea-9a00-0260-8750-a1220d7dc41f
+[debug]: Received an ICE candidate from:89f088ea-9a00-0260-8750-a1220d7dc41f
+[debug]: Received an ICE candidate from:89f088ea-9a00-0260-8750-a1220d7dc41f
+[silly]: Sending MSG to central server:{"eventName":"send_ice_candidate","data":{"label":"my_room_001","candidate":{"candidate":"candidate:453802058 1 udp 41885439 158.69.221.198 54587 typ relay raddr 122.161.76.62 rport 17710 generation 0 ufrag Svsl network-id 1 network-cost 50","sdpMid":"0","sdpMLineIndex":0,"foundation":"453802058","component":"rtp","priority":41885439,"address":"158.69.221.198","protocol":"udp","port":54587,"type":"relay","tcpType":null,"relatedAddress":"122.161.76.62","relatedPort":17710,"usernameFragment":"Svsl"},"socketId":"89f088ea-9a00-0260-8750-a1220d7dc41f"}}
+[debug]: Received an ICE candidate from:89f088ea-9a00-0260-8750-a1220d7dc41f
+[debug]: Received an ICE candidate from:89f088ea-9a00-0260-8750-a1220d7dc41f
+[debug]: Received an ICE candidate from:89f088ea-9a00-0260-8750-a1220d7dc41f
+[debug]: Received an ICE candidate from:89f088ea-9a00-0260-8750-a1220d7dc41f
+[debug]: Received an ICE candidate from:89f088ea-9a00-0260-8750-a1220d7dc41f
+[debug]: Received an ICE candidate from:89f088ea-9a00-0260-8750-a1220d7dc41f
+[debug]: Received an ICE candidate from:89f088ea-9a00-0260-8750-a1220d7dc41f
+[debug]: Received an ICE candidate from:89f088ea-9a00-0260-8750-a1220d7dc41f
+[debug]: Received an ICE candidate from:89f088ea-9a00-0260-8750-a1220d7dc41f
+[debug]: Received an ICE candidate from:89f088ea-9a00-0260-8750-a1220d7dc41f
+[debug]: Received an ICE candidate from:89f088ea-9a00-0260-8750-a1220d7dc41f
+[debug]: Received an ICE candidate from:89f088ea-9a00-0260-8750-a1220d7dc41f
+[debug]: Received an ICE candidate from:89f088ea-9a00-0260-8750-a1220d7dc41f
+[debug]: ICE "Gathering" done!..
+[debug]: Got called by an internal impl:::
+[info]: data.endswith rrrr: false
+[info]: results: "pwd\r\n"
+[info]: this.history[this.history.length - 1]: "\"pwd\\n\""
+[info]: results
+[info]: pwd
+
+[info]: history
+[info]: >>START,"pwd\n"
+[info]: results: "/Users/dhruvmisra/Code/robinhood\r\nbash-3.2$ "
+[info]: this.history[this.history.length - 1]: "\"pwd\\n\""
+[info]: results
+[info]: /Users/dhruvmisra/Code/robinhood
+bash-3.2$ 
+[info]: history
+[info]: >>START,"pwd\n"
+[info]: Socket closed, Peer killed. I will no longer listen to any commands or REST API calls
+[debug]: TRICKLE mode=
+[silly]: Not attaching onmessage handler right away..
+[debug]: TRICKLE mode=
+[silly]: Not attaching onmessage handler right away..
+[debug]: TRICKLE mode=
+[silly]: Not attaching onmessage handler right away..
+[silly]: Finally attached onmessage handler!
+[silly]: Sending MSG to central server:{"eventName":"send_offer","data":{"socketId":"73c92183-1cc7-142f-5bee-4fac5b8110ab","sdp":{"type":"offer","sdp":"v=0\r\no=- 9171108582240971813 2 IN IP4 127.0.0.1\r\ns=-\r\nt=0 0\r\na=group:BUNDLE 0\r\na=msid-semantic: WMS\r\nm=application 9 UDP/DTLS/SCTP webrtc-datachannel\r\nc=IN IP4 0.0.0.0\r\na=ice-ufrag:OxoI\r\na=ice-pwd:SjixW0Vfoyd9zwccwhxK8obz\r\na=ice-options:trickle\r\na=fingerprint:sha-256 29:23:A2:9F:3F:63:82:65:93:C4:E1:E8:AA:C3:8B:3A:D0:14:E4:C2:B1:73:75:5C:49:77:A9:0F:62:80:E4:B4\r\na=setup:actpass\r\na=mid:0\r\na=sctp-port:5000\r\na=max-message-size:262144\r\n"}}}
+[silly]: Sending MSG to central server:{"eventName":"send_ice_candidate","data":{"label":"my_room_001","candidate":{"candidate":"candidate:918459911 1 udp 2122260223 192.168.1.18 56472 typ host generation 0 ufrag OxoI network-id 1 network-cost 50","sdpMid":"0","sdpMLineIndex":0,"foundation":"918459911","component":"rtp","priority":2122260223,"address":"192.168.1.18","protocol":"udp","port":56472,"type":"host","tcpType":null,"relatedAddress":null,"relatedPort":null,"usernameFragment":"OxoI"},"socketId":"73c92183-1cc7-142f-5bee-4fac5b8110ab"}}
+[silly]: Sending MSG to central server:{"eventName":"send_ice_candidate","data":{"label":"my_room_001","candidate":{"candidate":"candidate:559267639 1 udp 2122202367 ::1 63820 typ host generation 0 ufrag OxoI network-id 3","sdpMid":"0","sdpMLineIndex":0,"foundation":"559267639","component":"rtp","priority":2122202367,"address":"::1","protocol":"udp","port":63820,"type":"host","tcpType":null,"relatedAddress":null,"relatedPort":null,"usernameFragment":"OxoI"},"socketId":"73c92183-1cc7-142f-5bee-4fac5b8110ab"}}
+[silly]: Sending MSG to central server:{"eventName":"send_ice_candidate","data":{"label":"my_room_001","candidate":{"candidate":"candidate:1510613869 1 udp 2122129151 127.0.0.1 55239 typ host generation 0 ufrag OxoI network-id 2","sdpMid":"0","sdpMLineIndex":0,"foundation":"1510613869","component":"rtp","priority":2122129151,"address":"127.0.0.1","protocol":"udp","port":55239,"type":"host","tcpType":null,"relatedAddress":null,"relatedPort":null,"usernameFragment":"OxoI"},"socketId":"73c92183-1cc7-142f-5bee-4fac5b8110ab"}}
+[silly]: Sending MSG to central server:{"eventName":"send_ice_candidate","data":{"label":"my_room_001","candidate":{"candidate":"candidate:2017290999 1 tcp 1518280447 192.168.1.18 65493 typ host tcptype passive generation 0 ufrag OxoI network-id 1 network-cost 50","sdpMid":"0","sdpMLineIndex":0,"foundation":"2017290999","component":"rtp","priority":1518280447,"address":"192.168.1.18","protocol":"tcp","port":65493,"type":"host","tcpType":"passive","relatedAddress":null,"relatedPort":null,"usernameFragment":"OxoI"},"socketId":"73c92183-1cc7-142f-5bee-4fac5b8110ab"}}
+[silly]: Sending MSG to central server:{"eventName":"send_ice_candidate","data":{"label":"my_room_001","candidate":{"candidate":"candidate:1876313031 1 tcp 1518222591 ::1 65494 typ host tcptype passive generation 0 ufrag OxoI network-id 3","sdpMid":"0","sdpMLineIndex":0,"foundation":"1876313031","component":"rtp","priority":1518222591,"address":"::1","protocol":"tcp","port":65494,"type":"host","tcpType":"passive","relatedAddress":null,"relatedPort":null,"usernameFragment":"OxoI"},"socketId":"73c92183-1cc7-142f-5bee-4fac5b8110ab"}}
+[silly]: Sending MSG to central server:{"eventName":"send_ice_candidate","data":{"label":"my_room_001","candidate":{"candidate":"candidate:344579997 1 tcp 1518149375 127.0.0.1 65495 typ host tcptype passive generation 0 ufrag OxoI network-id 2","sdpMid":"0","sdpMLineIndex":0,"foundation":"344579997","component":"rtp","priority":1518149375,"address":"127.0.0.1","protocol":"tcp","port":65495,"type":"host","tcpType":"passive","relatedAddress":null,"relatedPort":null,"usernameFragment":"OxoI"},"socketId":"73c92183-1cc7-142f-5bee-4fac5b8110ab"}}
+[silly]: Sending MSG to central server:{"eventName":"send_ice_candidate","data":{"label":"my_room_001","candidate":{"candidate":"candidate:3232690131 1 udp 1686052607 122.161.76.62 31495 typ srflx raddr 192.168.1.18 rport 56472 generation 0 ufrag OxoI network-id 1 network-cost 50","sdpMid":"0","sdpMLineIndex":0,"foundation":"3232690131","component":"rtp","priority":1686052607,"address":"122.161.76.62","protocol":"udp","port":31495,"type":"srflx","tcpType":null,"relatedAddress":"192.168.1.18","relatedPort":56472,"usernameFragment":"OxoI"},"socketId":"73c92183-1cc7-142f-5bee-4fac5b8110ab"}}
+[debug]: Received an ICE candidate from:73c92183-1cc7-142f-5bee-4fac5b8110ab
+[debug]: Received an ICE candidate from:73c92183-1cc7-142f-5bee-4fac5b8110ab
+[debug]: Received an ICE candidate from:73c92183-1cc7-142f-5bee-4fac5b8110ab
+[debug]: Received an ICE candidate from:73c92183-1cc7-142f-5bee-4fac5b8110ab
+[debug]: Received an ICE candidate from:73c92183-1cc7-142f-5bee-4fac5b8110ab
+[debug]: Received an ICE candidate from:73c92183-1cc7-142f-5bee-4fac5b8110ab
+[silly]: Sending MSG to central server:{"eventName":"send_ice_candidate","data":{"label":"my_room_001","candidate":{"candidate":"candidate:453802058 1 udp 41885439 158.69.221.198 58436 typ relay raddr 122.161.76.62 rport 31495 generation 0 ufrag OxoI network-id 1 network-cost 50","sdpMid":"0","sdpMLineIndex":0,"foundation":"453802058","component":"rtp","priority":41885439,"address":"158.69.221.198","protocol":"udp","port":58436,"type":"relay","tcpType":null,"relatedAddress":"122.161.76.62","relatedPort":31495,"usernameFragment":"OxoI"},"socketId":"73c92183-1cc7-142f-5bee-4fac5b8110ab"}}
+[debug]: Received an ICE candidate from:73c92183-1cc7-142f-5bee-4fac5b8110ab
+[debug]: Received an ICE candidate from:73c92183-1cc7-142f-5bee-4fac5b8110ab
+[debug]: Received an ICE candidate from:73c92183-1cc7-142f-5bee-4fac5b8110ab
+[debug]: Received an ICE candidate from:73c92183-1cc7-142f-5bee-4fac5b8110ab
+[debug]: Received an ICE candidate from:73c92183-1cc7-142f-5bee-4fac5b8110ab
+[debug]: Received an ICE candidate from:73c92183-1cc7-142f-5bee-4fac5b8110ab
+[debug]: Received an ICE candidate from:73c92183-1cc7-142f-5bee-4fac5b8110ab
+[debug]: Received an ICE candidate from:73c92183-1cc7-142f-5bee-4fac5b8110ab
+[debug]: Received an ICE candidate from:73c92183-1cc7-142f-5bee-4fac5b8110ab
+[debug]: Received an ICE candidate from:73c92183-1cc7-142f-5bee-4fac5b8110ab
+[debug]: Received an ICE candidate from:73c92183-1cc7-142f-5bee-4fac5b8110ab
+[debug]: Received an ICE candidate from:73c92183-1cc7-142f-5bee-4fac5b8110ab
+[debug]: Received an ICE candidate from:73c92183-1cc7-142f-5bee-4fac5b8110ab
+[debug]: ICE "Gathering" done!..
+[debug]: Got called by an internal impl:::
+[info]: data.endswith rrrr: false
+[info]: results: "pwd\r\n"
+[info]: this.history[this.history.length - 1]: "\"pwd\\n\""
+[info]: results
+[info]: pwd
+
+[info]: history
+[info]: >>START,"pwd\n"
+[info]: results: "/Users/dhruvmisra/Code/robinhood\r\nbash-3.2$ "
+[info]: this.history[this.history.length - 1]: "\"pwd\\n\""
+[info]: results
+[info]: /Users/dhruvmisra/Code/robinhood
+bash-3.2$ 
+[info]: history
+[info]: >>START,"pwd\n"
+[debug]: TRICKLE mode=
+[silly]: Not attaching onmessage handler right away..
+[debug]: TRICKLE mode=
+[silly]: Not attaching onmessage handler right away..
+[silly]: Finally attached onmessage handler!
+[silly]: Sending MSG to central server:{"eventName":"send_offer","data":{"socketId":"aacd4b64-67ed-9c0e-5550-3837bde67b36","sdp":{"type":"offer","sdp":"v=0\r\no=- 601558300410548406 2 IN IP4 127.0.0.1\r\ns=-\r\nt=0 0\r\na=group:BUNDLE 0\r\na=msid-semantic: WMS\r\nm=application 9 UDP/DTLS/SCTP webrtc-datachannel\r\nc=IN IP4 0.0.0.0\r\na=ice-ufrag:DL15\r\na=ice-pwd:USHnQ7d9XE7v62ChFM1jfvlw\r\na=ice-options:trickle\r\na=fingerprint:sha-256 E2:4A:B0:3C:AA:54:A6:7A:A2:B6:39:EB:A0:C7:E3:44:73:1E:DC:E2:FD:33:AF:4B:01:66:29:41:D6:87:D7:82\r\na=setup:actpass\r\na=mid:0\r\na=sctp-port:5000\r\na=max-message-size:262144\r\n"}}}
+[silly]: Sending MSG to central server:{"eventName":"send_ice_candidate","data":{"label":"my_room_001","candidate":{"candidate":"candidate:918459911 1 udp 2122260223 192.168.1.18 57095 typ host generation 0 ufrag DL15 network-id 1 network-cost 50","sdpMid":"0","sdpMLineIndex":0,"foundation":"918459911","component":"rtp","priority":2122260223,"address":"192.168.1.18","protocol":"udp","port":57095,"type":"host","tcpType":null,"relatedAddress":null,"relatedPort":null,"usernameFragment":"DL15"},"socketId":"aacd4b64-67ed-9c0e-5550-3837bde67b36"}}
+[silly]: Sending MSG to central server:{"eventName":"send_ice_candidate","data":{"label":"my_room_001","candidate":{"candidate":"candidate:559267639 1 udp 2122202367 ::1 54739 typ host generation 0 ufrag DL15 network-id 3","sdpMid":"0","sdpMLineIndex":0,"foundation":"559267639","component":"rtp","priority":2122202367,"address":"::1","protocol":"udp","port":54739,"type":"host","tcpType":null,"relatedAddress":null,"relatedPort":null,"usernameFragment":"DL15"},"socketId":"aacd4b64-67ed-9c0e-5550-3837bde67b36"}}
+[silly]: Sending MSG to central server:{"eventName":"send_ice_candidate","data":{"label":"my_room_001","candidate":{"candidate":"candidate:1510613869 1 udp 2122129151 127.0.0.1 50929 typ host generation 0 ufrag DL15 network-id 2","sdpMid":"0","sdpMLineIndex":0,"foundation":"1510613869","component":"rtp","priority":2122129151,"address":"127.0.0.1","protocol":"udp","port":50929,"type":"host","tcpType":null,"relatedAddress":null,"relatedPort":null,"usernameFragment":"DL15"},"socketId":"aacd4b64-67ed-9c0e-5550-3837bde67b36"}}
+[silly]: Sending MSG to central server:{"eventName":"send_ice_candidate","data":{"label":"my_room_001","candidate":{"candidate":"candidate:2017290999 1 tcp 1518280447 192.168.1.18 49999 typ host tcptype passive generation 0 ufrag DL15 network-id 1 network-cost 50","sdpMid":"0","sdpMLineIndex":0,"foundation":"2017290999","component":"rtp","priority":1518280447,"address":"192.168.1.18","protocol":"tcp","port":49999,"type":"host","tcpType":"passive","relatedAddress":null,"relatedPort":null,"usernameFragment":"DL15"},"socketId":"aacd4b64-67ed-9c0e-5550-3837bde67b36"}}
+[silly]: Sending MSG to central server:{"eventName":"send_ice_candidate","data":{"label":"my_room_001","candidate":{"candidate":"candidate:1876313031 1 tcp 1518222591 ::1 50000 typ host tcptype passive generation 0 ufrag DL15 network-id 3","sdpMid":"0","sdpMLineIndex":0,"foundation":"1876313031","component":"rtp","priority":1518222591,"address":"::1","protocol":"tcp","port":50000,"type":"host","tcpType":"passive","relatedAddress":null,"relatedPort":null,"usernameFragment":"DL15"},"socketId":"aacd4b64-67ed-9c0e-5550-3837bde67b36"}}
+[silly]: Sending MSG to central server:{"eventName":"send_ice_candidate","data":{"label":"my_room_001","candidate":{"candidate":"candidate:344579997 1 tcp 1518149375 127.0.0.1 50001 typ host tcptype passive generation 0 ufrag DL15 network-id 2","sdpMid":"0","sdpMLineIndex":0,"foundation":"344579997","component":"rtp","priority":1518149375,"address":"127.0.0.1","protocol":"tcp","port":50001,"type":"host","tcpType":"passive","relatedAddress":null,"relatedPort":null,"usernameFragment":"DL15"},"socketId":"aacd4b64-67ed-9c0e-5550-3837bde67b36"}}
+[silly]: Sending MSG to central server:{"eventName":"send_ice_candidate","data":{"label":"my_room_001","candidate":{"candidate":"candidate:3232690131 1 udp 1686052607 122.161.76.62 26453 typ srflx raddr 192.168.1.18 rport 57095 generation 0 ufrag DL15 network-id 1 network-cost 50","sdpMid":"0","sdpMLineIndex":0,"foundation":"3232690131","component":"rtp","priority":1686052607,"address":"122.161.76.62","protocol":"udp","port":26453,"type":"srflx","tcpType":null,"relatedAddress":"192.168.1.18","relatedPort":57095,"usernameFragment":"DL15"},"socketId":"aacd4b64-67ed-9c0e-5550-3837bde67b36"}}
+[debug]: Received an ICE candidate from:aacd4b64-67ed-9c0e-5550-3837bde67b36
+[debug]: Received an ICE candidate from:aacd4b64-67ed-9c0e-5550-3837bde67b36
+[debug]: Received an ICE candidate from:aacd4b64-67ed-9c0e-5550-3837bde67b36
+[debug]: Received an ICE candidate from:aacd4b64-67ed-9c0e-5550-3837bde67b36
+[debug]: Received an ICE candidate from:aacd4b64-67ed-9c0e-5550-3837bde67b36
+[debug]: Received an ICE candidate from:aacd4b64-67ed-9c0e-5550-3837bde67b36
+[silly]: Sending MSG to central server:{"eventName":"send_ice_candidate","data":{"label":"my_room_001","candidate":{"candidate":"candidate:453802058 1 udp 41885439 158.69.221.198 59110 typ relay raddr 122.161.76.62 rport 26453 generation 0 ufrag DL15 network-id 1 network-cost 50","sdpMid":"0","sdpMLineIndex":0,"foundation":"453802058","component":"rtp","priority":41885439,"address":"158.69.221.198","protocol":"udp","port":59110,"type":"relay","tcpType":null,"relatedAddress":"122.161.76.62","relatedPort":26453,"usernameFragment":"DL15"},"socketId":"aacd4b64-67ed-9c0e-5550-3837bde67b36"}}
+[debug]: Received an ICE candidate from:aacd4b64-67ed-9c0e-5550-3837bde67b36
+[debug]: Received an ICE candidate from:aacd4b64-67ed-9c0e-5550-3837bde67b36
+[debug]: Received an ICE candidate from:aacd4b64-67ed-9c0e-5550-3837bde67b36
+[debug]: Received an ICE candidate from:aacd4b64-67ed-9c0e-5550-3837bde67b36
+[debug]: Received an ICE candidate from:aacd4b64-67ed-9c0e-5550-3837bde67b36
+[debug]: Received an ICE candidate from:aacd4b64-67ed-9c0e-5550-3837bde67b36
+[debug]: Received an ICE candidate from:aacd4b64-67ed-9c0e-5550-3837bde67b36
+[debug]: Received an ICE candidate from:aacd4b64-67ed-9c0e-5550-3837bde67b36
+[debug]: Received an ICE candidate from:aacd4b64-67ed-9c0e-5550-3837bde67b36
+[debug]: Received an ICE candidate from:aacd4b64-67ed-9c0e-5550-3837bde67b36
+[debug]: Received an ICE candidate from:aacd4b64-67ed-9c0e-5550-3837bde67b36
+[debug]: Received an ICE candidate from:aacd4b64-67ed-9c0e-5550-3837bde67b36
+[debug]: Received an ICE candidate from:aacd4b64-67ed-9c0e-5550-3837bde67b36
+[debug]: ICE "Gathering" done!..
+[debug]: Got called by an internal impl:::
+[info]: data.endswith rrrr: false
+[info]: results json: "pwd\r\n"
+[info]: this.history[this.history.length - 1] json: "\"pwd\\n\""
+[info]: results trim: pwd
+[info]: this.history[this.history.length - 1] trim: pwd\n
+[info]: results
+[info]: pwd
+
+[info]: history
+[info]: >>START,"pwd\n"
+[info]: results json: "/Users/dhruvmisra/Code/robinhood\r\nbash-3.2$ "
+[info]: this.history[this.history.length - 1] json: "\"pwd\\n\""
+[info]: results trim: /Users/dhruvmisra/Code/robinhood
+bash-3.2$
+[info]: this.history[this.history.length - 1] trim: pwd\n
+[info]: results
+[info]: /Users/dhruvmisra/Code/robinhood
+bash-3.2$ 
+[info]: history
+[info]: >>START,"pwd\n"
+[debug]: TRICKLE mode=
+[silly]: Not attaching onmessage handler right away..
+[silly]: Finally attached onmessage handler!
+[silly]: Sending MSG to central server:{"eventName":"send_offer","data":{"socketId":"bd327ffe-6f1a-ab0e-3da6-282accbb7df4","sdp":{"type":"offer","sdp":"v=0\r\no=- 497871373610626406 2 IN IP4 127.0.0.1\r\ns=-\r\nt=0 0\r\na=group:BUNDLE 0\r\na=msid-semantic: WMS\r\nm=application 9 UDP/DTLS/SCTP webrtc-datachannel\r\nc=IN IP4 0.0.0.0\r\na=ice-ufrag:BkUt\r\na=ice-pwd:al8UjrLXJXWes8M5mjYO/hRd\r\na=ice-options:trickle\r\na=fingerprint:sha-256 5C:9B:0C:76:57:3A:B1:15:B2:16:86:1C:A9:9F:9E:F3:D5:FA:6D:A3:D5:A7:F5:87:22:8D:A1:F6:8F:3F:D1:D5\r\na=setup:actpass\r\na=mid:0\r\na=sctp-port:5000\r\na=max-message-size:262144\r\n"}}}
+[silly]: Sending MSG to central server:{"eventName":"send_ice_candidate","data":{"label":"my_room_001","candidate":{"candidate":"candidate:918459911 1 udp 2122260223 192.168.1.18 49418 typ host generation 0 ufrag BkUt network-id 1 network-cost 50","sdpMid":"0","sdpMLineIndex":0,"foundation":"918459911","component":"rtp","priority":2122260223,"address":"192.168.1.18","protocol":"udp","port":49418,"type":"host","tcpType":null,"relatedAddress":null,"relatedPort":null,"usernameFragment":"BkUt"},"socketId":"bd327ffe-6f1a-ab0e-3da6-282accbb7df4"}}
+[silly]: Sending MSG to central server:{"eventName":"send_ice_candidate","data":{"label":"my_room_001","candidate":{"candidate":"candidate:559267639 1 udp 2122202367 ::1 56194 typ host generation 0 ufrag BkUt network-id 3","sdpMid":"0","sdpMLineIndex":0,"foundation":"559267639","component":"rtp","priority":2122202367,"address":"::1","protocol":"udp","port":56194,"type":"host","tcpType":null,"relatedAddress":null,"relatedPort":null,"usernameFragment":"BkUt"},"socketId":"bd327ffe-6f1a-ab0e-3da6-282accbb7df4"}}
+[silly]: Sending MSG to central server:{"eventName":"send_ice_candidate","data":{"label":"my_room_001","candidate":{"candidate":"candidate:1510613869 1 udp 2122129151 127.0.0.1 59343 typ host generation 0 ufrag BkUt network-id 2","sdpMid":"0","sdpMLineIndex":0,"foundation":"1510613869","component":"rtp","priority":2122129151,"address":"127.0.0.1","protocol":"udp","port":59343,"type":"host","tcpType":null,"relatedAddress":null,"relatedPort":null,"usernameFragment":"BkUt"},"socketId":"bd327ffe-6f1a-ab0e-3da6-282accbb7df4"}}
+[silly]: Sending MSG to central server:{"eventName":"send_ice_candidate","data":{"label":"my_room_001","candidate":{"candidate":"candidate:2017290999 1 tcp 1518280447 192.168.1.18 50561 typ host tcptype passive generation 0 ufrag BkUt network-id 1 network-cost 50","sdpMid":"0","sdpMLineIndex":0,"foundation":"2017290999","component":"rtp","priority":1518280447,"address":"192.168.1.18","protocol":"tcp","port":50561,"type":"host","tcpType":"passive","relatedAddress":null,"relatedPort":null,"usernameFragment":"BkUt"},"socketId":"bd327ffe-6f1a-ab0e-3da6-282accbb7df4"}}
+[silly]: Sending MSG to central server:{"eventName":"send_ice_candidate","data":{"label":"my_room_001","candidate":{"candidate":"candidate:1876313031 1 tcp 1518222591 ::1 50562 typ host tcptype passive generation 0 ufrag BkUt network-id 3","sdpMid":"0","sdpMLineIndex":0,"foundation":"1876313031","component":"rtp","priority":1518222591,"address":"::1","protocol":"tcp","port":50562,"type":"host","tcpType":"passive","relatedAddress":null,"relatedPort":null,"usernameFragment":"BkUt"},"socketId":"bd327ffe-6f1a-ab0e-3da6-282accbb7df4"}}
+[silly]: Sending MSG to central server:{"eventName":"send_ice_candidate","data":{"label":"my_room_001","candidate":{"candidate":"candidate:344579997 1 tcp 1518149375 127.0.0.1 50563 typ host tcptype passive generation 0 ufrag BkUt network-id 2","sdpMid":"0","sdpMLineIndex":0,"foundation":"344579997","component":"rtp","priority":1518149375,"address":"127.0.0.1","protocol":"tcp","port":50563,"type":"host","tcpType":"passive","relatedAddress":null,"relatedPort":null,"usernameFragment":"BkUt"},"socketId":"bd327ffe-6f1a-ab0e-3da6-282accbb7df4"}}
+[silly]: Sending MSG to central server:{"eventName":"send_ice_candidate","data":{"label":"my_room_001","candidate":{"candidate":"candidate:3232690131 1 udp 1686052607 122.161.76.62 32958 typ srflx raddr 192.168.1.18 rport 49418 generation 0 ufrag BkUt network-id 1 network-cost 50","sdpMid":"0","sdpMLineIndex":0,"foundation":"3232690131","component":"rtp","priority":1686052607,"address":"122.161.76.62","protocol":"udp","port":32958,"type":"srflx","tcpType":null,"relatedAddress":"192.168.1.18","relatedPort":49418,"usernameFragment":"BkUt"},"socketId":"bd327ffe-6f1a-ab0e-3da6-282accbb7df4"}}
+[debug]: Received an ICE candidate from:bd327ffe-6f1a-ab0e-3da6-282accbb7df4
+[debug]: Received an ICE candidate from:bd327ffe-6f1a-ab0e-3da6-282accbb7df4
+[debug]: Received an ICE candidate from:bd327ffe-6f1a-ab0e-3da6-282accbb7df4
+[debug]: Received an ICE candidate from:bd327ffe-6f1a-ab0e-3da6-282accbb7df4
+[debug]: Received an ICE candidate from:bd327ffe-6f1a-ab0e-3da6-282accbb7df4
+[debug]: Received an ICE candidate from:bd327ffe-6f1a-ab0e-3da6-282accbb7df4
+[silly]: Sending MSG to central server:{"eventName":"send_ice_candidate","data":{"label":"my_room_001","candidate":{"candidate":"candidate:453802058 1 udp 41885439 158.69.221.198 59813 typ relay raddr 122.161.76.62 rport 32958 generation 0 ufrag BkUt network-id 1 network-cost 50","sdpMid":"0","sdpMLineIndex":0,"foundation":"453802058","component":"rtp","priority":41885439,"address":"158.69.221.198","protocol":"udp","port":59813,"type":"relay","tcpType":null,"relatedAddress":"122.161.76.62","relatedPort":32958,"usernameFragment":"BkUt"},"socketId":"bd327ffe-6f1a-ab0e-3da6-282accbb7df4"}}
+[debug]: Received an ICE candidate from:bd327ffe-6f1a-ab0e-3da6-282accbb7df4
+[debug]: Received an ICE candidate from:bd327ffe-6f1a-ab0e-3da6-282accbb7df4
+[debug]: Received an ICE candidate from:bd327ffe-6f1a-ab0e-3da6-282accbb7df4
+[debug]: Received an ICE candidate from:bd327ffe-6f1a-ab0e-3da6-282accbb7df4
+[debug]: Received an ICE candidate from:bd327ffe-6f1a-ab0e-3da6-282accbb7df4
+[debug]: Received an ICE candidate from:bd327ffe-6f1a-ab0e-3da6-282accbb7df4
+[debug]: Received an ICE candidate from:bd327ffe-6f1a-ab0e-3da6-282accbb7df4
+[debug]: Received an ICE candidate from:bd327ffe-6f1a-ab0e-3da6-282accbb7df4
+[debug]: Received an ICE candidate from:bd327ffe-6f1a-ab0e-3da6-282accbb7df4
+[debug]: Received an ICE candidate from:bd327ffe-6f1a-ab0e-3da6-282accbb7df4
+[debug]: Received an ICE candidate from:bd327ffe-6f1a-ab0e-3da6-282accbb7df4
+[debug]: Received an ICE candidate from:bd327ffe-6f1a-ab0e-3da6-282accbb7df4
+[debug]: Received an ICE candidate from:bd327ffe-6f1a-ab0e-3da6-282accbb7df4
+[debug]: ICE "Gathering" done!..
+[debug]: Got called by an internal impl:::
+[info]: data.endswith rrrr: false
+[info]: results json: "echo \\\"This is nuts\\\"\r\n"
+[info]: this.history[this.history.length - 1] json: "\"echo \\\"This is nuts\\\"\\n\""
+[info]: results trim: echo \"This is nuts\"
+[info]: this.history[this.history.length - 1] trim: echo \"This is nuts\"\n
+[info]: results array: e,c,h,o, ,\,",T,h,i,s, ,i,s, ,n,u,t,s,\,",,
+
+[info]: this.history[this.history.length - 1] array: ",e,c,h,o, ,\,",T,h,i,s, ,i,s, ,n,u,t,s,\,",\,n,"
+[info]: results regex: echo \"This is nuts\"
+[info]: this.history[this.history.length - 1] regex: echo \"This is nuts\"\n
+[info]: results
+[info]: echo \"This is nuts\"
+
+[info]: history
+[info]: >>START,"echo \"This is nuts\"\n"
+[info]: results json: "\"This is nuts\"\r\nbash-3.2$ "
+[info]: this.history[this.history.length - 1] json: "\"echo \\\"This is nuts\\\"\\n\""
+[info]: results trim: "This is nuts"
+bash-3.2$
+[info]: this.history[this.history.length - 1] trim: echo \"This is nuts\"\n
+[info]: results array: ",T,h,i,s, ,i,s, ,n,u,t,s,",,
+,b,a,s,h,-,3,.,2,$, 
+[info]: this.history[this.history.length - 1] array: ",e,c,h,o, ,\,",T,h,i,s, ,i,s, ,n,u,t,s,\,",\,n,"
+[info]: results regex: "This is nuts"bash-3.2$ 
+[info]: this.history[this.history.length - 1] regex: echo \"This is nuts\"\n
+[info]: results
+[info]: "This is nuts"
+bash-3.2$ 
+[info]: history
+[info]: >>START,"echo \"This is nuts\"\n"
+[error]: This Donor supports only single Donee. Exiting..
+[debug]: TRICKLE mode=
+[silly]: Not attaching onmessage handler right away..
+[silly]: Finally attached onmessage handler!
+[silly]: Sending MSG to central server:{"eventName":"send_offer","data":{"socketId":"e41d7639-0cc3-dffb-5bbd-81c122c88ffe","sdp":{"type":"offer","sdp":"v=0\r\no=- 6690750906203505019 2 IN IP4 127.0.0.1\r\ns=-\r\nt=0 0\r\na=group:BUNDLE 0\r\na=msid-semantic: WMS\r\nm=application 9 UDP/DTLS/SCTP webrtc-datachannel\r\nc=IN IP4 0.0.0.0\r\na=ice-ufrag:CGwI\r\na=ice-pwd:m6w1cMthkJm7JNcWXsfdXi/s\r\na=ice-options:trickle\r\na=fingerprint:sha-256 F9:50:F2:CB:A6:D3:17:38:E0:22:02:5C:3B:46:4B:67:E8:12:1D:F7:27:AF:14:FD:7A:08:8D:B9:C5:E4:B6:49\r\na=setup:actpass\r\na=mid:0\r\na=sctp-port:5000\r\na=max-message-size:262144\r\n"}}}
+[silly]: Sending MSG to central server:{"eventName":"send_ice_candidate","data":{"label":"my_room_001","candidate":{"candidate":"candidate:918459911 1 udp 2122260223 192.168.1.18 53324 typ host generation 0 ufrag CGwI network-id 1 network-cost 50","sdpMid":"0","sdpMLineIndex":0,"foundation":"918459911","component":"rtp","priority":2122260223,"address":"192.168.1.18","protocol":"udp","port":53324,"type":"host","tcpType":null,"relatedAddress":null,"relatedPort":null,"usernameFragment":"CGwI"},"socketId":"e41d7639-0cc3-dffb-5bbd-81c122c88ffe"}}
+[silly]: Sending MSG to central server:{"eventName":"send_ice_candidate","data":{"label":"my_room_001","candidate":{"candidate":"candidate:559267639 1 udp 2122202367 ::1 63462 typ host generation 0 ufrag CGwI network-id 3","sdpMid":"0","sdpMLineIndex":0,"foundation":"559267639","component":"rtp","priority":2122202367,"address":"::1","protocol":"udp","port":63462,"type":"host","tcpType":null,"relatedAddress":null,"relatedPort":null,"usernameFragment":"CGwI"},"socketId":"e41d7639-0cc3-dffb-5bbd-81c122c88ffe"}}
+[silly]: Sending MSG to central server:{"eventName":"send_ice_candidate","data":{"label":"my_room_001","candidate":{"candidate":"candidate:1510613869 1 udp 2122129151 127.0.0.1 65335 typ host generation 0 ufrag CGwI network-id 2","sdpMid":"0","sdpMLineIndex":0,"foundation":"1510613869","component":"rtp","priority":2122129151,"address":"127.0.0.1","protocol":"udp","port":65335,"type":"host","tcpType":null,"relatedAddress":null,"relatedPort":null,"usernameFragment":"CGwI"},"socketId":"e41d7639-0cc3-dffb-5bbd-81c122c88ffe"}}
+[silly]: Sending MSG to central server:{"eventName":"send_ice_candidate","data":{"label":"my_room_001","candidate":{"candidate":"candidate:2017290999 1 tcp 1518280447 192.168.1.18 50890 typ host tcptype passive generation 0 ufrag CGwI network-id 1 network-cost 50","sdpMid":"0","sdpMLineIndex":0,"foundation":"2017290999","component":"rtp","priority":1518280447,"address":"192.168.1.18","protocol":"tcp","port":50890,"type":"host","tcpType":"passive","relatedAddress":null,"relatedPort":null,"usernameFragment":"CGwI"},"socketId":"e41d7639-0cc3-dffb-5bbd-81c122c88ffe"}}
+[silly]: Sending MSG to central server:{"eventName":"send_ice_candidate","data":{"label":"my_room_001","candidate":{"candidate":"candidate:1876313031 1 tcp 1518222591 ::1 50891 typ host tcptype passive generation 0 ufrag CGwI network-id 3","sdpMid":"0","sdpMLineIndex":0,"foundation":"1876313031","component":"rtp","priority":1518222591,"address":"::1","protocol":"tcp","port":50891,"type":"host","tcpType":"passive","relatedAddress":null,"relatedPort":null,"usernameFragment":"CGwI"},"socketId":"e41d7639-0cc3-dffb-5bbd-81c122c88ffe"}}
+[silly]: Sending MSG to central server:{"eventName":"send_ice_candidate","data":{"label":"my_room_001","candidate":{"candidate":"candidate:344579997 1 tcp 1518149375 127.0.0.1 50892 typ host tcptype passive generation 0 ufrag CGwI network-id 2","sdpMid":"0","sdpMLineIndex":0,"foundation":"344579997","component":"rtp","priority":1518149375,"address":"127.0.0.1","protocol":"tcp","port":50892,"type":"host","tcpType":"passive","relatedAddress":null,"relatedPort":null,"usernameFragment":"CGwI"},"socketId":"e41d7639-0cc3-dffb-5bbd-81c122c88ffe"}}
+[silly]: Sending MSG to central server:{"eventName":"send_ice_candidate","data":{"label":"my_room_001","candidate":{"candidate":"candidate:3232690131 1 udp 1686052607 122.161.76.62 28205 typ srflx raddr 192.168.1.18 rport 53324 generation 0 ufrag CGwI network-id 1 network-cost 50","sdpMid":"0","sdpMLineIndex":0,"foundation":"3232690131","component":"rtp","priority":1686052607,"address":"122.161.76.62","protocol":"udp","port":28205,"type":"srflx","tcpType":null,"relatedAddress":"192.168.1.18","relatedPort":53324,"usernameFragment":"CGwI"},"socketId":"e41d7639-0cc3-dffb-5bbd-81c122c88ffe"}}
+[debug]: Received an ICE candidate from:e41d7639-0cc3-dffb-5bbd-81c122c88ffe
+[debug]: Received an ICE candidate from:e41d7639-0cc3-dffb-5bbd-81c122c88ffe
+[debug]: Received an ICE candidate from:e41d7639-0cc3-dffb-5bbd-81c122c88ffe
+[debug]: Received an ICE candidate from:e41d7639-0cc3-dffb-5bbd-81c122c88ffe
+[debug]: Received an ICE candidate from:e41d7639-0cc3-dffb-5bbd-81c122c88ffe
+[debug]: Received an ICE candidate from:e41d7639-0cc3-dffb-5bbd-81c122c88ffe
+[silly]: Sending MSG to central server:{"eventName":"send_ice_candidate","data":{"label":"my_room_001","candidate":{"candidate":"candidate:453802058 1 udp 41885439 158.69.221.198 58089 typ relay raddr 122.161.76.62 rport 28205 generation 0 ufrag CGwI network-id 1 network-cost 50","sdpMid":"0","sdpMLineIndex":0,"foundation":"453802058","component":"rtp","priority":41885439,"address":"158.69.221.198","protocol":"udp","port":58089,"type":"relay","tcpType":null,"relatedAddress":"122.161.76.62","relatedPort":28205,"usernameFragment":"CGwI"},"socketId":"e41d7639-0cc3-dffb-5bbd-81c122c88ffe"}}
+[debug]: Received an ICE candidate from:e41d7639-0cc3-dffb-5bbd-81c122c88ffe
+[debug]: Received an ICE candidate from:e41d7639-0cc3-dffb-5bbd-81c122c88ffe
+[debug]: Received an ICE candidate from:e41d7639-0cc3-dffb-5bbd-81c122c88ffe
+[debug]: Received an ICE candidate from:e41d7639-0cc3-dffb-5bbd-81c122c88ffe
+[debug]: Received an ICE candidate from:e41d7639-0cc3-dffb-5bbd-81c122c88ffe
+[debug]: Received an ICE candidate from:e41d7639-0cc3-dffb-5bbd-81c122c88ffe
+[debug]: Received an ICE candidate from:e41d7639-0cc3-dffb-5bbd-81c122c88ffe
+[debug]: Received an ICE candidate from:e41d7639-0cc3-dffb-5bbd-81c122c88ffe
+[debug]: Received an ICE candidate from:e41d7639-0cc3-dffb-5bbd-81c122c88ffe
+[debug]: Received an ICE candidate from:e41d7639-0cc3-dffb-5bbd-81c122c88ffe
+[debug]: Received an ICE candidate from:e41d7639-0cc3-dffb-5bbd-81c122c88ffe
+[debug]: Received an ICE candidate from:e41d7639-0cc3-dffb-5bbd-81c122c88ffe
+[debug]: ICE "Gathering" done!..
+[debug]: Got called by an internal impl:::
+[info]: data.endswith rrrr: false
+[info]: results json: "pwd\r\n"
+[info]: this.history[this.history.length - 1] json: "\"pwd\\n\""
+[info]: results trim: pwd
+[info]: this.history[this.history.length - 1] trim: pwd\n
+[info]: results array: p,w,d,,
+
+[info]: this.history[this.history.length - 1] array: ",p,w,d,\,n,"
+[info]: results regex: pwd
+[info]: this.history[this.history.length - 1] regex: pwd\n
+[info]: results
+[info]: pwd
+
+[info]: history
+[info]: >>START,"pwd\n"
+[info]: results json: "/Users/dhruvmisra/Code/robinhood\r\nbash-3.2$ "
+[info]: this.history[this.history.length - 1] json: "\"pwd\\n\""
+[info]: results trim: /Users/dhruvmisra/Code/robinhood
+bash-3.2$
+[info]: this.history[this.history.length - 1] trim: pwd\n
+[info]: results array: /,U,s,e,r,s,/,d,h,r,u,v,m,i,s,r,a,/,C,o,d,e,/,r,o,b,i,n,h,o,o,d,,
+,b,a,s,h,-,3,.,2,$, 
+[info]: this.history[this.history.length - 1] array: ",p,w,d,\,n,"
+[info]: results regex: /Users/dhruvmisra/Code/robinhoodbash-3.2$ 
+[info]: this.history[this.history.length - 1] regex: pwd\n
+[info]: results
+[info]: /Users/dhruvmisra/Code/robinhood
+bash-3.2$ 
+[info]: history
+[info]: >>START,"pwd\n"
+[debug]: TRICKLE mode=
+[silly]: Not attaching onmessage handler right away..
+[silly]: Finally attached onmessage handler!
+[silly]: Sending MSG to central server:{"eventName":"send_offer","data":{"socketId":"a599fe4f-d51d-2476-fad2-d90c6452fbd4","sdp":{"type":"offer","sdp":"v=0\r\no=- 5780642003421057967 2 IN IP4 127.0.0.1\r\ns=-\r\nt=0 0\r\na=group:BUNDLE 0\r\na=msid-semantic: WMS\r\nm=application 9 UDP/DTLS/SCTP webrtc-datachannel\r\nc=IN IP4 0.0.0.0\r\na=ice-ufrag:5aTe\r\na=ice-pwd:I1jj3RPSyrq4DtlO4sogGJib\r\na=ice-options:trickle\r\na=fingerprint:sha-256 13:40:5C:00:EC:BD:9A:38:8E:BA:51:BF:53:99:1D:68:BF:E1:F2:8D:C2:52:00:96:D8:86:01:84:13:3C:77:41\r\na=setup:actpass\r\na=mid:0\r\na=sctp-port:5000\r\na=max-message-size:262144\r\n"}}}
+[silly]: Sending MSG to central server:{"eventName":"send_ice_candidate","data":{"label":"my_room_001","candidate":{"candidate":"candidate:918459911 1 udp 2122260223 192.168.1.18 57215 typ host generation 0 ufrag 5aTe network-id 1 network-cost 50","sdpMid":"0","sdpMLineIndex":0,"foundation":"918459911","component":"rtp","priority":2122260223,"address":"192.168.1.18","protocol":"udp","port":57215,"type":"host","tcpType":null,"relatedAddress":null,"relatedPort":null,"usernameFragment":"5aTe"},"socketId":"a599fe4f-d51d-2476-fad2-d90c6452fbd4"}}
+[silly]: Sending MSG to central server:{"eventName":"send_ice_candidate","data":{"label":"my_room_001","candidate":{"candidate":"candidate:559267639 1 udp 2122202367 ::1 59932 typ host generation 0 ufrag 5aTe network-id 3","sdpMid":"0","sdpMLineIndex":0,"foundation":"559267639","component":"rtp","priority":2122202367,"address":"::1","protocol":"udp","port":59932,"type":"host","tcpType":null,"relatedAddress":null,"relatedPort":null,"usernameFragment":"5aTe"},"socketId":"a599fe4f-d51d-2476-fad2-d90c6452fbd4"}}
+[silly]: Sending MSG to central server:{"eventName":"send_ice_candidate","data":{"label":"my_room_001","candidate":{"candidate":"candidate:1510613869 1 udp 2122129151 127.0.0.1 51840 typ host generation 0 ufrag 5aTe network-id 2","sdpMid":"0","sdpMLineIndex":0,"foundation":"1510613869","component":"rtp","priority":2122129151,"address":"127.0.0.1","protocol":"udp","port":51840,"type":"host","tcpType":null,"relatedAddress":null,"relatedPort":null,"usernameFragment":"5aTe"},"socketId":"a599fe4f-d51d-2476-fad2-d90c6452fbd4"}}
+[silly]: Sending MSG to central server:{"eventName":"send_ice_candidate","data":{"label":"my_room_001","candidate":{"candidate":"candidate:2017290999 1 tcp 1518280447 192.168.1.18 52347 typ host tcptype passive generation 0 ufrag 5aTe network-id 1 network-cost 50","sdpMid":"0","sdpMLineIndex":0,"foundation":"2017290999","component":"rtp","priority":1518280447,"address":"192.168.1.18","protocol":"tcp","port":52347,"type":"host","tcpType":"passive","relatedAddress":null,"relatedPort":null,"usernameFragment":"5aTe"},"socketId":"a599fe4f-d51d-2476-fad2-d90c6452fbd4"}}
+[silly]: Sending MSG to central server:{"eventName":"send_ice_candidate","data":{"label":"my_room_001","candidate":{"candidate":"candidate:1876313031 1 tcp 1518222591 ::1 52348 typ host tcptype passive generation 0 ufrag 5aTe network-id 3","sdpMid":"0","sdpMLineIndex":0,"foundation":"1876313031","component":"rtp","priority":1518222591,"address":"::1","protocol":"tcp","port":52348,"type":"host","tcpType":"passive","relatedAddress":null,"relatedPort":null,"usernameFragment":"5aTe"},"socketId":"a599fe4f-d51d-2476-fad2-d90c6452fbd4"}}
+[silly]: Sending MSG to central server:{"eventName":"send_ice_candidate","data":{"label":"my_room_001","candidate":{"candidate":"candidate:344579997 1 tcp 1518149375 127.0.0.1 52349 typ host tcptype passive generation 0 ufrag 5aTe network-id 2","sdpMid":"0","sdpMLineIndex":0,"foundation":"344579997","component":"rtp","priority":1518149375,"address":"127.0.0.1","protocol":"tcp","port":52349,"type":"host","tcpType":"passive","relatedAddress":null,"relatedPort":null,"usernameFragment":"5aTe"},"socketId":"a599fe4f-d51d-2476-fad2-d90c6452fbd4"}}
+[silly]: Sending MSG to central server:{"eventName":"send_ice_candidate","data":{"label":"my_room_001","candidate":{"candidate":"candidate:3232690131 1 udp 1686052607 122.161.76.62 28361 typ srflx raddr 192.168.1.18 rport 57215 generation 0 ufrag 5aTe network-id 1 network-cost 50","sdpMid":"0","sdpMLineIndex":0,"foundation":"3232690131","component":"rtp","priority":1686052607,"address":"122.161.76.62","protocol":"udp","port":28361,"type":"srflx","tcpType":null,"relatedAddress":"192.168.1.18","relatedPort":57215,"usernameFragment":"5aTe"},"socketId":"a599fe4f-d51d-2476-fad2-d90c6452fbd4"}}
+[silly]: Sending MSG to central server:{"eventName":"send_ice_candidate","data":{"label":"my_room_001","candidate":{"candidate":"candidate:453802058 1 udp 41885439 158.69.221.198 50656 typ relay raddr 122.161.76.62 rport 28361 generation 0 ufrag 5aTe network-id 1 network-cost 50","sdpMid":"0","sdpMLineIndex":0,"foundation":"453802058","component":"rtp","priority":41885439,"address":"158.69.221.198","protocol":"udp","port":50656,"type":"relay","tcpType":null,"relatedAddress":"122.161.76.62","relatedPort":28361,"usernameFragment":"5aTe"},"socketId":"a599fe4f-d51d-2476-fad2-d90c6452fbd4"}}
+[debug]: TRICKLE mode=
+[silly]: Not attaching onmessage handler right away..
+[silly]: Finally attached onmessage handler!
+[silly]: Sending MSG to central server:{"eventName":"send_offer","data":{"socketId":"de894fd8-dd38-ce9e-bf93-8a51a7128395","sdp":{"type":"offer","sdp":"v=0\r\no=- 7415104285752537619 2 IN IP4 127.0.0.1\r\ns=-\r\nt=0 0\r\na=group:BUNDLE 0\r\na=msid-semantic: WMS\r\nm=application 9 UDP/DTLS/SCTP webrtc-datachannel\r\nc=IN IP4 0.0.0.0\r\na=ice-ufrag:1k9B\r\na=ice-pwd:caBKFuxlfPbRi3xWJ8n5+UA7\r\na=ice-options:trickle\r\na=fingerprint:sha-256 82:DE:58:B0:AA:70:1D:58:AF:F0:14:D6:6B:59:B1:50:CA:5F:4B:21:0D:AF:4B:D3:A2:8E:A1:63:41:40:AB:6B\r\na=setup:actpass\r\na=mid:0\r\na=sctp-port:5000\r\na=max-message-size:262144\r\n"}}}
+[silly]: Sending MSG to central server:{"eventName":"send_ice_candidate","data":{"label":"my_room_001","candidate":{"candidate":"candidate:918459911 1 udp 2122260223 192.168.1.18 56952 typ host generation 0 ufrag 1k9B network-id 1 network-cost 50","sdpMid":"0","sdpMLineIndex":0,"foundation":"918459911","component":"rtp","priority":2122260223,"address":"192.168.1.18","protocol":"udp","port":56952,"type":"host","tcpType":null,"relatedAddress":null,"relatedPort":null,"usernameFragment":"1k9B"},"socketId":"de894fd8-dd38-ce9e-bf93-8a51a7128395"}}
+[silly]: Sending MSG to central server:{"eventName":"send_ice_candidate","data":{"label":"my_room_001","candidate":{"candidate":"candidate:559267639 1 udp 2122202367 ::1 57781 typ host generation 0 ufrag 1k9B network-id 3","sdpMid":"0","sdpMLineIndex":0,"foundation":"559267639","component":"rtp","priority":2122202367,"address":"::1","protocol":"udp","port":57781,"type":"host","tcpType":null,"relatedAddress":null,"relatedPort":null,"usernameFragment":"1k9B"},"socketId":"de894fd8-dd38-ce9e-bf93-8a51a7128395"}}
+[silly]: Sending MSG to central server:{"eventName":"send_ice_candidate","data":{"label":"my_room_001","candidate":{"candidate":"candidate:1510613869 1 udp 2122129151 127.0.0.1 62044 typ host generation 0 ufrag 1k9B network-id 2","sdpMid":"0","sdpMLineIndex":0,"foundation":"1510613869","component":"rtp","priority":2122129151,"address":"127.0.0.1","protocol":"udp","port":62044,"type":"host","tcpType":null,"relatedAddress":null,"relatedPort":null,"usernameFragment":"1k9B"},"socketId":"de894fd8-dd38-ce9e-bf93-8a51a7128395"}}
+[silly]: Sending MSG to central server:{"eventName":"send_ice_candidate","data":{"label":"my_room_001","candidate":{"candidate":"candidate:2017290999 1 tcp 1518280447 192.168.1.18 52400 typ host tcptype passive generation 0 ufrag 1k9B network-id 1 network-cost 50","sdpMid":"0","sdpMLineIndex":0,"foundation":"2017290999","component":"rtp","priority":1518280447,"address":"192.168.1.18","protocol":"tcp","port":52400,"type":"host","tcpType":"passive","relatedAddress":null,"relatedPort":null,"usernameFragment":"1k9B"},"socketId":"de894fd8-dd38-ce9e-bf93-8a51a7128395"}}
+[silly]: Sending MSG to central server:{"eventName":"send_ice_candidate","data":{"label":"my_room_001","candidate":{"candidate":"candidate:1876313031 1 tcp 1518222591 ::1 52401 typ host tcptype passive generation 0 ufrag 1k9B network-id 3","sdpMid":"0","sdpMLineIndex":0,"foundation":"1876313031","component":"rtp","priority":1518222591,"address":"::1","protocol":"tcp","port":52401,"type":"host","tcpType":"passive","relatedAddress":null,"relatedPort":null,"usernameFragment":"1k9B"},"socketId":"de894fd8-dd38-ce9e-bf93-8a51a7128395"}}
+[silly]: Sending MSG to central server:{"eventName":"send_ice_candidate","data":{"label":"my_room_001","candidate":{"candidate":"candidate:344579997 1 tcp 1518149375 127.0.0.1 52402 typ host tcptype passive generation 0 ufrag 1k9B network-id 2","sdpMid":"0","sdpMLineIndex":0,"foundation":"344579997","component":"rtp","priority":1518149375,"address":"127.0.0.1","protocol":"tcp","port":52402,"type":"host","tcpType":"passive","relatedAddress":null,"relatedPort":null,"usernameFragment":"1k9B"},"socketId":"de894fd8-dd38-ce9e-bf93-8a51a7128395"}}
+[silly]: Sending MSG to central server:{"eventName":"send_ice_candidate","data":{"label":"my_room_001","candidate":{"candidate":"candidate:3232690131 1 udp 1686052607 122.161.76.62 30592 typ srflx raddr 192.168.1.18 rport 56952 generation 0 ufrag 1k9B network-id 1 network-cost 50","sdpMid":"0","sdpMLineIndex":0,"foundation":"3232690131","component":"rtp","priority":1686052607,"address":"122.161.76.62","protocol":"udp","port":30592,"type":"srflx","tcpType":null,"relatedAddress":"192.168.1.18","relatedPort":56952,"usernameFragment":"1k9B"},"socketId":"de894fd8-dd38-ce9e-bf93-8a51a7128395"}}
+[silly]: Sending MSG to central server:{"eventName":"send_ice_candidate","data":{"label":"my_room_001","candidate":{"candidate":"candidate:453802058 1 udp 41885439 158.69.221.198 56490 typ relay raddr 122.161.76.62 rport 30592 generation 0 ufrag 1k9B network-id 1 network-cost 50","sdpMid":"0","sdpMLineIndex":0,"foundation":"453802058","component":"rtp","priority":41885439,"address":"158.69.221.198","protocol":"udp","port":56490,"type":"relay","tcpType":null,"relatedAddress":"122.161.76.62","relatedPort":30592,"usernameFragment":"1k9B"},"socketId":"de894fd8-dd38-ce9e-bf93-8a51a7128395"}}
+[info]: Socket closed, Peer killed. I will no longer listen to any commands or REST API calls
+[debug]: TRICKLE mode=
+[silly]: Not attaching onmessage handler right away..
+[silly]: Finally attached onmessage handler!
+[silly]: Sending MSG to central server:{"eventName":"send_offer","data":{"socketId":"498dd8ec-0ce8-3d2d-3e47-e5c2bc23c74b","sdp":{"type":"offer","sdp":"v=0\r\no=- 3474391294284625 2 IN IP4 127.0.0.1\r\ns=-\r\nt=0 0\r\na=group:BUNDLE 0\r\na=msid-semantic: WMS\r\nm=application 9 UDP/DTLS/SCTP webrtc-datachannel\r\nc=IN IP4 0.0.0.0\r\na=ice-ufrag:ENkV\r\na=ice-pwd:5s+UGsHok4h2hgAkUKiM53oP\r\na=ice-options:trickle\r\na=fingerprint:sha-256 FA:78:BC:77:65:80:67:0B:9F:C0:C2:D8:C8:9B:58:D4:13:A6:57:ED:C8:C1:48:C8:A6:14:B7:5C:D3:FD:2F:63\r\na=setup:actpass\r\na=mid:0\r\na=sctp-port:5000\r\na=max-message-size:262144\r\n"}}}
+[silly]: Sending MSG to central server:{"eventName":"send_ice_candidate","data":{"label":"my_room_001","candidate":{"candidate":"candidate:918459911 1 udp 2122260223 192.168.1.18 58176 typ host generation 0 ufrag ENkV network-id 1 network-cost 50","sdpMid":"0","sdpMLineIndex":0,"foundation":"918459911","component":"rtp","priority":2122260223,"address":"192.168.1.18","protocol":"udp","port":58176,"type":"host","tcpType":null,"relatedAddress":null,"relatedPort":null,"usernameFragment":"ENkV"},"socketId":"498dd8ec-0ce8-3d2d-3e47-e5c2bc23c74b"}}
+[silly]: Sending MSG to central server:{"eventName":"send_ice_candidate","data":{"label":"my_room_001","candidate":{"candidate":"candidate:559267639 1 udp 2122202367 ::1 59709 typ host generation 0 ufrag ENkV network-id 3","sdpMid":"0","sdpMLineIndex":0,"foundation":"559267639","component":"rtp","priority":2122202367,"address":"::1","protocol":"udp","port":59709,"type":"host","tcpType":null,"relatedAddress":null,"relatedPort":null,"usernameFragment":"ENkV"},"socketId":"498dd8ec-0ce8-3d2d-3e47-e5c2bc23c74b"}}
+[silly]: Sending MSG to central server:{"eventName":"send_ice_candidate","data":{"label":"my_room_001","candidate":{"candidate":"candidate:1510613869 1 udp 2122129151 127.0.0.1 64516 typ host generation 0 ufrag ENkV network-id 2","sdpMid":"0","sdpMLineIndex":0,"foundation":"1510613869","component":"rtp","priority":2122129151,"address":"127.0.0.1","protocol":"udp","port":64516,"type":"host","tcpType":null,"relatedAddress":null,"relatedPort":null,"usernameFragment":"ENkV"},"socketId":"498dd8ec-0ce8-3d2d-3e47-e5c2bc23c74b"}}
+[silly]: Sending MSG to central server:{"eventName":"send_ice_candidate","data":{"label":"my_room_001","candidate":{"candidate":"candidate:2017290999 1 tcp 1518280447 192.168.1.18 52459 typ host tcptype passive generation 0 ufrag ENkV network-id 1 network-cost 50","sdpMid":"0","sdpMLineIndex":0,"foundation":"2017290999","component":"rtp","priority":1518280447,"address":"192.168.1.18","protocol":"tcp","port":52459,"type":"host","tcpType":"passive","relatedAddress":null,"relatedPort":null,"usernameFragment":"ENkV"},"socketId":"498dd8ec-0ce8-3d2d-3e47-e5c2bc23c74b"}}
+[silly]: Sending MSG to central server:{"eventName":"send_ice_candidate","data":{"label":"my_room_001","candidate":{"candidate":"candidate:1876313031 1 tcp 1518222591 ::1 52460 typ host tcptype passive generation 0 ufrag ENkV network-id 3","sdpMid":"0","sdpMLineIndex":0,"foundation":"1876313031","component":"rtp","priority":1518222591,"address":"::1","protocol":"tcp","port":52460,"type":"host","tcpType":"passive","relatedAddress":null,"relatedPort":null,"usernameFragment":"ENkV"},"socketId":"498dd8ec-0ce8-3d2d-3e47-e5c2bc23c74b"}}
+[silly]: Sending MSG to central server:{"eventName":"send_ice_candidate","data":{"label":"my_room_001","candidate":{"candidate":"candidate:344579997 1 tcp 1518149375 127.0.0.1 52461 typ host tcptype passive generation 0 ufrag ENkV network-id 2","sdpMid":"0","sdpMLineIndex":0,"foundation":"344579997","component":"rtp","priority":1518149375,"address":"127.0.0.1","protocol":"tcp","port":52461,"type":"host","tcpType":"passive","relatedAddress":null,"relatedPort":null,"usernameFragment":"ENkV"},"socketId":"498dd8ec-0ce8-3d2d-3e47-e5c2bc23c74b"}}
+[silly]: Sending MSG to central server:{"eventName":"send_ice_candidate","data":{"label":"my_room_001","candidate":{"candidate":"candidate:3232690131 1 udp 1686052607 122.161.76.62 10041 typ srflx raddr 192.168.1.18 rport 58176 generation 0 ufrag ENkV network-id 1 network-cost 50","sdpMid":"0","sdpMLineIndex":0,"foundation":"3232690131","component":"rtp","priority":1686052607,"address":"122.161.76.62","protocol":"udp","port":10041,"type":"srflx","tcpType":null,"relatedAddress":"192.168.1.18","relatedPort":58176,"usernameFragment":"ENkV"},"socketId":"498dd8ec-0ce8-3d2d-3e47-e5c2bc23c74b"}}
+[silly]: Sending MSG to central server:{"eventName":"send_ice_candidate","data":{"label":"my_room_001","candidate":{"candidate":"candidate:453802058 1 udp 41885439 158.69.221.198 63654 typ relay raddr 122.161.76.62 rport 10041 generation 0 ufrag ENkV network-id 1 network-cost 50","sdpMid":"0","sdpMLineIndex":0,"foundation":"453802058","component":"rtp","priority":41885439,"address":"158.69.221.198","protocol":"udp","port":63654,"type":"relay","tcpType":null,"relatedAddress":"122.161.76.62","relatedPort":10041,"usernameFragment":"ENkV"},"socketId":"498dd8ec-0ce8-3d2d-3e47-e5c2bc23c74b"}}
+[debug]: Received an ICE candidate from:498dd8ec-0ce8-3d2d-3e47-e5c2bc23c74b
+[debug]: Received an ICE candidate from:498dd8ec-0ce8-3d2d-3e47-e5c2bc23c74b
+[debug]: Received an ICE candidate from:498dd8ec-0ce8-3d2d-3e47-e5c2bc23c74b
+[debug]: Received an ICE candidate from:498dd8ec-0ce8-3d2d-3e47-e5c2bc23c74b
+[debug]: Received an ICE candidate from:498dd8ec-0ce8-3d2d-3e47-e5c2bc23c74b
+[debug]: Received an ICE candidate from:498dd8ec-0ce8-3d2d-3e47-e5c2bc23c74b
+[debug]: Received an ICE candidate from:498dd8ec-0ce8-3d2d-3e47-e5c2bc23c74b
+[debug]: Received an ICE candidate from:498dd8ec-0ce8-3d2d-3e47-e5c2bc23c74b
+[debug]: Received an ICE candidate from:498dd8ec-0ce8-3d2d-3e47-e5c2bc23c74b
+[debug]: Received an ICE candidate from:498dd8ec-0ce8-3d2d-3e47-e5c2bc23c74b
+[debug]: Received an ICE candidate from:498dd8ec-0ce8-3d2d-3e47-e5c2bc23c74b
+[debug]: Received an ICE candidate from:498dd8ec-0ce8-3d2d-3e47-e5c2bc23c74b
+[debug]: Received an ICE candidate from:498dd8ec-0ce8-3d2d-3e47-e5c2bc23c74b
+[debug]: Received an ICE candidate from:498dd8ec-0ce8-3d2d-3e47-e5c2bc23c74b
+[debug]: Received an ICE candidate from:498dd8ec-0ce8-3d2d-3e47-e5c2bc23c74b
+[debug]: Received an ICE candidate from:498dd8ec-0ce8-3d2d-3e47-e5c2bc23c74b
+[debug]: Received an ICE candidate from:498dd8ec-0ce8-3d2d-3e47-e5c2bc23c74b
+[debug]: Received an ICE candidate from:498dd8ec-0ce8-3d2d-3e47-e5c2bc23c74b
+[debug]: Received an ICE candidate from:498dd8ec-0ce8-3d2d-3e47-e5c2bc23c74b
+[debug]: ICE "Gathering" done!..
+[debug]: Got called by an internal impl:::
+[info]: data.endswith rrrr: false
+[info]: results json: "pwd\r\n"
+[info]: this.history[this.history.length - 1] json: "pwd"
+[info]: results trim: pwd
+[info]: this.history[this.history.length - 1] trim: w
+[info]: results array: p,w,d,,
+
+[info]: this.history[this.history.length - 1] array: p,w,d
+[info]: results json: "/Users/dhruvmisra/Code/robinhood\r\nbash-3.2$ "
+[info]: this.history[this.history.length - 1] json: "pwd"
+[info]: results trim: /Users/dhruvmisra/Code/robinhood
+bash-3.2$
+[info]: this.history[this.history.length - 1] trim: w
+[info]: results array: /,U,s,e,r,s,/,d,h,r,u,v,m,i,s,r,a,/,C,o,d,e,/,r,o,b,i,n,h,o,o,d,,
+,b,a,s,h,-,3,.,2,$, 
+[info]: this.history[this.history.length - 1] array: p,w,d
+[info]: results
+[info]: /Users/dhruvmisra/Code/robinhood
+bash-3.2$ 
+[info]: history
+[info]: >>START,pwd
