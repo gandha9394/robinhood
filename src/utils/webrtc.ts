@@ -12,6 +12,7 @@ type StrictConfig = {
   signalingServer: string | URL;
   iceServer: string;
   roomName: string;
+  trickle: boolean;
 };
 type Config = Partial<StrictConfig>;
 type PeerHandle = {
@@ -53,6 +54,10 @@ const defaultConfig: Partial<Config> = {
   signalingServer: "ws://localhost:8080",
   iceServer: "stun:stun.l.google.com:19302",
   roomName: "lorem",
+  //default is trickle=true unless specified otherwise
+  trickle: process.env["TRICKLE"]
+    ? process.env["TRICKLE"].toLowerCase() === "true"
+    : true,
 };
 
 class Peer {
@@ -71,6 +76,7 @@ class Peer {
       ...defaultConfig,
       ...config,
     };
+    logger.debug("TRICKLE mode=",this.config.trickle)
     this.register = this.register.bind(this);
     this.fire = this.fire.bind(this);
     this.on = this.on.bind(this);
@@ -190,8 +196,10 @@ class RTCPeer extends Peer {
     this.onReceiveIceCandidate = this.onReceiveIceCandidate.bind(this);
     this.peerConnectionOnDataChannel =
       this.peerConnectionOnDataChannel.bind(this);
-    this.peerConnectionOnNegotiationNeeded = this.peerConnectionOnNegotiationNeeded.bind(this);
-    this.peerConnectionOnIceConnectionStateChange = this.peerConnectionOnIceConnectionStateChange.bind(this);
+    this.peerConnectionOnNegotiationNeeded =
+      this.peerConnectionOnNegotiationNeeded.bind(this);
+    this.peerConnectionOnIceConnectionStateChange =
+      this.peerConnectionOnIceConnectionStateChange.bind(this);
   }
   send(msg: any) {
     if (
@@ -229,7 +237,7 @@ class RTCPeer extends Peer {
       logger.error("You fucked up the flow. Gon kill myself. Bye...");
       process.exit(1);
     }
-    logger.info("Received an ICE candidate from:" + socketId);
+    logger.debug("Received an ICE candidate from:" + socketId);
     const rtcIceCandidate = new RTCIceCandidate(candidate);
     const pc = this.peerConnections[socketId];
     if (pc.remoteDescription) pc.addIceCandidate(rtcIceCandidate);
@@ -245,6 +253,27 @@ class RTCPeer extends Peer {
       },
     });
   }
+  sendSdp(socketId: SocketId) {
+    if (!this.peerHandle) {
+      logger.error(
+        "Incorrect State. Cannot send SDP because peerHandle=null. Exiting..."
+      );
+      process.exit(1);
+    }
+    this.relayMessageThroughCentralServer({
+      eventName: this._["isDonor"] ? "send_offer" : "send_answer",
+      data: {
+        socketId,
+        sdp: this.peerHandle.peerConnection.localDescription,
+      },
+    });
+  }
+  sendOffer(socketId: SocketId) {
+    this.sendSdp(socketId);
+  }
+  sendAnswer(socketId: SocketId) {
+    this.sendSdp(socketId);
+  }
   createRTCPeerConnection(socketId: SocketId) {
     if (socketId in this.peerConnections) {
       logger.debug("RTCPeerConnection already exists for socketID:" + socketId);
@@ -255,7 +284,7 @@ class RTCPeer extends Peer {
     }));
     pipe(
       this.peerConnectionOnDataChannel,
-      this.peerConnectionOnIceCandidate,
+      this.peerConnectionOnIceCandidate
       // this.peerConnectionOnIceConnectionStateChange,
       // this.peerConnectionOnNegotiationNeeded
     )(pc);
@@ -282,7 +311,6 @@ class RTCPeer extends Peer {
   }
   peerConnectionOnDataChannel(peerConnection: RTCPeerConnection) {
     peerConnection.ondatachannel = ({ channel }) => {
-      //not sure what to do with the received data channel
       const socketId = this.getSocketIdForPeerConnection(peerConnection);
       pipe(
         this.dataChannelOnOpen,
@@ -299,9 +327,6 @@ class RTCPeer extends Peer {
         };
       }
       this.peerHandle.dataChannel = channel;
-      logger.info(
-        "PeerConnection ondatachannel::Choosing not to do anything with this datachannel"
-      );
     };
     return peerConnection;
   }
@@ -310,37 +335,38 @@ class RTCPeer extends Peer {
     peerConnection.onicecandidate = ({ candidate }) => {
       if (candidate) this.sendIceCandidate(socketId, candidate);
       else {
-        logger.info('ICE "Gathering" done!..');
-        this.relayMessageThroughCentralServer({
-          eventName: this._["isDonor"] ? "send_offer" : "send_answer",
-          data: {
-            socketId,
-            sdp: peerConnection.localDescription,
-          },
-        });
+        logger.debug('ICE "Gathering" done!..');
+        if (!this.config.trickle) {
+          if (peerConnection !== this.peerHandle?.peerConnection)
+            logger.error(
+              "You fucked up big time. This can happen only in non trickle(slow) mode .Exiting..."
+            );
+          this.sendSdp(socketId);
+        }
       }
     };
     return peerConnection;
   }
-  peerConnectionOnIceConnectionStateChange(peerConnection: RTCPeerConnection){
-    peerConnection.oniceconnectionstatechange = ev =>{
-      if(peerConnection.iceConnectionState==="failed"){
-        logger.warn("ALERT: ICE RESTART!...good things come to those who WAIT!")
+  peerConnectionOnIceConnectionStateChange(peerConnection: RTCPeerConnection) {
+    peerConnection.oniceconnectionstatechange = (ev) => {
+      if (peerConnection.iceConnectionState === "failed") {
+        logger.warn(
+          "ALERT: ICE RESTART!...good things come to those who WAIT!"
+        );
         peerConnection.restartIce();
       }
-    }
+    };
     return peerConnection;
   }
-  peerConnectionOnNegotiationNeeded(peerConnection:RTCPeerConnection){
-    peerConnection.onnegotiationneeded = async (ev)=>{
-      if(this._["isDonor"]){
+  peerConnectionOnNegotiationNeeded(peerConnection: RTCPeerConnection) {
+    peerConnection.onnegotiationneeded = async (ev) => {
+      if (this._["isDonor"]) {
         const offer = await peerConnection.createOffer();
         await peerConnection.setLocalDescription(offer);
       }
-    }
+    };
     return peerConnection;
   }
-  //@Dhruv
   dataChannelOnOpen(dataChannel: RTCDataChannel) {
     dataChannel.onopen = () => {
       this.fire("connection_established");
@@ -349,7 +375,7 @@ class RTCPeer extends Peer {
     return dataChannel;
   }
   dataChannelOnClose(dataChannel: RTCDataChannel) {
-    dataChannel.onclose = () => logger.info("DataChannel closed");
+    dataChannel.onclose = () => logger.debug("DataChannel closed");
     return dataChannel;
   }
   dataChannelOnMessage(dataChannel: RTCDataChannel) {
@@ -374,14 +400,12 @@ class RTCPeer extends Peer {
 }
 
 export class RTCDonorPeer extends RTCPeer {
-  //@Dhruv
   count: number = 0;
   constructor(config: Config) {
     super(config);
     this._["isDonor"] = true;
     this.on("new_peer_connected", async (data: any) => {
       if (++this.count > 1) {
-        //@Dhruv
         logger.error("This Donor supports only single Donee. Exiting..");
         process.exit(1);
       }
@@ -389,6 +413,7 @@ export class RTCDonorPeer extends RTCPeer {
       this.peerHandle.dataChannel = this.createDataChannel(data.socketId);
       const offer = await this.peerHandle.peerConnection.createOffer();
       await this.peerHandle.peerConnection.setLocalDescription(offer);
+      if (this.config.trickle) this.sendOffer(data.socketId);
     });
     this.on("receive_answer", async (data: any) => {
       this.receiveAnswer(data.socketId, data.sdp);
@@ -405,9 +430,9 @@ export class RTCDonorPeer extends RTCPeer {
       process.exit(1);
     }
     const pc = this.peerConnections[socketId];
-    try{
-    await pc.setRemoteDescription(new RTCSessionDescription(answer));
-    }catch(err){
+    try {
+      await pc.setRemoteDescription(new RTCSessionDescription(answer));
+    } catch (err) {
       logger.error(err);
     }
     while (this.Q.length > 0) pc.addIceCandidate(this.Q.shift());
@@ -421,9 +446,9 @@ export class RTCDoneePeer extends RTCPeer {
       await this.receiveOffer(data.socketId, data.sdp);
       const answer = await this.peerHandle?.peerConnection.createAnswer();
       await this.peerHandle?.peerConnection.setLocalDescription(answer);
+      if(this.config.trickle) this.sendAnswer(data.socketId);
     });
     this.on("get_peers", (data: Command.getPeers) => {
-      //@Dhruv
       if (data.connections.length > 1) {
         logger.error(
           "Looks like someone else joined the room. Only Donor and me(Donee) were supposed to be there. Exiting..."
