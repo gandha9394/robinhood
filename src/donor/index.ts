@@ -1,5 +1,6 @@
 import logger from "../utils/log.js";
 import { PseudoTerminal, Terminal } from "../utils/pty.js";
+import spinner from "../utils/spinner.js";
 import { RTCDonorPeer } from "../utils/webrtc.js";
 
 const pty = new Terminal();
@@ -13,8 +14,13 @@ const peer = new RTCDonorPeer({
 peer.onmessage = (msg: any) => {
   pty.write(msg);
 };
+const stopSpinner = spinner("Waiting for connections...");
 
 peer.connectedToPeer().then(() => {
-  pty.onoutput = results => {peer.send(results)}
-  pty.onclose = logger.debug; 
+  console.clear();
+  stopSpinner();
+  pty.onoutput = (results) => {
+    peer.send(results);
+  };
+  pty.onclose = logger.debug;
 });
