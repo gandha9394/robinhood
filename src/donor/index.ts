@@ -1,5 +1,8 @@
 import logger from "../utils/log.js";
+import { PseudoTerminal } from "../utils/pty.js";
 import { RTCDonorPeer } from "../utils/webrtc.js";
+
+const pty = new PseudoTerminal();
 
 const peer = new RTCDonorPeer({
   roomName: "my_room_001",

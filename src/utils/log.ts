@@ -12,6 +12,12 @@ const logger = createLogger({
     transports: [new transports.Console()],
 });
 
+export const devLogger = createLogger({
+    level: "silly",
+    silent: false, //set this to true later
+    format: combine(format.errors({ stack: true }), format.colorize({ all: true }), logFormat),
+    transports: [new transports.Console()],
+});
 export default logger;
 
 export class Deferred {

@@ -19,3 +19,4 @@ declare module 'webrtc.io'{
 }
 
 declare module 'wrtc';
+declare module 'autobind';

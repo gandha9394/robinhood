@@ -32,7 +32,9 @@
   },
   "homepage": "https://github.com/gandha9394/robinhood#readme",
   "dependencies": {
+    "autobind": "^1.0.3",
     "express": "^4.17.2",
+    "node-pty": "^0.10.1",
     "ramda": "^0.28.0",
     "webrtc.io": "^0.0.4",
     "winston": "^3.5.1",
