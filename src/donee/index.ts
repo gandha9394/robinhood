@@ -9,16 +9,17 @@ const peer = new RTCDoneePeer({
   roomName: "my_room_001",
   signalingServer: process.env["RHSS"]
     ? process.env["RHSS"]
-    : "ws://34.133.251.43:8080",
+    : // : "ws://34.133.251.43:8080",
+      "ws://localhost:8080",
 });
-const stopSpinner = spinner("Trying to connect...");
+// const stopSpinner = spinner("Trying to connect...");
 
-peer.onmessage = (msg: any) => {
-  pty.print(msg);
+peer.onmessage = (commandResult: string) => {
+  const commandResultJSON = JSON.parse(commandResult);
+  pty.print(commandResultJSON);
 };
 peer.connectedToPeer().then(() => {
-  console.clear();
-  stopSpinner();
-  pty.oninput = (input) => peer.send(input);
+  // stopSpinner();
+  pty.oninput = (command) => peer.send(JSON.stringify(command));
   pty.onclose = logger.debug;
 });

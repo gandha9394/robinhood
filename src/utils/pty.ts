@@ -1,27 +1,20 @@
 import pty, { IPty } from "node-pty";
-import { pipe, trim } from "ramda";
 import readline from "readline";
-import { devLogger } from "./log.js";
+import logger from "./log.js";
 
-const sleep = (secs: number) => new Promise((r) => setTimeout(r, secs * 1000));
 
 interface TerminalConfig {
   devtest?: boolean;
 }
-
-function sanitizeCommand(cmd: string) {
-  /** ==>order is important
-   * removes a single occurence of double quotes at the start
-   * removes a single occurence of a double quote at the end
-   * removes any occurences of \r or \n from start and end
-   */
-  function removeDoubleQuoteFromStart(s: string) {
-    return s.startsWith('"') ? s.slice(1) : s;
-  }
-  function removeDoubleQuoteFromEnd(s: string) {
-    return s.endsWith('"') ? s.slice(0, -1) : s;
-  }
-  return pipe(removeDoubleQuoteFromStart, removeDoubleQuoteFromEnd, trim)(cmd);
+interface STDOUTdata {
+  type: "CMD" | "RSLT";
+  data: string;
+}
+interface Command extends STDOUTdata {
+  type: "CMD";
+}
+interface CommandResult extends STDOUTdata {
+  type: "RSLT";
 }
 export class Terminal {
   /**
@@ -31,7 +24,7 @@ export class Terminal {
   static PAUSE = "\x13";
   static RESUME = "\x11";
   _pty?: IPty;
-  history = [">>START"];
+  history: Array<Command> = [];
 
   constructor({ devtest }: TerminalConfig = {}) {
     if (devtest) this.devtest();
@@ -40,22 +33,22 @@ export class Terminal {
     }
   }
 
-  set onoutput(onOutput: (results: string) => void) {
-    this._pty?.onData((results: string) => {
-      results = sanitizeCommand(results);
-      if (results != [...this.history].pop()) {
-        onOutput(results);
-      }
+  set onoutput(onOutput: (commandResult: CommandResult) => void) {
+    this._pty?.onData((data: string) => {
+      const commandResult: CommandResult = {
+        type: "RSLT",
+        data,
+      };
+      onOutput(commandResult);
     });
   }
   set onclose(onClose: (ev: any) => void) {
     this._pty?.onExit(onClose);
   }
 
-  write(data: string) {
-    const command = sanitizeCommand(data);
-    this.history.push(command);
-    this._pty!.write(data + "\r");
+  write(data: Command) {
+    this.history.push(data);
+    this._pty!.write(data.data);
   }
 
   pause() {
@@ -65,17 +58,11 @@ export class Terminal {
     this._pty!.write(Terminal.RESUME);
   }
   devtest() {
-    (() => {
-      const term = new Terminal();
-      term.onoutput = (results) => process.stdout.write(results);
-      term.onclose = () => devLogger.silly(term.history);
-      const rl = readline.createInterface({ input: process.stdin });
-      rl.on("line", (cmd) => term.write(cmd));
-    })();
+    return;
   }
 }
 interface PseudoTerminalConfig {
-  customPrinter?: (results: string) => void;
+  customPrinter?: (result: CommandResult) => void;
   devtest?: boolean;
 }
 export class PseudoTerminal {
@@ -84,15 +71,23 @@ export class PseudoTerminal {
    * but NEVER Execute
    */
   customPrinter: PseudoTerminalConfig["customPrinter"];
-  history = [">>START"];
+  history: Array<Command> = [];
+  rl: readline.Interface;
 
   constructor({ devtest, customPrinter }: PseudoTerminalConfig = {}) {
     if (devtest) this.devtest();
     this.customPrinter = customPrinter;
+    this.rl = readline.createInterface({
+      input: process.stdin,
+      prompt: "",
+    });
   }
-  set oninput(onInput: (input: string) => void) {
-    process.stdin.on("data", (input) => {
-      const command = input.toString("utf-8");
+  set oninput(onInput: (command: Command) => void) {
+    this.rl.on("line", (line) => {
+      const command: Command = {
+        type: "CMD",
+        data: line + "\n",
+      };
       onInput(command);
       this.history.push(command);
     });
@@ -101,24 +96,11 @@ export class PseudoTerminal {
     onClose(this.history);
   }
 
-  print(results: string) {
-    if (this.customPrinter) this.customPrinter(results);
-    else process.stdout.write(JSON.parse(results));
+  print(result: CommandResult) {
+    if (this.customPrinter) this.customPrinter(result);
+    else process.stdout.write(result.data);
   }
   devtest() {
-    (async () => {
-      const pterm = new PseudoTerminal();
-      pterm.oninput = async (input) => {
-        devLogger.silly("Assume that im sending this data across: " + input);
-        let count = 0;
-        while (count++ < 4) {
-          await sleep(1);
-          pterm.print(".");
-        }
-      };
-      await sleep(7);
-      pterm.print("This is your output: <output>");
-      devLogger.silly(pterm.history);
-    })();
+    return;
   }
 }

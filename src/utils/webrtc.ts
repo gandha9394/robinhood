@@ -201,17 +201,17 @@ class RTCPeer extends Peer {
     this.peerConnectionOnIceConnectionStateChange =
       this.peerConnectionOnIceConnectionStateChange.bind(this);
   }
-  send(msg: any) {
+  send(jsonStringified: string) {
     if (
       !this.peerHandle ||
       !this.peerHandle.dataChannel ||
       this.peerHandle.dataChannel.readyState !== "open"
     ) {
       logger.debug(
-        `DataChannel not yet ready. Unable to send msg: ${JSON.stringify(msg)}`
+        `DataChannel not yet ready. Unable to send msg: ${jsonStringified}`
       );
     } else {
-      this.peerHandle.dataChannel.send(JSON.stringify(msg));
+      this.peerHandle.dataChannel.send(jsonStringified);
     }
   }
   set onmessage(callback: Function) {
@@ -219,7 +219,9 @@ class RTCPeer extends Peer {
       this._["onmessage"] = callback;
       logger.silly("Not attaching onmessage handler right away..");
     } else {
-      this.peerHandle.dataChannel.onmessage = ({ data }) => callback(data);
+      this.peerHandle.dataChannel.onmessage = ({ data }) => {
+        if (data) callback(data);
+      };
       logger.silly("Attached onmessage handler");
     }
   }
@@ -282,7 +284,7 @@ class RTCPeer extends Peer {
     const pc = (this.peerConnections[socketId] = new RTCPeerConnection({
       iceServers: [
         // {
-          // urls: `${this.config.iceServer}`,
+        // urls: `${this.config.iceServer}`,
         // },
         {
           urls: "turn:numb.viagenie.ca",
@@ -390,13 +392,14 @@ class RTCPeer extends Peer {
   dataChannelOnMessage(dataChannel: RTCDataChannel) {
     dataChannel.onmessage = ({ data }) => {
       logger.info(`DataChannel recv msg:${data}`);
-      this.fire("recv", data);
+      if (data) this.fire("recv", data);
     };
     if (typeof this._["onmessage"] === "function") {
       dataChannel.onmessage = ({ data }) => {
-        logger.debug("Got called by an internal impl:::")
-        this.fire("recv", data);
-        this._["onmessage"](data);
+        if (data) {
+          this.fire("recv", data);
+          this._["onmessage"](data);
+        }
       };
       logger.silly("Finally attached onmessage handler!");
     }
