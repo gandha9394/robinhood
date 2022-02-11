@@ -1,6 +1,6 @@
 import pty, { IEvent, IPty } from "node-pty";
 import readline from "readline";
-import { devLogger } from "./log.js";
+import logger, { devLogger } from "./log.js";
 
 const sleep = (secs: number) => new Promise((r) => setTimeout(r, secs * 1000));
 
@@ -26,7 +26,7 @@ export class Terminal {
   }
 
   set onoutput(onOutput: (results: string) => void) {
-    this._pty!.on("data", (results:any) => onOutput(results));
+    this._pty!.on("data", (results: any) => onOutput(results));
   }
   set onclose(onClose: (ev: any) => void) {
     this._pty?.onExit(onClose);
@@ -34,7 +34,9 @@ export class Terminal {
 
   write(data: string) {
     this._pty!.resume();
-    const carriageReturn = data.endsWith("\r") ? "" : "\r";
+    logger.info(`The requested command is :${data}`)
+    const carriageReturn =
+      data.endsWith("\r") || data.endsWith("\n") ? "" : "\r";
     this._pty!.write(data + carriageReturn);
     this.history.push(data);
   }

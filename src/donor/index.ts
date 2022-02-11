@@ -7,7 +7,7 @@ const peer = new RTCDonorPeer({
   roomName: "my_room_001",
   signalingServer: process.env["RHSS"]
     ? process.env["RHSS"]
-    : "ws://localhost:8080",
+    : "ws://34.133.251.43:8080",
 });
 
 peer.onmessage = (msg: any) => {
@@ -16,5 +16,5 @@ peer.onmessage = (msg: any) => {
 };
 
 peer.connectedToPeer().then(() => {
-  pty.onoutput = results => peer.send(results)
+  pty.onoutput = results => {logger.warn(`this is the results:${results}`);peer.send(results)}
 });
