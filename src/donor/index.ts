@@ -11,10 +11,10 @@ const peer = new RTCDonorPeer({
 });
 
 peer.onmessage = (msg: any) => {
-  logger.info(`recieved message:${msg}`);
   pty.write(msg);
 };
 
 peer.connectedToPeer().then(() => {
-  pty.onoutput = results => {logger.warn(`this is the results:${results}`);peer.send(results)}
+  pty.onoutput = results => {peer.send(results)}
+  pty.onclose = logger.debug; 
 });

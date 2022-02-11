@@ -12,9 +12,9 @@ const peer = new RTCDoneePeer({
 });
 
 peer.onmessage = (msg: any) => {
-  logger.info(`recieved output:${msg}`);
   pty.print(msg);
 };
 peer.connectedToPeer().then(() => {
   pty.oninput = (input) => peer.send(input);
+  pty.onclose = logger.debug;
 });

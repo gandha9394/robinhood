@@ -1,6 +1,6 @@
-import pty, { IEvent, IPty } from "node-pty";
+import pty, { IPty } from "node-pty";
 import readline from "readline";
-import logger, { devLogger } from "./log.js";
+import { devLogger } from "./log.js";
 
 const sleep = (secs: number) => new Promise((r) => setTimeout(r, secs * 1000));
 
@@ -20,25 +20,24 @@ export class Terminal {
   constructor({ devtest }: TerminalConfig = {}) {
     if (devtest) this.devtest();
     else {
-      this._pty = pty.spawn("bash", [], { handleFlowControl: true });
-      this._pty.pause();
+      this._pty = pty.spawn("bash", [], {});
     }
   }
 
   set onoutput(onOutput: (results: string) => void) {
-    this._pty!.on("data", (results: any) => onOutput(results));
+    this._pty?.onData((results: string) => {
+        onOutput(results);
+    });
   }
   set onclose(onClose: (ev: any) => void) {
     this._pty?.onExit(onClose);
   }
 
   write(data: string) {
-    this._pty!.resume();
-    logger.info(`The requested command is :${data}`)
-    const carriageReturn =
-      data.endsWith("\r") || data.endsWith("\n") ? "" : "\r";
+    data = data.substring(1).slice(0, -3);
+    const carriageReturn = data.endsWith("\r") ? "" : "\r";
     this._pty!.write(data + carriageReturn);
-    this.history.push(data);
+    this.history.push(data + carriageReturn);
   }
 
   pause() {
@@ -80,6 +79,10 @@ export class PseudoTerminal {
       this.history.push(command);
     });
   }
+  set onclose(onClose: (data: any) => void) {
+    onClose(this.history);
+  }
+
   print(results: string) {
     if (this.customPrinter) this.customPrinter(results);
     else process.stdout.write(results);
@@ -101,5 +104,3 @@ export class PseudoTerminal {
     })();
   }
 }
-
-new Terminal({ devtest: true });

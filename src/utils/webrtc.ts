@@ -281,9 +281,9 @@ class RTCPeer extends Peer {
     }
     const pc = (this.peerConnections[socketId] = new RTCPeerConnection({
       iceServers: [
-        {
-          urls: `${this.config.iceServer}`,
-        },
+        // {
+          // urls: `${this.config.iceServer}`,
+        // },
         {
           urls: "turn:numb.viagenie.ca",
           username: "dhirajbhakta110@gmail.com",
