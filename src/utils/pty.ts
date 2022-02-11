@@ -38,7 +38,6 @@ export class Terminal {
   write(data: string) {
     data = data.slice(1, -3);
     this.history.push(data);
-    logger.info("data.endswith rrrr: " + data.endsWith("\r"))
     const carriageReturn = data.endsWith("\r") ? "" : "\r";
     this._pty!.write(data + carriageReturn);
   }
