@@ -2,7 +2,6 @@ import pty, { IPty } from "node-pty";
 import readline from "readline";
 import logger from "./log.js";
 
-
 interface TerminalConfig {
   devtest?: boolean;
 }
@@ -16,6 +15,7 @@ interface Command extends STDOUTdata {
 interface CommandResult extends STDOUTdata {
   type: "RSLT";
 }
+
 export class Terminal {
   /**
    * JOB: take input via method call, execute and send output through callback (another method)
@@ -33,11 +33,20 @@ export class Terminal {
     }
   }
 
+  //https://github.com/microsoft/node-pty/issues/429
+  isThisAnInputEcho(cmdStr: string) {
+    let _1 = cmdStr.trim()
+    let _2 = [...this.history].pop()?.data.trim()
+    _1 = _1.split('\n')[0].trim()
+    return _1 === _2;
+  }
+
   set onoutput(onOutput: (commandResult: CommandResult) => void) {
-    this._pty?.onData((data: string) => {
+    this._pty?.onData((cmdStr: string) => {
+      if (this.isThisAnInputEcho(cmdStr)) return;
       const commandResult: CommandResult = {
         type: "RSLT",
-        data,
+        data:cmdStr,
       };
       onOutput(commandResult);
     });
