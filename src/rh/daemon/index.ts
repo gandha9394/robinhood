@@ -1,6 +1,6 @@
 import minimist from "minimist";
 import { devLogger } from "../../utils/log.js";
-import { Terminal } from "../../utils/pty.js";
+import { Command, Terminal } from "../../utils/pty.js";
 import { RTCDonorPeer } from "../../utils/webrtc.js";
 import pty from "node-pty";
 import { startDockerContainer } from "./container.js";
@@ -10,13 +10,14 @@ const argv = minimist(process.argv.slice(2));
 devLogger.info("Running daemon script");
 devLogger.debug("Arguments: " + JSON.stringify(argv));
 
-const generateName = () => "my_room_001";
+const generateName = () => "my_room_002";
 
 const peer = new RTCDonorPeer({
     roomName: generateName(),
-    //   signalingServer: process.env["RHSS"] || "ws://localhost:8080",
-    signalingServer: process.env["RHSS"] || "ws://34.133.251.43:8080",
+      signalingServer: process.env["RHSS"] || "ws://localhost:8080",
+    // signalingServer: process.env["RHSS"] || "ws://34.133.251.43:8080",
 });
+
 
 peer.connectedToPeer().then(() => {
     process.stdout.write("Connected to peer!")
@@ -36,7 +37,13 @@ peer.connectedToPeer().then(() => {
             // Listeners
             dockerPtyTerminal.onoutput = (commandResult) => {
                 console.log("commandResult", commandResult)
-                peer.send(JSON.stringify(commandResult));
+                if(!commandResult.data.includes("bash")){
+                    peer.send(JSON.stringify(commandResult));
+                }
+                else if(commandResult.data.includes('exit')){
+                    peer.send(JSON.stringify(commandResult));
+                    peer.close();
+                }
             };
             dockerPtyTerminal.onclose = devLogger.debug;
         }
