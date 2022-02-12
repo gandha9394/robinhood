@@ -19,4 +19,6 @@ declare module 'webrtc.io'{
 }
 
 declare module 'wrtc';
-declare module 'autobind';
+declare module 'pm2';
+declare module 'colorette';
+declare module 'wrtc';
