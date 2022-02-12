@@ -129,14 +129,19 @@ export class DaemonProcess {
         this.maxMemory = maxMemory;
         this.maxDisk = maxDisk;
         this.daemon = new PM2Process(pm2, DAEMON_PROCESS_SCRIPT, DAEMON_PROCESS_NAME, "daemon", [
-            "--test",
+            "--max-cpu",
+            maxCpu,
+            "--max-memory",
+            maxMemory,
+            "--max-disk",
+            maxDisk,
         ]);
         this.daemonMetrics = new PM2Process(
             pm2,
             DAEMON_METRICS_PROCESS_SCRIPT,
             DAEMON_METRICS_PROCESS_NAME,
             "daemon-metrics",
-            ["--test"],
+            [],
             "*/5 * * * * *"
         );
     }

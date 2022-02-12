@@ -126,7 +126,12 @@ class Peer {
   register(socket: WebSocket | null) {
     socket &&
       socket.send(
-        JSON.stringify({ eventName: "join_room", data: this.config.roomName })
+        JSON.stringify({ 
+          eventName: "join_room", 
+          data: {
+            room: this.config.roomName
+          } 
+        })
       );
     return socket;
   }
@@ -146,7 +151,7 @@ class Peer {
     if (socket)
       socket.onclose = () => {
         //TODO: destructor and cleanup
-        logger.info(
+        logger.warn(
           "Socket closed, Peer killed. I will no longer listen to any commands or REST API calls"
         );
         console.error("Socket server closed connection.")
@@ -190,15 +195,14 @@ class Peer {
     this.sendMessageToCentralServer(msg); //L.O.L
   }
 
-  close=()=>{
-    this.socket &&
-    this.socket.close()
-  }
+  // close=()=>{
+  //   this.socket &&
+  //   this.socket.close()
+  // }
 }
 
 class RTCPeer extends Peer {
   peerHandle: PeerHandle | null = null;
-  cerberus: Deferred = new Deferred();
   _isDonor: boolean = false;
 
   constructor(config: Config) {
@@ -212,6 +216,7 @@ class RTCPeer extends Peer {
     this.createPeerHandle = this.createPeerHandle.bind(this);
     this.dataChannelOnMessage = this.dataChannelOnMessage.bind(this);
     this.dataChannelOnOpen = this.dataChannelOnOpen.bind(this);
+    this.dataChannelOnClose = this.dataChannelOnClose.bind(this);
     this.onReceiveIceCandidate = this.onReceiveIceCandidate.bind(this);
     this.peerConnectionOnDataChannel =
       this.peerConnectionOnDataChannel.bind(this);
@@ -243,9 +248,6 @@ class RTCPeer extends Peer {
       };
       logger.silly("Attached onmessage handler");
     }
-  }
-  connectedToPeer() {
-    return this.cerberus.promise;
   }
 
   createPeerHandle(socketId: SocketId) {
@@ -407,12 +409,11 @@ class RTCPeer extends Peer {
   dataChannelOnOpen(dataChannel: RTCDataChannel) {
     dataChannel.onopen = () => {
       this.fire("connection_established");
-      this.cerberus.resolve(null);
     };
     return dataChannel;
   }
   dataChannelOnClose(dataChannel: RTCDataChannel) {
-    dataChannel.onclose = () => logger.debug("DataChannel closed");
+    dataChannel.onclose = () => logger.warn("DataChannel closed");
     return dataChannel;
   }
   dataChannelOnMessage(dataChannel: RTCDataChannel) {
@@ -444,10 +445,10 @@ export class RTCDonorPeer extends RTCPeer {
     super({...config, isDonor: true});
     this._["isDonor"] = true;
     this.on("new_peer_connected", async (data: any) => {
-      if (++this.count > 1) {
-        logger.error("This Donor supports only single Donee. Exiting..");
-        process.exit(1);
-      }
+      // if (++this.count > 1) {
+      //   logger.error("This Donor supports only single Donee. Exiting..");
+      //   process.exit(1);
+      // }
       this.peerHandle = this.createPeerHandle(data.socketId);
       this.peerHandle.dataChannel = this.createDataChannel(data.socketId);
       const offer = await this.peerHandle.peerConnection.createOffer();

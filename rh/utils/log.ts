@@ -6,7 +6,7 @@ const logFormat = printf(({ level, message, stack }) => {
 });
 
 const logger = createLogger({
-    level: "silly",
+    level: "warn",
     silent: false, //set this to true later
     // format: combine(format.errors({ stack: true }), format.colorize({ all: true }), logFormat),
     format: combine(format.errors({ stack: true }), logFormat),
@@ -15,7 +15,7 @@ const logger = createLogger({
 });
 
 export const devLogger = createLogger({
-    level: "silly",
+    level: "warn",
     silent: false, //set this to true later
     format: combine(format.errors({ stack: true }), format.colorize({ all: true }), logFormat),
     transports: [new transports.Console()],

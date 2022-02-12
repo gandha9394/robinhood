@@ -16,7 +16,7 @@ export const DAEMON_PROCESS_NAME = "rh-daemon";
 
 export const DAEMON_METRICS_PROCESS_SCRIPT = "./dist/metrics/index.js";
 export const DAEMON_METRICS_PROCESS_NAME = "rh-daemon-metrics";
-export const CONTAINER_PREFIX = "rh-container-";
+export const CONTAINER_PREFIX = "rh_container";
 
 export const SUPPORTED_IMAGES = ["ubuntu", "debian", "fedora"]
 

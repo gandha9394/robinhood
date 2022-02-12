@@ -3,22 +3,27 @@ import minimist from "minimist";
 import { devLogger } from "../utils/log.js";
 import { Terminal } from "../utils/pty.js";
 import { RTCDonorPeer } from "../utils/webrtc.js";
-import { SIGNALING_SERVER } from "../config.js";
+import { CONTAINER_PREFIX, SIGNALING_SERVER } from "../config.js";
+import { generateName } from "./name-generator.js";
 
 const argv = minimist(process.argv.slice(2));
-
-devLogger.info("Running daemon script");
 devLogger.debug("Arguments: " + JSON.stringify(argv));
 
-const generateName = () => "my_room_002";
+const MAX_CPU = argv["max-cpu"]
+const MAX_MEMORY = argv["max-memory"]
+const MAX_DISK = argv["max-disk"]
+const ROOM_NAME = generateName()
+
+devLogger.warn(`Starting daemon with room name: ${ROOM_NAME}`);
 
 const peer = new RTCDonorPeer({
-    roomName: generateName(),
+    roomName: ROOM_NAME,
     signalingServer: SIGNALING_SERVER,
 });
 
+let containerRunning = false;
 
-peer.connectedToPeer().then(() => {
+peer.on("connection_established", () => {
     process.stdout.write("Connected to peer!")
     
     let dockerPtyTerminal: Terminal | null = null;
@@ -32,20 +37,27 @@ peer.connectedToPeer().then(() => {
             const cpus = "1.0"
             const cpuShares = "1024"
             const image = messageObj.data.image
-            const dockerRunCommand = `docker run -it --rm --privileged=true --memory=${memoryLimit} --cpus=${cpus} --cpu-shares=${cpuShares} ${image} bash`
+            const name = `${CONTAINER_PREFIX}_${ROOM_NAME}`
+            const shell = "bash"
+            const dockerExecCommand = `docker exec -it ${name} ${shell}`
+            const dockerRunCommand = `docker run -it --privileged=true --name=${name} --memory=${memoryLimit} --cpus=${cpus} --cpu-shares=${cpuShares} ${image} ${shell}`
             
-            const ptyProcess = pty.spawn("docker", dockerRunCommand.split(" ").slice(1), {});
+            let ptyProcess = null;
+            if(containerRunning) {
+                ptyProcess = pty.spawn("docker", dockerExecCommand.split(" ").slice(1), {});
+            } else {
+                ptyProcess = pty.spawn("docker", dockerRunCommand.split(" ").slice(1), {});
+            }
             
             dockerPtyTerminal = new Terminal({ ptyProcess: ptyProcess });
-
+            containerRunning = true;
+            
             // Listeners
             dockerPtyTerminal.onoutput = (commandResult) => {
-                console.log("commandResult", commandResult)
                 peer.send(JSON.stringify(commandResult));
             };
             dockerPtyTerminal.onclose = (ev) => {
                 devLogger.debug(ev)
-                peer.close()
             };
         }
 

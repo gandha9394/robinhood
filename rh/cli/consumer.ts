@@ -130,7 +130,7 @@ const startPeeringConnection = (roomName: string, image: string) => {
     // Start pseudo terminal
     const ptyTerminal = new PseudoTerminal();
 
-    peer.connectedToPeer().then(() => {
+    peer.on("connection_established", () => {
         snipper.stop()
         
         ptyTerminal.print({
