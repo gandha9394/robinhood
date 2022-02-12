@@ -6,8 +6,8 @@ import {
     DEFAULT_MAX_CPU,
     DEFAULT_MAX_DISK,
     DEFAULT_MAX_MEMORY,
-    getUserPreferences,
-    setUserPreferences,
+    getDonorPreferences,
+    setDonorPreferences,
 } from "../config.js";
 import { connectToPM2, PM2Process, PM2Error } from "./process.js";
 import inquirer, { Answers, Question } from "inquirer";
@@ -26,7 +26,7 @@ export const initializeDaemon = async (maxCpu: string, maxMemory: string, maxDis
             process.exit();
         }
 
-        const { maxCpu: savedMaxCpu, maxMemory: savedMaxMemory, maxDisk: savedMaxDisk } = getUserPreferences();
+        const { maxCpu: savedMaxCpu, maxMemory: savedMaxMemory, maxDisk: savedMaxDisk } = getDonorPreferences();
 
         // Ask for limits if not provided
         let questions: Question[] = [];
@@ -79,7 +79,7 @@ export const initializeDaemon = async (maxCpu: string, maxMemory: string, maxDis
             });
 
         // Save preference in persisted config
-        setUserPreferences(maxCpu, maxMemory, maxDisk);
+        setDonorPreferences(maxCpu, maxMemory, maxDisk);
 
         const daemonProcess = new DaemonProcess(pm2, maxCpu, maxMemory, maxDisk);
         daemonProcess
@@ -95,8 +95,9 @@ export const initializeDaemon = async (maxCpu: string, maxMemory: string, maxDis
 export const restartDaemon = async () => {
     return new Promise<void>(async (resolve, reject) => {
         await killDaemon()
-        const { maxCpu: savedMaxCpu, maxMemory: savedMaxMemory, maxDisk: savedMaxDisk } = getUserPreferences();
+        const { maxCpu: savedMaxCpu, maxMemory: savedMaxMemory, maxDisk: savedMaxDisk } = getDonorPreferences();
         await initializeDaemon(savedMaxCpu, savedMaxMemory, savedMaxDisk)
+        resolve()
     });
 };
 

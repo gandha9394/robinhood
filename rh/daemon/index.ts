@@ -29,23 +29,25 @@ peer.connectedToPeer().then(() => {
         const messageObj = JSON.parse(message);
         
         if (messageObj.eventName == "create_container") {
-            let ptyProcess = pty.spawn("bash", [], {});
-            ptyProcess = startDockerContainer(ptyProcess, "ubuntu", "1G", "1.0", "1024");
+            const memoryLimit = "1g"
+            const cpus = "1.0"
+            const cpuShares = "1024"
+            const image = messageObj.data.image
+            const dockerRunCommand = `docker run -it --rm --privileged=true --memory=${memoryLimit} --cpus=${cpus} --cpu-shares=${cpuShares} ${image} bash`
+            
+            const ptyProcess = pty.spawn("docker", dockerRunCommand.split(" ").slice(1), {});
             
             dockerPtyTerminal = new Terminal({ ptyProcess: ptyProcess });
 
             // Listeners
             dockerPtyTerminal.onoutput = (commandResult) => {
                 console.log("commandResult", commandResult)
-                if(!commandResult.data.includes("bash")){
-                    peer.send(JSON.stringify(commandResult));
-                }
-                else if(commandResult.data.includes('exit')){
-                    peer.send(JSON.stringify(commandResult));
-                    peer.close();
-                }
+                peer.send(JSON.stringify(commandResult));
             };
-            dockerPtyTerminal.onclose = devLogger.debug;
+            dockerPtyTerminal.onclose = (ev) => {
+                devLogger.debug(ev)
+                peer.close()
+            };
         }
 
         if (messageObj.eventName == "command") {

@@ -1,6 +1,6 @@
 import { green } from "colorette";
-import CLI from "clui";
 import pm2, { Proc, StartOptions } from "pm2";
+import CLI from "clui";
 const { Spinner } = CLI;
 
 // TODO: Import type of pm2 instance (entire module)
