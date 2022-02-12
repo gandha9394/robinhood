@@ -142,7 +142,7 @@ const startPeeringConnection = (roomName: string, image: string) => {
             const commandResultJSON = JSON.parse(commandResult);
             ptyTerminal.print(commandResultJSON);
             if(clearANSIFormatting(commandResultJSON.data).trim() == "exit") {
-                terminateProcess()
+                terminateProcess(peer)
             }
         };
     
@@ -169,28 +169,35 @@ const startPeeringConnection = (roomName: string, image: string) => {
         // Is this of any use?
         ptyTerminal.onclose = console.log
 
-        process.on("SIGINT", confirmBeforeTerminate);
+        process.on("SIGINT", () => confirmBeforeTerminate(peer));
     });
 }
 
-const confirmBeforeTerminate = async () => {
-    await inquirer
-        .prompt([
-            {
-                type: 'confirm',
-                name: 'endProcess',
-                message: '\n\nAre you sure? Your connection will be terminated.',
-                default: true,
-            },
-        ])
-        .then((answers: Answers) => {
-            if (answers.endProcess) {
-                terminateProcess()
-            }
-        })
+const confirmBeforeTerminate = async (peer: RTCDoneePeer) => {
+    console.log(
+        "\n\nAre you sure? Your connection will be terminated. (y/Y)"
+    );
+    var stdin = process.openStdin();
+    stdin.addListener("data", (d) => {
+        const response = d.toString().trim();
+        if (response === "y" || response === "Y") {
+            terminateProcess(peer)
+        }
+        return;
+    });
 }
 
-const terminateProcess = () => {
+const terminateProcess = (peer: RTCDoneePeer) => {
+    peer.send(
+        JSON.stringify({
+            eventName: "command",
+            data: {
+                type: "CMD",
+                data: "exit\n"
+            }
+        })
+    );
+    peer.close();
     const stdin = process.openStdin();
     stdin.removeAllListeners();
     process.exit(1);

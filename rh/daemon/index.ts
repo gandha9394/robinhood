@@ -21,14 +21,25 @@ const peer = new RTCDonorPeer({
     signalingServer: SIGNALING_SERVER,
 });
 
-let containerRunning = false;
+let containerCreated = false;
+
+
+const restartContainer = async (dockerRestartCommand: string) => {
+    return new Promise<void>((resolve, reject) => {
+        const tempProcess = pty.spawn("docker", dockerRestartCommand.split(" ").slice(1), {});
+        tempProcess.onExit(() => {
+            resolve()
+        })
+    })
+}
+
 
 peer.on("connection_established", () => {
     process.stdout.write("Connected to peer!")
     
     let dockerPtyTerminal: Terminal | null = null;
 
-    peer.onmessage = (message: string) => {
+    peer.onmessage = async (message: string) => {
         console.log(message)
         const messageObj = JSON.parse(message);
         
@@ -41,23 +52,26 @@ peer.on("connection_established", () => {
             const shell = "bash"
             const dockerExecCommand = `docker exec -it ${name} ${shell}`
             const dockerRunCommand = `docker run -it --privileged=true --name=${name} --memory=${memoryLimit} --cpus=${cpus} --cpu-shares=${cpuShares} ${image} ${shell}`
+            const dockerRestartCommand = `docker restart ${name}`
             
             let ptyProcess = null;
-            if(containerRunning) {
+            if(containerCreated) {
+                await restartContainer(dockerRestartCommand)
                 ptyProcess = pty.spawn("docker", dockerExecCommand.split(" ").slice(1), {});
             } else {
                 ptyProcess = pty.spawn("docker", dockerRunCommand.split(" ").slice(1), {});
+                containerCreated = true;
             }
             
             dockerPtyTerminal = new Terminal({ ptyProcess: ptyProcess });
-            containerRunning = true;
             
             // Listeners
             dockerPtyTerminal.onoutput = (commandResult) => {
                 peer.send(JSON.stringify(commandResult));
             };
             dockerPtyTerminal.onclose = (ev) => {
-                devLogger.debug(ev)
+                devLogger.debug(ev);
+                peer.close();
             };
         }
 
