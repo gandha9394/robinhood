@@ -1,7 +1,7 @@
 import { getConsumerPreferences, setConsumerPreferences, SIGNALING_SERVER, SUPPORTED_IMAGES } from "../config.js";
 import { red, green, bold } from "colorette";
 import inquirer, { Answers } from "inquirer";
-import { Command, PseudoTerminal } from "../utils/pty.js";
+import { clearANSIFormatting, PseudoTerminal } from "../utils/pty.js";
 import { RTCDoneePeer } from "../utils/webrtc.js";
 import CLI from "clui";
 const { Spinner } = CLI;
@@ -141,7 +141,7 @@ const startPeeringConnection = (roomName: string, image: string) => {
         peer.onmessage = (commandResult: string) => {
             const commandResultJSON = JSON.parse(commandResult);
             ptyTerminal.print(commandResultJSON);
-            if(commandResultJSON.data.trim() == "exit") {
+            if(clearANSIFormatting(commandResultJSON.data).trim() == "exit") {
                 terminateProcess()
             }
         };
@@ -166,10 +166,7 @@ const startPeeringConnection = (roomName: string, image: string) => {
             );
         };
 
-        // ptyTerminal.onclose = (history) => {
-        //     peer.close();
-        //     process.exit();
-        // };
+        // Is this of any use?
         ptyTerminal.onclose = console.log
 
         process.on("SIGINT", confirmBeforeTerminate);

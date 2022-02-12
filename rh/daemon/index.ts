@@ -1,9 +1,9 @@
 import pty from "node-pty";
 import minimist from "minimist";
 import { devLogger } from "../utils/log.js";
-import { Command, Terminal } from "../utils/pty.js";
+import { Terminal } from "../utils/pty.js";
 import { RTCDonorPeer } from "../utils/webrtc.js";
-import { startDockerContainer } from "./container.js";
+import { SIGNALING_SERVER } from "../config.js";
 
 const argv = minimist(process.argv.slice(2));
 
@@ -14,8 +14,7 @@ const generateName = () => "my_room_002";
 
 const peer = new RTCDonorPeer({
     roomName: generateName(),
-      signalingServer: process.env["RHSS"] || "ws://localhost:8080",
-    // signalingServer: process.env["RHSS"] || "ws://34.133.251.43:8080",
+    signalingServer: SIGNALING_SERVER,
 });
 
 

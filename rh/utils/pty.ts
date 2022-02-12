@@ -17,6 +17,11 @@ export interface CommandResult extends STDOUTdata {
   type: "RSLT";
 }
 
+// https://stackoverflow.com/questions/25245716/remove-all-ansi-colors-styles-from-strings/29497680
+export const clearANSIFormatting = (str: string) => {
+  return str.replace(/[\u001b\u009b][[()#;?]*(?:[0-9]{1,4}(?:;[0-9]{0,4})*)?[0-9A-ORZcf-nqry=><]/g, "")
+}
+
 export class Terminal {
   /**
    * JOB: take input via method call, execute and send output through callback (another method)
