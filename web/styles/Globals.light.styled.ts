@@ -2,12 +2,9 @@ import { defaultColours } from "fictoan-react";
 import { lighten,darken } from "polished";
 import { createGlobalStyle } from "styled-components";
 
-import { SetuLightTheme } from "./Setu/Setu.light.theme";
-import { DatePickerStyles } from "./datepicker-override-custom";
-import { setuColours } from "./Setu/SetuColours";
+import { setuColours } from "./Robinhood/SetuColours";
 
 export const GlobalLightStyles = createGlobalStyle`
-    ${DatePickerStyles}
 
     #root { display : flex; }
 
@@ -77,7 +74,6 @@ export const GlobalLightStyles = createGlobalStyle`
 
     .is-clickable { cursor : pointer; }
     
-    .subtext { color : ${(props) => props.theme.text.paras.subtext} }
     
     .line-height-reset { line-height : 1; }
 
@@ -138,10 +134,6 @@ export const GlobalLightStyles = createGlobalStyle`
 
     .radio-set { flex-direction : row; }
 
-    .placeholder-card {
-        background-color : transparent !important;
-        border           : 1px solid ${(props) => props.theme.PlaceholderCard.border} !important;
-    }
     
     //  TABS  /////////////////////////////////////////////////////////////////
     .tabs-wrapper nav {
@@ -215,9 +207,6 @@ export const GlobalLightStyles = createGlobalStyle`
         overflow-x : scroll;
     }
 
-    .dismiss-button {
-        border-radius : ${(props) => props.theme.button.primary.default.borderRadius};
-    }
     
     //  CHECKLIST TICK  ///////////////////////////////////////////////////////
     .tick circle {

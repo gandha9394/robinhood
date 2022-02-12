@@ -38,13 +38,22 @@ a {
   height: 100vh;
 }
 .font-monospace{
-  font-family: 'Anonymous Pro', Arial, Helvetica, sans-serif;
+  font-family: 'Anonymous Pro', monospace;
+}
+.font-monospace pre{
+  font-family: 'Anonymous Pro', monospace !important;
+  font-size: 16px !important;
 }
 .font-default{
   font-family: 'Montserrat', sans-serif;
-
 }
 .font-xl{
 font-size: 3rem;
+}
+.font-xxl{
+font-size: 4rem;
+}
+button.link-to-doc:hover{
+  border-bottom:2pt solid mediumseagreen !important;
 }
 

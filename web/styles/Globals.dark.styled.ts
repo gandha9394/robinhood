@@ -2,12 +2,9 @@ import { defaultColours } from "fictoan-react";
 import { lighten ,darken} from "polished";
 import { createGlobalStyle } from "styled-components";
 
-import { SetuDarkTheme } from "./Setu/Setu.dark.theme";
-import { DatePickerStyles } from "./datepicker-override-custom";
-import { setuColours } from "./Setu/SetuColours";
+import { setuColours } from "./Robinhood/SetuColours";
 
-export const GlobalDarkStyles = createGlobalStyle`
-    ${DatePickerStyles}
+export const GlobalDarkStyles = (createGlobalStyle as any)`
 
     #root { display : flex; }
 
@@ -49,7 +46,7 @@ export const GlobalDarkStyles = createGlobalStyle`
     input:read-only { background-color: ${defaultColours.slate10} !important; }
 
     //TODO: ADD THIS TO FICTOAN
-    input + label { color : ${(props) => props.theme.text.paras.color} !important; }
+    input + label { color : ${(props:any) => props.theme.text.paras.color} !important; }
 
     button[disabled] {
         filter           : unset !important;
@@ -58,7 +55,7 @@ export const GlobalDarkStyles = createGlobalStyle`
         border           : 1px solid ${lighten(0.24, setuColours.murkyNight)} !important;
     }
     
-    select { color : ${(props) => props.theme.text.paras.color}; }
+    select { color : ${(props:any) => props.theme.text.paras.color}; }
     ///////////////////////////////////////////////////////////////////////////
 
     //*:focus { box-shadow: 0 0 0 0.2rem rgba(0,123,255,0.25); }
@@ -91,7 +88,7 @@ export const GlobalDarkStyles = createGlobalStyle`
 
     .is-clickable { cursor : pointer; }
     
-    .subtext { color : ${(props) => props.theme.text.paras.subtext} }
+    .subtext { color : ${(props:any) => props.theme.text.paras.subtext} }
 
     .line-height-reset { line-height : 1; }
 
@@ -154,7 +151,7 @@ export const GlobalDarkStyles = createGlobalStyle`
 
     .placeholder-card {
         background-color : transparent !important;
-        border           : 1px solid ${(props) => props.theme.PlaceholderCard.border} !important;
+        border           : 1px solid ${(props:any) => props.theme.PlaceholderCard.border} !important;
     }
 
     //  TABS  /////////////////////////////////////////////////////////////////

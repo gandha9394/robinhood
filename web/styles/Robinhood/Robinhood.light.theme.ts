@@ -4,8 +4,7 @@ import { DefaultTheme as BridgeThemeType } from "styled-components";
 
 import { setuColours } from "./SetuColours";
 
-// @ts-ignore : TODO: Bifurcate Setu theme types and RZP theme types
-export const SetuLightTheme: BridgeThemeType = {
+export const RobinhoodLightTheme: BridgeThemeType = {
     body: {
         bg: setuColours.pearlyCoke,
     },
@@ -13,18 +12,18 @@ export const SetuLightTheme: BridgeThemeType = {
     //  TEXT  /////////////////////////////////////////////////////////////////
     text: {
         font: {
-            sans: "Matter",
-            mono: "GT America Mono",
+            sans: "Anonymous Pro",
+            mono: "Montserrat",
         },
         paras: {
-            font: "Matter",
+            font: "Montserrat",
             color: `${lighten(0.16, setuColours.murkyNight)}`,
             lineHeight: 1.44,
             size: 0.96,
             subtext: defaultColours.slate80,
         },
         headings: {
-            font: "Matter",
+            font: "Montserrat",
             weight: 400,
             lineHeight: 1.2,
             color: setuColours.murkyNight,
@@ -54,6 +53,7 @@ export const SetuLightTheme: BridgeThemeType = {
             prism: {
                 tokens: {
                     plain: defaultColours.grey,
+
                 }
             }
         },
@@ -172,18 +172,18 @@ export const SetuLightTheme: BridgeThemeType = {
 
     //  BUTTON  ///////////////////////////////////////////////////////////////
     button: {
-        font: "Matter",
+        font: "Montserrat",
         primary: {
             default: {
-                bg: setuColours.flashTurk,
-                border: setuColours.flashTurk,
+                bg: `${darken(0.08, setuColours.murkyNight)}`,
+                border: `${darken(0.08, setuColours.murkyNight)}`,
                 text: defaultColours.white,
                 borderRadius: "4px",
             },
             onHover: {
-                bg: `${lighten(0.08, setuColours.flashTurk)}`,
-                border: `${lighten(0.08, setuColours.flashTurk)}`,
-                text: defaultColours.white,
+                bg: `${lighten(0.08, setuColours.crackedYolk)}`,
+                border: `${lighten(0.08, setuColours.crackedYolk)}`,
+                text: defaultColours.black,
             },
             isActive: {
                 bg: setuColours.flashTurk,
@@ -192,23 +192,23 @@ export const SetuLightTheme: BridgeThemeType = {
             },
             isLoading: {
                 bg: setuColours.flashTurk,
-                spinnerBorder: defaultColours.white,
+                spinnerBorder: defaultColours.black,
             },
         },
         secondary: {
             default: {
-                bg: `${lighten(0.36, setuColours.flashTurk)}`,
-                border: setuColours.flashTurk,
-                text: setuColours.flashTurk,
+                bg: "#E6F1FF",
+                border: 'none',
+                text: `${lighten(0.08, setuColours.azureBlue)}`,
                 borderRadius: "4px",
             },
             onHover: {
-                bg: `${lighten(0.4, setuColours.flashTurk)}`,
-                border: setuColours.flashTurk,
+                bg: "#E6F1FF",
+                border:'none',
                 text: setuColours.flashTurk,
             },
             isActive: {
-                bg: `${lighten(0.2, setuColours.flashTurk)}`,
+                bg: `${darken(0.32, setuColours.flashTurk)}`,
                 border: setuColours.flashTurk,
                 text: setuColours.flashTurk,
             },

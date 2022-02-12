@@ -1,5 +1,5 @@
 import "../styles/globals.css";
-import "../styles/Setu/SetuFonts.css";
+import "../styles/Robinhood/SetuFonts.css";
 import Head from 'next/head'
 import type { AppProps } from "next/app";
 import { ThemeProvider } from "fictoan-react";
@@ -7,9 +7,10 @@ import { useEffect, useState } from "react";
 import { Router, useRouter } from "next/router";
 import Loader from "../components/Loader/Loader";
 import { getSession, signIn } from "next-auth/client";
-import { GlobalLightStyles, SetuLightTheme } from "../styles";
+import { GlobalLightStyles } from "../styles";
 import {Sidebar}  from "../components/Sidebar/Sidebar";
 import { DefaultSession } from "next-auth";
+import { RobinhoodLightTheme } from "../styles/Robinhood/Robinhood.light.theme";
 
 function MyApp({ Component, pageProps: { ...pageProps } }: AppProps) {
     const [loading, setLoading] = useState(false);
@@ -38,19 +39,17 @@ function MyApp({ Component, pageProps: { ...pageProps } }: AppProps) {
                 signIn()
             }
             else{
-                console.log(res)
                 setSession(res || undefined);
-                console.log("again",res)
             }
         });
     }, []);
     
     return <>
             <Head>
-                <title>SETU</title>
+                <title>Robinhood</title>
                 <link rel="icon" href="/setu-icon.png"></link>
             </Head>
-            <ThemeProvider theme={SetuLightTheme}>
+            <ThemeProvider theme={RobinhoodLightTheme}>
                 <GlobalLightStyles/>
                 {paths.includes(router.pathname)?(<Component {...pageProps}/>):(
                     <>

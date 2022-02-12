@@ -12,6 +12,7 @@
     "@svgr/webpack": "^5.5.0",
     "axios": "^0.21.4",
     "fictoan-react": "^0.34.0",
+    "fork-me-on-github": "^1.0.6",
     "form-data": "^4.0.0",
     "formidable": "^1.2.2",
     "framer-motion": "^4.1.17",

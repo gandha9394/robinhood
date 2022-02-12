@@ -4,7 +4,7 @@ import { DefaultTheme as BridgeThemeType } from "styled-components";
 
 import { setuColours } from "./SetuColours";
 
-export const SetuDarkTheme: BridgeThemeType = {
+export const RobinhoodDarkTheme : BridgeThemeType = {
     body: {
         bg: setuColours.murkyNight,
     },
@@ -12,18 +12,18 @@ export const SetuDarkTheme: BridgeThemeType = {
     //  TEXT  /////////////////////////////////////////////////////////////////
     text: {
         font: {
-            sans: "Matter",
-            mono: "GT America Mono",
+            sans: "Montserrat",
+            mono: "Anonymous Pro",
         },
         paras: {
-            font: "Matter",
+            font: "Montserrat",
             color: `${lighten(0.56, setuColours.murkyNight)}`,
             lineHeight: 1.44,
             size: 0.96,
             subtext: `${lighten(0.40, setuColours.murkyNight)}`,
         },
         headings: {
-            font: "Matter",
+            font: "Montserrat",
             weight: 400,
             lineHeight: 1.2,
             color: `${lighten(0.64, setuColours.murkyNight)}`,
@@ -172,18 +172,18 @@ export const SetuDarkTheme: BridgeThemeType = {
 
     //  BUTTON  ///////////////////////////////////////////////////////////////
     button: {
-        font: "Matter",
+        font: "Montserrat",
         primary: {
             default: {
-                bg: `${darken(0.08, setuColours.flashTurk)}`,
-                border: `${darken(0.08, setuColours.flashTurk)}`,
+                bg: `${darken(0.08, setuColours.murkyNight)}`,
+                border: `${darken(0.08, setuColours.murkyNight)}`,
                 text: defaultColours.white,
                 borderRadius: "4px",
             },
             onHover: {
-                bg: `${lighten(0.08, setuColours.flashTurk)}`,
-                border: `${lighten(0.08, setuColours.flashTurk)}`,
-                text: defaultColours.white,
+                bg: `${lighten(0.08, setuColours.crackedYolk)}`,
+                border: `${lighten(0.08, setuColours.crackedYolk)}`,
+                text: defaultColours.black,
             },
             isActive: {
                 bg: setuColours.flashTurk,
@@ -197,9 +197,9 @@ export const SetuDarkTheme: BridgeThemeType = {
         },
         secondary: {
             default: {
-                bg: `${darken(0.24, setuColours.flashTurk)}`,
-                border: setuColours.flashTurk,
-                text: `${lighten(0.08, setuColours.flashTurk)}`,
+                bg: `none`,
+                border: 'none',
+                text: `${lighten(0.08, setuColours.azureBlue)}`,
                 borderRadius: "4px",
             },
             onHover: {
