@@ -16,7 +16,7 @@
     "start:rh": "concurrently \"tsc -w\" \"nodemon dist/rh\"",
     "dev:signaling": "npx tsc && node dist/signaling_server -debug",
     "dev:donee": "npx tsc && node dist/donee",
-    "dev:donor": "npx tsc && node dist/donor",
+    "dev:donor": "npm run dev:rh -- restart && pm2 logs rh-daemon",
     "dev:rh": "npx tsc && node dist/rh",
     "package:rh": "pkg . --targets node14-macos-x64 --output rh"
   },

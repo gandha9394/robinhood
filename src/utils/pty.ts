@@ -10,10 +10,10 @@ interface STDOUTdata {
   type: "CMD" | "RSLT";
   data: string;
 }
-interface Command extends STDOUTdata {
+export interface Command extends STDOUTdata {
   type: "CMD";
 }
-interface CommandResult extends STDOUTdata {
+export interface CommandResult extends STDOUTdata {
   type: "RSLT";
 }
 
@@ -46,15 +46,15 @@ export class Terminal {
     // if(cmdStr.includes("#")) {
     //   cmdStr = cmdStr.split("#")[1]
     // }
-    console.log("cmdStr srray", Array.from(cmdStr))
+    // console.log("cmdStr srray", Array.from(cmdStr))
     cmdStr = cmdStr.split("\r\n")[0]
     let _1 = cmdStr.trim()
     let _2 = [...this.history].pop()?.data.trim()
-    console.log("cmdStr trimmed", _1)
-    console.log("history item trimmed", _2)
+    // console.log("cmdStr trimmed", _1)
+    // console.log("history item trimmed", _2)
     _1 = _1.split('\n')[0].trim()
-    console.log("cmdStr modified", _1)
-    console.log("condition", _1 === _2)
+    // console.log("cmdStr modified", _1)
+    // console.log("condition", _1 === _2)
     return _1 === _2;
   }
 
