@@ -1,136 +1,79 @@
+import { promisify } from "util";
+import {
+  connect,
+  disconnect,
+  start,
+  restart,
+  stop,
+  delete as deleteP,
+  list,
+  StartOptions,
+  ProcessDescription,
+} from "pm2";
 import { green } from "colorette";
-import CLI from "clui";
-import pm2, { Proc, StartOptions } from "pm2";
-const { Spinner } = CLI;
+import { Spinner } from "clui";
+import { andThen, pipe } from "ramda";
+import { DAEMON_METRICS_PROCESS_NAME, DAEMON_PROCESS_NAME } from "rh/config.js";
 
-// TODO: Import type of pm2 instance (entire module)
-// Wish this was exported from PM2 library so I wouldn't have to redefine it :/
-export interface PM2Error {
-    name: string;
-    message: string;
-    stack?: string;
-}
-
-export const connectToPM2 = async () => {
-    const snipper = new Spinner(`Connecting to PM2...`);
-    snipper.start();
-    return new Promise((resolve, reject) => {
-        pm2.connect((err: PM2Error) => {
-            if (err) {
-                console.error(err);
-                reject(err);
-            }
-            snipper.stop();
-            resolve(pm2);
-        });
-    });
+type Verb = keyof typeof PM2;
+type ProcessName = string;
+type Monad = readonly [processName: string, verb: Verb, args?: StartOptions];
+/***/ ////////////// lookup maps & helpers /////////////// */
+const PM2 = {
+  connect: promisify(connect),
+  start: promisify<StartOptions>(start),
+  restart: promisify<string>(restart),
+  stop: promisify<string>(stop),
+  delete: promisify<string>(deleteP),
+  list: promisify(list),
 };
+const presentParticiple = (verb: Verb) =>
+  verb.endsWith("e") ? verb.slice(0, -1) + "ing" : verb + "ing";
 
-export class PM2Process {
-    _pm2: any;
-    scriptPath: string;
-    processName: string;
-    displayName: string;
-    args: string[];
-    cron: string | null;
-
-    constructor(
-        pm2Instance: any,
-        scriptPath: string,
-        processName: string,
-        displayName: string,
-        args: string[],
-        cron: string | null = null
-    ) {
-        this._pm2 = pm2Instance;
-        this.scriptPath = scriptPath;
-        this.processName = processName;
-        this.displayName = displayName;
-        this.args = args;
-        this.cron = cron;
-    }
-
-    startProcess = async () => {
-        return new Promise((resolve, reject) => {
-            const snipper = new Spinner(`Starting ${this.displayName} process...`);
-            snipper.start();
-            const startConfig: StartOptions = {
-                script: "node",
-                name: this.processName,
-                args: [this.scriptPath, ...this.args],
-                cron: this.cron,
-            };
-            this._pm2.start(startConfig, (err: PM2Error, proc: Proc) => {
-                snipper.stop();
-                if (err) {
-                    console.error(err);
-                    reject(err);
-                    return;
-                }
-                console.log(green(`Process ${this.displayName} started.`));
-                resolve(proc);
-            });
-        });
-    };
-
-    restartProcess = () => {
-        return new Promise((resolve, reject) => {
-            const snipper = new Spinner(`Restarting ${this.displayName} process...`);
-            snipper.start();
-            this._pm2.restart(this.processName, (err: PM2Error, proc: Proc) => {
-                snipper.stop();
-                if (err) {
-                    console.error(err);
-                    reject(err);
-                    return;
-                }
-                console.log(green(`Process ${this.displayName} restarted.`));
-                resolve(proc);
-            });
-        });
-    };
-
-    stopProcess = () => {
-        return new Promise((resolve, reject) => {
-            const snipper = new Spinner(`Stopping ${this.displayName} process...`);
-            snipper.start();
-            this._pm2.stop(this.processName, (err: PM2Error, proc: Proc) => {
-                snipper.stop();
-                if (err) {
-                    if(err.message == "process or namespace not found") {
-                        console.log(green(`Process ${this.displayName} already stopped.`));
-                        resolve(proc);
-                    } else {
-                        console.error(err);
-                        reject(err);
-                    }
-                    return;
-                }
-                console.log(green(`Process ${this.displayName} stopped.`));
-                resolve(proc);
-            });
-        });
-    };
-
-    deleteProcess = () => {
-        return new Promise((resolve, reject) => {
-            const snipper = new Spinner(`Deleting ${this.displayName} process...`);
-            snipper.start();
-            this._pm2.delete(this.processName, (err: PM2Error, proc: Proc) => {
-                snipper.stop();
-                if (err) {
-                    if(err.message == "process or namespace not found") {
-                        console.log(green(`Process ${this.displayName} already deleted.`));
-                        resolve(proc);
-                    } else {
-                        console.error(err);
-                        reject(err);
-                    }
-                    return;
-                }
-                console.log(green(`Process ${this.displayName} deleted.`));
-                resolve(proc);
-            });
-        });
-    };
-}
+const Spinners: Record<ProcessName, Spinner> = {};
+/***/ //////////////////////////////////////////////////// */
+/**/ ////----------The Pipe-------------------/////////////*/
+const StartSpinner_Execute_StopSpinner = (monad: Monad) =>
+  (
+    pipe(startSpinner, execute, andThen(stopSpinner))(monad) as Promise<
+      [string, Verb, void]
+    >
+  ).then((monad: [string, Verb, void]) => monad[2]);
+/***/ //////////////////////////////////////////////////// */
+/**/ ////----Parts that make up the pipe------/////////////*/
+const startSpinner = function ([processName, _, __]: Monad): Monad {
+  Spinners[processName] = new Spinner(
+    `${presentParticiple("start")} ${processName} process...`
+  );
+  Spinners[processName].start();
+  return [processName, _, __];
+};
+const execute = async ([processName, verb, args]: Monad): Promise<
+  [string, Verb, void | ProcessDescription[]]
+> => [processName, verb, await PM2[verb](args as any)];
+const stopSpinner = function ([processName, _, __]: unknown) {
+  Spinners[processName].stop();
+  delete Spinners[processName];
+  console.log(green(`${presentParticiple("stop")} ${processName} process...`));
+  return [processName, _, __];
+};
+/***/ //////////////////////////////////////////////////// */
+export default {
+  connect: (processName: string) =>
+    StartSpinner_Execute_StopSpinner([processName, "connect", undefined]),
+  disconnect,
+  start: (opts: StartOptions) =>
+    StartSpinner_Execute_StopSpinner([opts.name!, "start", opts]),
+  restart: (processName: string) =>
+    StartSpinner_Execute_StopSpinner([processName, "restart", undefined]),
+  stop: (processName: string) =>
+    StartSpinner_Execute_StopSpinner([processName, "stop", undefined]),
+  delete: (processName: string) =>
+    StartSpinner_Execute_StopSpinner([processName, "delete", undefined]),
+  list: PM2.list,
+  isDaemon: (pd: ProcessDescription) => pd.name === DAEMON_PROCESS_NAME,
+  isDaemonMetrics: (pd: ProcessDescription) =>
+    pd.name === DAEMON_METRICS_PROCESS_NAME,
+  isOnline: (pd: ProcessDescription) =>
+    pd && pd.pm2_env && pd.pm2_env.status === "online",
+};

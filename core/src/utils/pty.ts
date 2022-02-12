@@ -1,6 +1,5 @@
-import pty, { IPty } from "node-pty";
+import { IPty } from "node-pty";
 import readline from "readline";
-import logger from "./log.js";
 
 interface TerminalConfig {
   devtest?: boolean;

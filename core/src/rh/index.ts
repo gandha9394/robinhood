@@ -2,8 +2,8 @@
 import { Command } from "commander";
 import figlet from "figlet";
 import { yellowBright, bold } from "colorette";
-import { loginUser } from "./cli/auth.js";
-import { initializeDaemon, killDaemon, restartDaemon } from "./cli/daemon.js";
+import { loginUser } from "rh/cli/auth.js";
+import { initializeDaemon, killDaemon, restartDaemon } from "rh/cli/daemon.js";
 
 const program = new Command();
 
@@ -24,7 +24,7 @@ program
     .option("--max-memory <percent>", "Max Memory % to allocate")
     .option("--max-disk <size>", "Max disk space to allocate")
     .description("Initialize rh daemon")
-    .action((options, ...args) => {
+    .action((options:any, ...args:any) => {
         initializeDaemon(options.maxCpu, options.maxMemory, options.maxDisk);
     });
 

@@ -1,8 +1,7 @@
-import logger from "../utils/log.js";
+import logger from "utils/log.js";
 import pty from "node-pty";
-import { Terminal } from "../utils/pty.js";
-import spinner from "../utils/spinner.js";
-import { RTCDonorPeer } from "../utils/webrtc.js";
+import { Terminal } from "utils/pty.js";
+import { RTCDonorPeer } from "utils/webrtc.js";
 
 const ptyProcess = pty.spawn("bash", [], {});
 const ptyTerminal = new Terminal({ptyProcess});

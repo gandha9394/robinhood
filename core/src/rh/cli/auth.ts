@@ -1,5 +1,5 @@
 import { bold, green, red } from "colorette";
-import { getAuthToken } from "../config.js";
+import { getAuthToken } from "rh/config.js";
 
 export const checkAuthToken = (email: string) => {
     const token = getAuthToken(email);

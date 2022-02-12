@@ -1,5 +1,6 @@
 import Conf from "conf";
 import dotenv from "dotenv";
+import { Answers } from "inquirer";
 dotenv.config();
 
 //////////////////////////////////
@@ -55,3 +56,9 @@ export const deleteUserPreferences = (): void => {
     persistedConfig.delete(`preferences.maxMemory`);
     persistedConfig.delete(`preferences.maxDisk`);
 };
+
+export interface UserPreferenceAnswers extends Answers{
+    maxCpu: string,
+    maxMemory: string,
+    maxDisk:string
+}

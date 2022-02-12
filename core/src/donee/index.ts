@@ -1,7 +1,7 @@
-import logger from "../utils/log.js";
-import { Command, PseudoTerminal, Terminal } from "../utils/pty.js";
-import spinner from "../utils/spinner.js";
-import { RTCDoneePeer } from "../utils/webrtc.js";
+import logger from "utils/log.js";
+import { Command, PseudoTerminal } from "utils/pty.js";
+import spinner from "utils/spinner.js";
+import { RTCDoneePeer } from "utils/webrtc.js";
 
 const pty = new PseudoTerminal();
 let isConnectionEstablished: boolean = false;

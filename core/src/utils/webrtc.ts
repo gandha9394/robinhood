@@ -1,8 +1,7 @@
 import { pipe } from "ramda";
 import { WebSocket, ErrorEvent} from "ws";
-import pkg from "wrtc";
-const { RTCPeerConnection, RTCSessionDescription, RTCIceCandidate } = pkg;
-import logger, { Deferred } from "./log.js";
+import { RTCPeerConnection, RTCSessionDescription, RTCIceCandidate } from "wrtc"
+import logger, { Deferred } from "utils/log.js";
 
 /**--------CONFIG & SETUP--------------------- */
 
