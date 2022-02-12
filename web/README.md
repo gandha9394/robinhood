@@ -32,3 +32,17 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+
+## gibberish.robinhood.com
+
+- client runs `rh serve -p 3000` where 3000 is the port his dev app is runnin on his host
+- `rh` sends a POST request to signaling server
+
+```json
+{
+  "port": "3000",
+}
+```
+- signaling server creates a random subdomain `gibberish` and
+    - adds the mapping to nginxConf to map `gibberish` to the signaling server app. Perhaps just a *.robinhood.com rule would work just fine
+    - adds the mapping to DB to map `gibberish` to the port number
