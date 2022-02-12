@@ -1,8 +1,8 @@
-import minimist from "minimist";
-import { devLogger } from "../../utils/log.js";
-import { Command, Terminal } from "../../utils/pty.js";
-import { RTCDonorPeer } from "../../utils/webrtc.js";
 import pty from "node-pty";
+import minimist from "minimist";
+import { devLogger } from "../utils/log.js";
+import { Command, Terminal } from "../utils/pty.js";
+import { RTCDonorPeer } from "../utils/webrtc.js";
 import { startDockerContainer } from "./container.js";
 
 const argv = minimist(process.argv.slice(2));

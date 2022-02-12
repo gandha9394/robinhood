@@ -1,9 +1,11 @@
 import logger from "../utils/log.js";
+import pty from "node-pty";
 import { Terminal } from "../utils/pty.js";
 import spinner from "../utils/spinner.js";
 import { RTCDonorPeer } from "../utils/webrtc.js";
 
-const pty = new Terminal();
+const ptyProcess = pty.spawn("bash", [], {});
+const ptyTerminal = new Terminal({ptyProcess});
 const peer = new RTCDonorPeer({
   roomName: "my_room_001",
   signalingServer: process.env["RHSS"]
@@ -14,14 +16,14 @@ const peer = new RTCDonorPeer({
 
 peer.onmessage = (command: string) => {
     const commandJSON = JSON.parse(command);
-    pty.write(commandJSON);
+    ptyTerminal.write(commandJSON);
 };
 // const stopSpinner = spinner("Waiting for connections...");
 
 peer.connectedToPeer().then(() => {
   // stopSpinner();
-  pty.onoutput = (commandResult) => {
+  ptyTerminal.onoutput = (commandResult) => {
     peer.send(JSON.stringify(commandResult));
   };
-  pty.onclose = logger.debug;
+  ptyTerminal.onclose = logger.debug;
 });

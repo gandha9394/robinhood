@@ -1,5 +1,5 @@
 import minimist from "minimist"
-import { devLogger } from "../../utils/log.js";
+import { devLogger } from "../utils/log.js";
 
 const argv = minimist(process.argv.slice(2));
 
