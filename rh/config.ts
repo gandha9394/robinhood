@@ -26,7 +26,7 @@ export const SIGNALING_SERVER = process.env.SIGNALING_SERVER || "ws://localhost:
 //////////////////////////////////
 // Persisted config
 //////////////////////////////////
-const persistedConfig = new Conf();
+const persistedConfig = new Conf({ projectName: 'robinhood-cli' });
 
 // Auth
 export const setAuthToken = (email: string, token: string): void => {
