@@ -258,15 +258,15 @@ export const RobinhoodDarkTheme: BridgeThemeType = {
     //  RULE  /////////////////////////////////////////////////////////////////
     hr : {
         primary   : {
-            bg     : `${lighten(0.48, setuColours.murkyNight)}`,
+            bg     : `${transparentize(0.24, defaultColours.green)}`,
             height : "1px",
         },
         secondary : {
-            bg     : `${lighten(0.32, setuColours.murkyNight)}`,
+            bg     : `${transparentize(0.48, defaultColours.green)}`,
             height : "1px",
         },
         tertiary  : {
-            bg     : `${lighten(0.16, setuColours.murkyNight)}`,
+            bg     : `${transparentize(0.80, defaultColours.green)}`,
             height : "1px",
         },
     },
