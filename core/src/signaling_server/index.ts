@@ -2,6 +2,7 @@ import express from "express";
 import http from "http";
 import signalingserver from "webrtc.io";
 import logger from "../utils/log.js";
+import metricRoutes from "./metric-routes.js";
 
 const DEFAULT = {
   PORT: 8080,
@@ -19,6 +20,9 @@ export function run(port = DEFAULT.PORT) {
   expressApp.get("/hello", (req, res) => {
     res.json({ message: "Hello, World!" });
   });
+
+  expressApp.use("/metrics", metricRoutes)
+  
   /**---------------------------------------------------- */
   mgr.rtc.on('send_ice_candidate',(data:any)=>{
     logger.info(data.socketId);
@@ -31,6 +35,7 @@ export function run(port = DEFAULT.PORT) {
     }
     process.exit(1);
   });
+
   httpServer.on("listening", (e: Event) => {
     const address = httpServer.address();
     if (!address) {

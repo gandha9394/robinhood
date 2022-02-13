@@ -26,13 +26,18 @@ export const connectToPM2 = async () => {
     });
 };
 
+interface PM2Config {
+    cron?: string,
+    alwaysRestart?: boolean
+}
+
 export class PM2Process {
     _pm2: any;
     scriptPath: string;
     processName: string;
     displayName: string;
     args: string[];
-    cron: string | null;
+    config: PM2Config
 
     constructor(
         pm2Instance: any,
@@ -40,14 +45,16 @@ export class PM2Process {
         processName: string,
         displayName: string,
         args: string[],
-        cron: string | null = null
+        config: PM2Config = { alwaysRestart: true }
     ) {
         this._pm2 = pm2Instance;
         this.scriptPath = scriptPath;
         this.processName = processName;
         this.displayName = displayName;
         this.args = args;
-        this.cron = cron;
+        this.config = {}
+        this.config.cron = config?.cron
+        this.config.alwaysRestart = config?.alwaysRestart
     }
 
     startProcess = async () => {
@@ -58,8 +65,14 @@ export class PM2Process {
                 script: "node",
                 name: this.processName,
                 args: [this.scriptPath, ...this.args],
-                cron: this.cron,
+                cron: this.config.cron,
             };
+            if(this.config.cron) {
+                startConfig.cron = this.config.cron
+            }
+            if(!this.config.alwaysRestart) {
+                startConfig.max_restarts = 1
+            }
             this._pm2.start(startConfig, (err: PM2Error, proc: Proc) => {
                 snipper.stop();
                 if (err) {

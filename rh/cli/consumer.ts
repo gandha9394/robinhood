@@ -44,11 +44,7 @@ export const listDonors = async (image?: string) => {
         const donorSelectionList: any[] = donors.map(donor => {
             const timeDiff = Math.round((new Date().getTime() - new Date(donor.lastUpdated).getTime()) / 1000);
             const specs = `${bold(donor.roomName)} \n  CPU: ${donor.availableCpu} ${SEPARATOR} Memory: ${donor.availableMemory} ${SEPARATOR} Disk: ${donor.availableDisk} ${SEPARATOR} Udated ${timeDiff} seconds ago \n`;
-            const item = {
-                name: specs,
-                value: donor.roomName
-            }
-            return item
+            return { name: specs, value: donor.roomName }
         })
 
         let roomName: string = ""

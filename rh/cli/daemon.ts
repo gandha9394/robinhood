@@ -13,6 +13,7 @@ import { connectToPM2, PM2Process, PM2Error } from "./process.js";
 import inquirer, { Answers, Question } from "inquirer";
 import { red, magenta } from "colorette";
 import { ProcessDescription } from "pm2";
+import { generateName } from "./name-generator.js";
 
 export const initializeDaemon = async (maxCpu: string, maxMemory: string, maxDisk: string) => {
     return new Promise<void>(async (resolve, reject) => {
@@ -122,12 +123,14 @@ export class DaemonProcess {
     maxCpu: string;
     maxMemory: string;
     maxDisk: string;
+    roomName: string;
 
     constructor(pm2: any, maxCpu: string = "", maxMemory: string = "", maxDisk: string = "") {
         this._pm2 = pm2;
         this.maxCpu = maxCpu;
         this.maxMemory = maxMemory;
         this.maxDisk = maxDisk;
+        this.roomName = generateName()
         this.daemon = new PM2Process(pm2, DAEMON_PROCESS_SCRIPT, DAEMON_PROCESS_NAME, "daemon", [
             "--max-cpu",
             maxCpu,
@@ -135,14 +138,28 @@ export class DaemonProcess {
             maxMemory,
             "--max-disk",
             maxDisk,
+            "--room-name",
+            this.roomName,
         ]);
         this.daemonMetrics = new PM2Process(
             pm2,
             DAEMON_METRICS_PROCESS_SCRIPT,
             DAEMON_METRICS_PROCESS_NAME,
             "daemon-metrics",
-            [],
-            "*/5 * * * * *"
+            [
+                "--max-cpu",
+                maxCpu,
+                "--max-memory",
+                maxMemory,
+                "--max-disk",
+                maxDisk,
+                "--room-name",
+                this.roomName,
+            ],
+            {
+                cron: "*/5 * * * * *",
+                alwaysRestart: false
+            }
         );
     }
 
