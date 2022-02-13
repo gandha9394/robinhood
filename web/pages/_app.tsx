@@ -1,4 +1,4 @@
-import "../styles/globals.css";
+// import "../styles/globals.css";
 import "../styles/Robinhood/SetuFonts.css";
 import Head from 'next/head'
 import type { AppProps } from "next/app";
@@ -10,7 +10,7 @@ import { getSession, signIn } from "next-auth/client";
 import { GlobalLightStyles } from "../styles";
 import {Sidebar}  from "../components/Sidebar/Sidebar";
 import { DefaultSession } from "next-auth";
-import { RobinhoodLightTheme } from "../styles/Robinhood/Robinhood.light.theme";
+import { RobinhoodDarkTheme } from "../styles";
 
 function MyApp({ Component, pageProps: { ...pageProps } }: AppProps) {
     const [loading, setLoading] = useState(false);
@@ -49,7 +49,7 @@ function MyApp({ Component, pageProps: { ...pageProps } }: AppProps) {
                 <title>Robinhood</title>
                 <link rel="icon" href="/setu-icon.png"></link>
             </Head>
-            <ThemeProvider theme={RobinhoodLightTheme}>
+            <ThemeProvider theme={RobinhoodDarkTheme}>
                 <GlobalLightStyles/>
                 {paths.includes(router.pathname)?(<Component {...pageProps}/>):(
                     <>
