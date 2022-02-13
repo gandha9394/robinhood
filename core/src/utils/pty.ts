@@ -1,5 +1,6 @@
-import { IPty } from "node-pty";
+import pty, { IPty } from "node-pty";
 import readline from "readline";
+import logger from "./log.js";
 
 interface TerminalConfig {
   devtest?: boolean;
@@ -14,6 +15,11 @@ export interface Command extends STDOUTdata {
 }
 export interface CommandResult extends STDOUTdata {
   type: "RSLT";
+}
+
+// https://stackoverflow.com/questions/25245716/remove-all-ansi-colors-styles-from-strings/29497680
+export const clearANSIFormatting = (str: string) => {
+  return str.replace(/[\u001b\u009b][[()#;?]*(?:[0-9]{1,4}(?:;[0-9]{0,4})*)?[0-9A-ORZcf-nqry=><]/g, "")
 }
 
 export class Terminal {
@@ -34,35 +40,50 @@ export class Terminal {
   }
 
   //https://github.com/microsoft/node-pty/issues/429
-  isThisAnInputEcho(cmdStr: string) {
-    /* Docker output always contains user cli line
-    // Example:
-          pwd                                           
-│         /                                                           
-│         ]0;root@a52a3c0eaa27: /root@a52a3c0eaa27:/#
-      Splitting on "#" for now to get the actual cmdStr
+  // Function to clear input echo
+  sanitizeCommandResult(cmdStr: string) {
+    /* 
+      Docker output always contains user cli line AFTER the input echo
+      Example:
+        pwd                                           
+        /                                                           
+        ]0;root@a52a3c0eaa27: /root@a52a3c0eaa27:/#
+      This is sometimes sent separately or even *along with the output* 
+      So, we can't discard the entire line as it might contain the actual output too
+      Hence, removing the FIRST occurrence of the last command from the output
+      (along with any carriage returns)
     */
-    // if(cmdStr.includes("#")) {
-    //   cmdStr = cmdStr.split("#")[1]
-    // }
-    // console.log("cmdStr srray", Array.from(cmdStr))
-    cmdStr = cmdStr.split("\r\n")[0]
-    let _1 = cmdStr.trim()
+
+    let _1 = cmdStr
     let _2 = [...this.history].pop()?.data.trim()
-    // console.log("cmdStr trimmed", _1)
-    // console.log("history item trimmed", _2)
-    _1 = _1.split('\n')[0].trim()
-    // console.log("cmdStr modified", _1)
-    // console.log("condition", _1 === _2)
-    return _1 === _2;
+
+    if(_2) {
+      // Remove last command from the beginning
+      if(_1.indexOf(_2) === 0) {
+        _1 = _1.replace(_2, "")
+        cmdStr = cmdStr.replace(_2, "")
+      }
+
+      // Remove any combination of carriage returns from the beginning
+      if(_1.indexOf("\r\n") === 0) {
+        _1 = _1.replace("\r\n", "")
+      }
+      if(_1.indexOf("\r") === 0) {
+        _1 = _1.replace("\r", "")
+      }
+      if(_1.indexOf("\n") === 0) {
+        _1 = _1.replace("\n", "")
+      }
+    }
+    return _1;
   }
 
   set onoutput(onOutput: (commandResult: CommandResult) => void) {
     this._pty?.onData((cmdStr: string) => {
-      if (this.isThisAnInputEcho(cmdStr)) return;
+      cmdStr = this.sanitizeCommandResult(cmdStr);
       const commandResult: CommandResult = {
         type: "RSLT",
-        data:cmdStr,
+        data: cmdStr,
       };
       onOutput(commandResult);
     });

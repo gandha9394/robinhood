@@ -3,49 +3,76 @@ import { devLogger } from "utils/log.js";
 import { Terminal } from "utils/pty.js";
 import { RTCDonorPeer } from "utils/webrtc.js";
 import pty from "node-pty";
-import { startDockerContainer } from "rh/daemon/container.js";
+import { generateName } from "./name-generator";
+import { CONTAINER_PREFIX, SIGNALING_SERVER } from "rh/config";
 
 const argv = minimist(process.argv.slice(2));
-
-devLogger.info("Running daemon script");
 devLogger.debug("Arguments: " + JSON.stringify(argv));
 
-const generateName = () => "my_room_002";
+const MAX_CPU = argv["max-cpu"]
+const MAX_MEMORY = argv["max-memory"]
+const MAX_DISK = argv["max-disk"]
+const ROOM_NAME = generateName()
+
+devLogger.warn(`Starting daemon with room name: ${ROOM_NAME}`);
 
 const peer = new RTCDonorPeer({
-    roomName: generateName(),
-      signalingServer: process.env["RHSS"] || "ws://localhost:8080",
-    // signalingServer: process.env["RHSS"] || "ws://34.133.251.43:8080",
+    roomName: ROOM_NAME,
+    signalingServer: SIGNALING_SERVER,
 });
 
+let containerCreated = false;
 
-peer.connectedToPeer().then(() => {
+
+const restartContainer = async (dockerRestartCommand: string) => {
+    return new Promise<void>((resolve) => {
+        const tempProcess = pty.spawn("docker", dockerRestartCommand.split(" ").slice(1), {});
+        tempProcess.onExit(() => {
+            resolve()
+        })
+    })
+}
+
+
+peer.on("connection_established", () => {
     process.stdout.write("Connected to peer!")
     
     let dockerPtyTerminal: Terminal | null = null;
 
-    peer.onmessage = (message: string) => {
+    peer.onmessage = async (message: string) => {
         console.log(message)
         const messageObj = JSON.parse(message);
         
         if (messageObj.eventName == "create_container") {
-            let ptyProcess = pty.spawn("bash", [], {});
-            ptyProcess = startDockerContainer(ptyProcess, "ubuntu", "1G", "1.0", "1024");
+            const memoryLimit = "1g"
+            const cpus = "1.0"
+            const cpuShares = "1024"
+            const image = messageObj.data.image
+            const name = `${CONTAINER_PREFIX}_${ROOM_NAME}`
+            const shell = "bash"
+            const dockerExecCommand = `docker exec -it ${name} ${shell}`
+            const dockerRunCommand = `docker run -it --privileged=true --name=${name} --memory=${memoryLimit} --cpus=${cpus} --cpu-shares=${cpuShares} ${image} ${shell}`
+            const dockerRestartCommand = `docker restart ${name}`
+            
+            let ptyProcess = null;
+            if(containerCreated) {
+                await restartContainer(dockerRestartCommand)
+                ptyProcess = pty.spawn("docker", dockerExecCommand.split(" ").slice(1), {});
+            } else {
+                ptyProcess = pty.spawn("docker", dockerRunCommand.split(" ").slice(1), {});
+                containerCreated = true;
+            }
             
             dockerPtyTerminal = new Terminal({ ptyProcess: ptyProcess });
-
+            
             // Listeners
             dockerPtyTerminal.onoutput = (commandResult) => {
-                console.log("commandResult", commandResult)
-                if(!commandResult.data.includes("bash")){
-                    peer.send(JSON.stringify(commandResult));
-                }
-                else if(commandResult.data.includes('exit')){
-                    peer.send(JSON.stringify(commandResult));
-                    peer.close();
-                }
+                peer.send(JSON.stringify(commandResult));
             };
-            dockerPtyTerminal.onclose = devLogger.debug;
+            dockerPtyTerminal.onclose = (ev) => {
+                devLogger.debug(ev);
+                peer.close();
+            };
         }
 
         if (messageObj.eventName == "command") {

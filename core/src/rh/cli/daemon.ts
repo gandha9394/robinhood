@@ -10,10 +10,10 @@ import {
   DEFAULT_MAX_CPU,
   DEFAULT_MAX_DISK,
   DEFAULT_MAX_MEMORY,
-  getUserPreferences,
-  setUserPreferences,
-  UserPreferenceAnswers,
-} from "../config.js";
+  getDonorPreferences,
+  setDonorPreferences,
+} from "rh/config.js";
+import { stringify } from "querystring";
 
 export const initializeDaemon = async (
   maxCpu: string,
@@ -29,7 +29,7 @@ export const initializeDaemon = async (
       maxCpu: savedMaxCpu,
       maxMemory: savedMaxMemory,
       maxDisk: savedMaxDisk,
-    } = getUserPreferences();
+    } = getDonorPreferences();
 
     // Ask for limits if not provided
     let questions: Question[] = [];
@@ -70,8 +70,8 @@ export const initializeDaemon = async (
       });
     }
     try{
-    const answers = await inquirer.prompt<UserPreferenceAnswers>(questions);
-    setUserPreferences(
+    const answers = await inquirer.prompt(questions);
+    setDonorPreferences(
         maxCpu || answers.maxCpu,
         maxMemory||answers.maxMemory,
         maxDisk||answers.maxDisk
@@ -93,7 +93,7 @@ export const restartDaemon = async () => {
       maxCpu: savedMaxCpu,
       maxMemory: savedMaxMemory,
       maxDisk: savedMaxDisk,
-    } = getUserPreferences();
+    } = getDonorPreferences();
     await initializeDaemon(savedMaxCpu, savedMaxMemory, savedMaxDisk);
 };
 
