@@ -1,39 +1,20 @@
 import fetch from "isomorphic-fetch";
 import inquirer, { Answers } from "inquirer";
-import { red, green, bold } from "colorette";
+import { red, green, bold, magenta } from "colorette";
 import { clearANSIFormatting, PseudoTerminal } from "../utils/pty.js";
 import { RTCDoneePeer } from "../utils/webrtc.js";
 import { getConsumerPreferences, setConsumerPreferences, CENTRAL_SERVER, SIGNALING_SERVER, SUPPORTED_IMAGES } from "../config.js";
+import { Metric } from "./metric-types.js";
 import CLI from "clui";
 const { Spinner } = CLI;
 
-
-interface MetricContainer {
-    name: string;
-    cpu: string;
-    memory: string;
-}
-
-interface MetricRequest {
-    roomName: string;
-    availableCpu: string;
-    availableMemory: string;
-    availableDisk: string;
-    containers?: {
-        [key: string]: MetricContainer
-    }
-}
-
-interface Metric extends MetricRequest {
-    lastUpdated: string;
-}
 
 export const listDonors = async (image?: string) => {
     return new Promise<void>(async (resolve, reject) => {
         const snipper = new Spinner(`Fetching list of avaiable donors...`);
         snipper.start();
 
-        const url = `http://${CENTRAL_SERVER}/metrics`
+        const url = `http://${CENTRAL_SERVER}/metrics/available`
         let donors: Metric[] = await fetch(url)
             .then(res => {
                 snipper.stop();
@@ -46,8 +27,15 @@ export const listDonors = async (image?: string) => {
                 return res.metrics;
             })
             .catch((err) => {
-                console.log(err)
+                console.log(magenta(err.message))
+                console.log(red("Could not connect to central server. Please try again later."))
+                process.exit(1);
             })
+
+        if(donors.length == 0) {
+            console.log(red("No donors available at the moment. Please try again later."))
+            process.exit();
+        }
 
         const SEPARATOR = "∘"
         const donorSelectionList: any[] = donors.map(donor => {
@@ -202,7 +190,6 @@ const confirmBeforeTerminate = async (peer: RTCDoneePeer) => {
         if (response === "y" || response === "Y") {
             terminateProcess(peer)
         }
-        return;
     });
 }
 
