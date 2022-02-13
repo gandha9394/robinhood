@@ -11,7 +11,8 @@
     "test": "./test.sh",
     "start": "concurrently \"tsc -w\" \"nodemon dist\"",
     "dev": "npx tsc && node dist",
-    "package": "pkg . --targets node14-macos-x64 --output rh"
+    "package": "pkg . --targets node14-macos-x64 --output rh",
+    "distribute": "npx tsc && npm i -g ."
   },
   "repository": {
     "type": "git",

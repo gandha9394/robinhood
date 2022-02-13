@@ -1,6 +1,10 @@
 import Conf from "conf";
 import dotenv from "dotenv";
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
 dotenv.config();
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
 
 //////////////////////////////////
 // Global config
@@ -11,10 +15,10 @@ export const DEFAULT_MAX_DISK = process.env.DEFAULT_MAX_DISK || "1G";
 
 export const DEFAULT_DAEMON_PORT = process.env.DEFAULT_DAEMON_PORT || "8080";
 
-export const DAEMON_PROCESS_SCRIPT = "./dist/daemon/index.js";
+export const DAEMON_PROCESS_SCRIPT = __dirname + "/daemon/index.js";
 export const DAEMON_PROCESS_NAME = "rh-daemon";
 
-export const DAEMON_METRICS_PROCESS_SCRIPT = "./dist/metrics/index.js";
+export const DAEMON_METRICS_PROCESS_SCRIPT = __dirname + "/metrics/index.js";
 export const DAEMON_METRICS_PROCESS_NAME = "rh-daemon-metrics";
 export const CONTAINER_PREFIX = "rh_container";
 
