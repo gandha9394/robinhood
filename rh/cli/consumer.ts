@@ -1,16 +1,30 @@
-import { getConsumerPreferences, setConsumerPreferences, SIGNALING_SERVER, SUPPORTED_IMAGES } from "../config.js";
-import { red, green, bold } from "colorette";
+import fetch from "isomorphic-fetch";
 import inquirer, { Answers } from "inquirer";
+import { red, green, bold } from "colorette";
 import { clearANSIFormatting, PseudoTerminal } from "../utils/pty.js";
 import { RTCDoneePeer } from "../utils/webrtc.js";
+import { getConsumerPreferences, setConsumerPreferences, CENTRAL_SERVER, SIGNALING_SERVER, SUPPORTED_IMAGES } from "../config.js";
 import CLI from "clui";
 const { Spinner } = CLI;
 
-interface Donor {
+
+interface MetricContainer {
+    name: string;
+    cpu: string;
+    memory: string;
+}
+
+interface MetricRequest {
     roomName: string;
     availableCpu: string;
     availableMemory: string;
     availableDisk: string;
+    containers?: {
+        [key: string]: MetricContainer
+    }
+}
+
+interface Metric extends MetricRequest {
     lastUpdated: string;
 }
 
@@ -18,27 +32,22 @@ export const listDonors = async (image?: string) => {
     return new Promise<void>(async (resolve, reject) => {
         const snipper = new Spinner(`Fetching list of avaiable donors...`);
         snipper.start();
-        await new Promise<void>((res,rej) => setTimeout(() => res(), 2000))
-        snipper.stop();
-        // TODO: Fetch from central server
-        
-        // Dummy list fetched from server 
-        let donors: Donor[] = [
-            {
-                roomName: "swinging_spiderman",
-                availableCpu: "1.0",
-                availableMemory: "1G",
-                availableDisk: "1G",
-                lastUpdated: "2022-02-12T12:14:44.386Z"
-            },
-            {
-                roomName: "flying_thor",
-                availableCpu: "2.0",
-                availableMemory: "2G",
-                availableDisk: "1G",
-                lastUpdated: "2022-02-12T12:04:44.386Z"
-            },
-        ]
+
+        const url = `http://${CENTRAL_SERVER}/metrics`
+        let donors: Metric[] = await fetch(url)
+            .then(res => {
+                snipper.stop();
+                if(res.status != 200) {
+                    throw new Error(JSON.stringify(res))
+                }
+                return res.json()
+            })
+            .then((res) => {
+                return res.metrics;
+            })
+            .catch((err) => {
+                console.log(err)
+            })
 
         const SEPARATOR = "∘"
         const donorSelectionList: any[] = donors.map(donor => {
@@ -76,7 +85,22 @@ export const listDonors = async (image?: string) => {
 
 export const connectToDonor = async (roomName: string, image?: string) => {
     return new Promise<void>(async (resolve, reject) => {
-        // TODO: Check if roomName is valid
+        const snipper = new Spinner(`Verifying '${roomName}'...`);
+        snipper.start();
+
+        const url = `http://${CENTRAL_SERVER}/metrics/${roomName}`
+        await fetch(url)
+            .then(res => {
+                snipper.stop();
+                if(res.status != 200) {
+                    console.log(red("Donor not available. Try checking for avaiable donors using `rh list`."))
+                    process.exit(1);
+                }
+                return res.json()
+            })
+            .catch((err) => {
+                console.log(err)
+            })
 
         const { image: savedImage } = getConsumerPreferences();
         
@@ -103,7 +127,7 @@ export const connectToDonor = async (roomName: string, image?: string) => {
                     }
                 }); 
         } else {
-            console.log(green(`\nOS to run: ${bold(image!)}`))
+            console.log(green(`\nOS to run: ${bold(image)}`))
         }
 
         // Save image in consumer preferences
@@ -153,7 +177,6 @@ const startPeeringConnection = (roomName: string, image: string) => {
         );
     
         ptyTerminal.oninput = (command) => {
-            // const validatedCmd = validateCommand(command);
             return peer.send(
                 JSON.stringify({
                     eventName: "command",
