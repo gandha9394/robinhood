@@ -13,7 +13,6 @@ import {
   getDonorPreferences,
   setDonorPreferences,
 } from "rh/config.js";
-import { stringify } from "querystring";
 
 export const initializeDaemon = async (
   maxCpu: string,

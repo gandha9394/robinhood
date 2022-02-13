@@ -64,7 +64,7 @@ const stopSpinner = function ([processName, _, __]: unknown) {
 export default {
   connect: (processName: string) =>
     StartSpinner_Execute_StopSpinner([processName, "connect", undefined]),
-  disconnect,
+  disconnect:disconnect.bind(pkg),
   start: (opts: StartOptions) =>
     StartSpinner_Execute_StopSpinner([opts.name!, "start", opts]),
   restart: (processName: string) =>
@@ -73,7 +73,7 @@ export default {
     StartSpinner_Execute_StopSpinner([processName, "stop", undefined]),
   delete: (processName: string) =>
     StartSpinner_Execute_StopSpinner([processName, "delete", undefined]),
-  list: PM2.list,
+  list: PM2.list.bind(pkg),
   isDaemon: (pd: ProcessDescription) => pd.name === DAEMON_PROCESS_NAME,
   isDaemonMetrics: (pd: ProcessDescription) =>
     pd.name === DAEMON_METRICS_PROCESS_NAME,
