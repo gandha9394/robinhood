@@ -44,12 +44,12 @@ program
   .action(restartDaemon);
 
 ///////////////////////
-//  commands
+// Consumer commands
 ///////////////////////
 program
   .command("list")
   .description("List donors to connect")
-  .action(listDonors);
+  .action(()=>listDonors());
 
 program
   .command("connect")

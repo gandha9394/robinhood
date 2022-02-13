@@ -11,6 +11,7 @@
     "clean": "rm -rf dist",
     "build": "tsc && npx rollup -c && chmod 711 ./dist/.rhbundle.js",
     "run": "npx .",
+    "distribute":"tsc && npm i -g",
     "help": "echo  Note: running \\( npx . \\) with an intention of running this module DOES NOT WORK. First run \\(npm test\\) | rainbow -r '.*'",
     "prepare": "husky install"
   },

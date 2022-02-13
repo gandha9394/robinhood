@@ -80,3 +80,4 @@ export default {
   isOnline: (pd: ProcessDescription) =>
     pd && pd.pm2_env && pd.pm2_env.status === "online",
 };
+//handle room name here somehow from daemon.ts

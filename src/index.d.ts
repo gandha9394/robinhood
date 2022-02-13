@@ -17,7 +17,5 @@ declare module 'webrtc.io'{
     }
     function listen(server:Server):SignalingServerManager
 }
-
-
 declare module 'wrtc';
 declare module 'colorette';

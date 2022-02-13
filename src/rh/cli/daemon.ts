@@ -13,6 +13,7 @@ import {
   getDonorPreferences,
   setDonorPreferences,
 } from "rh/config.js";
+import { generateName } from "./name-generator.js";
 
 export const initializeDaemon = async (
   maxCpu: string,
@@ -102,6 +103,7 @@ export const killDaemon = async () => {
     await pm2.disconnect();
 }
 export class DaemonProcess {
+  roomName:string=generateName();
   static start = () =>
     Promise.all([
       pm2.start({

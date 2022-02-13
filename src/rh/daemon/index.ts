@@ -3,7 +3,6 @@ import { devLogger } from "utils/log.js";
 import { Terminal } from "utils/pty.js";
 import { RTCDonorPeer } from "utils/webrtc.js";
 import pty from "node-pty";
-import { generateName } from "./name-generator";
 import { CONTAINER_PREFIX, SIGNALING_SERVER } from "rh/config";
 
 const argv = minimist(process.argv.slice(2));
@@ -12,7 +11,7 @@ devLogger.debug("Arguments: " + JSON.stringify(argv));
 const MAX_CPU = argv["max-cpu"]
 const MAX_MEMORY = argv["max-memory"]
 const MAX_DISK = argv["max-disk"]
-const ROOM_NAME = generateName()
+const ROOM_NAME = argv["room-name"]
 
 devLogger.warn(`Starting daemon with room name: ${ROOM_NAME}`);
 
