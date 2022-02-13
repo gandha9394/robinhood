@@ -1,7 +1,8 @@
 import { pipe } from "ramda";
 import { WebSocket, ErrorEvent} from "ws";
-import { RTCPeerConnection, RTCSessionDescription, RTCIceCandidate } from "wrtc"
-import logger, { Deferred } from "utils/log.js";
+import pkg from "wrtc";
+const { RTCPeerConnection, RTCSessionDescription, RTCIceCandidate } = pkg;
+import logger from "./log.js";
 
 /**--------CONFIG & SETUP--------------------- */
 
@@ -13,7 +14,7 @@ type StrictConfig = {
   roomName: string;
   trickle: boolean;
   isDonor: boolean;
-  onclose?: ()=>void
+  close: (p: Peer) => void;
 };
 type Config = Partial<StrictConfig>;
 type PeerHandle = {
@@ -71,15 +72,13 @@ class Peer {
   config: Config;
   whoAmI: SocketId = "";
   _: Record<any, any> = {};
-  onclose?: ()=>void
 
   constructor(config: Config) {
     this.config = {
       ...defaultConfig,
       ...config,
     };
-    this.onclose= config.onclose
-    logger.debug("TRICKLE mode=", this.config.trickle);
+    logger.debug("TRICKLE mode=" + this.config.trickle);
     this.register = this.register.bind(this);
     this.fire = this.fire.bind(this);
     this.on = this.on.bind(this);
@@ -125,7 +124,12 @@ class Peer {
   register(socket: WebSocket | null) {
     socket &&
       socket.send(
-        JSON.stringify({ eventName: "join_room", data: this.config.roomName })
+        JSON.stringify({ 
+          eventName: "join_room", 
+          data: {
+            room: this.config.roomName
+          } 
+        })
       );
     return socket;
   }
@@ -145,12 +149,11 @@ class Peer {
     if (socket)
       socket.onclose = () => {
         //TODO: destructor and cleanup
-        logger.info(
+        logger.warn(
           "Socket closed, Peer killed. I will no longer listen to any commands or REST API calls"
         );
         console.error("Socket server closed connection.")
-        if(this.onclose) this.onclose() 
-        else process.exit(1)
+        process.exit(1)
       };
     return socket;
   }
@@ -188,21 +191,13 @@ class Peer {
   relayMessageThroughCentralServer(msg: any) {
     this.sendMessageToCentralServer(msg); //L.O.L
   }
-
-  close=()=>{
-    this.socket &&
-    this.socket.close()
-  }
 }
 
 class RTCPeer extends Peer {
   peerHandle: PeerHandle | null = null;
-  cerberus: Deferred = new Deferred();
-  _isDonor: boolean = false;
 
   constructor(config: Config) {
     super(config);
-    this._isDonor = !!config.isDonor;
     this.on("receive_ice_candidate", (data: any) => {
       this.onReceiveIceCandidate(data.socketId, data.candidate);
     });
@@ -211,13 +206,10 @@ class RTCPeer extends Peer {
     this.createPeerHandle = this.createPeerHandle.bind(this);
     this.dataChannelOnMessage = this.dataChannelOnMessage.bind(this);
     this.dataChannelOnOpen = this.dataChannelOnOpen.bind(this);
+    this.dataChannelOnClose = this.dataChannelOnClose.bind(this);
     this.onReceiveIceCandidate = this.onReceiveIceCandidate.bind(this);
     this.peerConnectionOnDataChannel =
       this.peerConnectionOnDataChannel.bind(this);
-    this.peerConnectionOnNegotiationNeeded =
-      this.peerConnectionOnNegotiationNeeded.bind(this);
-    this.peerConnectionOnIceConnectionStateChange =
-      this.peerConnectionOnIceConnectionStateChange.bind(this);
   }
   send(jsonStringified: string) {
     if (
@@ -243,12 +235,9 @@ class RTCPeer extends Peer {
       logger.silly("Attached onmessage handler");
     }
   }
-  connectedToPeer() {
-    return this.cerberus.promise;
-  }
 
   createPeerHandle(socketId: SocketId) {
-    const peerConnection = this.createRTCPeerConnection(socketId, this._isDonor);
+    const peerConnection = this.createRTCPeerConnection(socketId, this._["isDonor"]);
     return { socketId, peerConnection };
   }
 
@@ -321,8 +310,6 @@ class RTCPeer extends Peer {
     pipe(
       this.peerConnectionOnDataChannel,
       this.peerConnectionOnIceCandidate
-      // this.peerConnectionOnIceConnectionStateChange,
-      // this.peerConnectionOnNegotiationNeeded
     )(pc);
     return pc;
   }
@@ -383,35 +370,14 @@ class RTCPeer extends Peer {
     };
     return peerConnection;
   }
-  peerConnectionOnIceConnectionStateChange(peerConnection: RTCPeerConnection) {
-    peerConnection.oniceconnectionstatechange = (ev) => {
-      if (peerConnection.iceConnectionState === "failed") {
-        logger.warn(
-          "ALERT: ICE RESTART!...good things come to those who WAIT!"
-        );
-        peerConnection.restartIce();
-      }
-    };
-    return peerConnection;
-  }
-  peerConnectionOnNegotiationNeeded(peerConnection: RTCPeerConnection) {
-    peerConnection.onnegotiationneeded = async (ev) => {
-      if (this._["isDonor"]) {
-        const offer = await peerConnection.createOffer();
-        await peerConnection.setLocalDescription(offer);
-      }
-    };
-    return peerConnection;
-  }
   dataChannelOnOpen(dataChannel: RTCDataChannel) {
     dataChannel.onopen = () => {
       this.fire("connection_established");
-      this.cerberus.resolve(null);
     };
     return dataChannel;
   }
   dataChannelOnClose(dataChannel: RTCDataChannel) {
-    dataChannel.onclose = () => logger.debug("DataChannel closed");
+    dataChannel.onclose = () => logger.warn("DataChannel closed");
     return dataChannel;
   }
   dataChannelOnMessage(dataChannel: RTCDataChannel) {
@@ -435,18 +401,26 @@ class RTCPeer extends Peer {
       logger.error(`DataChannel error:${err.toString()}`);
     return dataChannel;
   }
+
+  close() {
+    if(this.config.close) {
+      this.config.close(this)
+    } else {
+      this.peerHandle!.dataChannel!.close();
+    }
+  }
 }
 
 export class RTCDonorPeer extends RTCPeer {
   count: number = 0;
   constructor(config: Config) {
-    super({...config, isDonor: true});
+    super(config);
     this._["isDonor"] = true;
     this.on("new_peer_connected", async (data: any) => {
-      if (++this.count > 1) {
-        logger.error("This Donor supports only single Donee. Exiting..");
-        process.exit(1);
-      }
+      // if (++this.count > 1) {
+      //   logger.error("This Donor supports only single Donee. Exiting..");
+      //   process.exit(1);
+      // }
       this.peerHandle = this.createPeerHandle(data.socketId);
       this.peerHandle.dataChannel = this.createDataChannel(data.socketId);
       const offer = await this.peerHandle.peerConnection.createOffer();
@@ -478,7 +452,7 @@ export class RTCDonorPeer extends RTCPeer {
 }
 export class RTCDoneePeer extends RTCPeer {
   constructor(config: Config) {
-    super({...config, isDonor: false});
+    super(config);
     this._["isDonor"] = false;
     this.on("receive_offer", async (data: any) => {
       await this.receiveOffer(data.socketId, data.sdp);

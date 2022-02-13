@@ -11,7 +11,7 @@ import {
   ProcessDescription,
 } from "pm2";
 import { green } from "colorette";
-import { Spinner } from "clui";
+import CLI from "clui";
 import { andThen, pipe } from "ramda";
 import { DAEMON_METRICS_PROCESS_NAME, DAEMON_PROCESS_NAME } from "rh/config.js";
 
@@ -30,7 +30,7 @@ const PM2 = {
 const presentParticiple = (verb: Verb) =>
   verb.endsWith("e") ? verb.slice(0, -1) + "ing" : verb + "ing";
 
-const Spinners: Record<ProcessName, Spinner> = {};
+const Spinners: Record<ProcessName, CLI.Spinner> = {};
 /***/ //////////////////////////////////////////////////// */
 /**/ ////----------The Pipe-------------------/////////////*/
 const StartSpinner_Execute_StopSpinner = (monad: Monad) =>
@@ -42,7 +42,7 @@ const StartSpinner_Execute_StopSpinner = (monad: Monad) =>
 /***/ //////////////////////////////////////////////////// */
 /**/ ////----Parts that make up the pipe------/////////////*/
 const startSpinner = function ([processName, _, __]: Monad): Monad {
-  Spinners[processName] = new Spinner(
+  Spinners[processName] = new CLI.Spinner(
     `${presentParticiple("start")} ${processName} process...`
   );
   Spinners[processName].start();

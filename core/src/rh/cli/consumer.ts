@@ -4,7 +4,6 @@ import inquirer, { Answers } from "inquirer";
 import { clearANSIFormatting, PseudoTerminal } from "utils/pty.js";
 import { RTCDoneePeer } from "utils/webrtc.js";
 import CLI from "clui";
-const { Spinner } = CLI;
 
 interface Donor {
     roomName: string;
@@ -16,7 +15,7 @@ interface Donor {
 
 export const listDonors = async (image?: string) => {
     return new Promise<void>(async (resolve, reject) => {
-        const snipper = new Spinner(`Fetching list of avaiable donors...`);
+        const snipper = new CLI.Spinner(`Fetching list of avaiable donors...`);
         snipper.start();
         await new Promise<void>((res,rej) => setTimeout(() => res(), 2000))
         snipper.stop();
@@ -118,7 +117,7 @@ export const connectToDonor = async (roomName: string, image?: string) => {
 };
 
 const startPeeringConnection = (roomName: string, image: string) => {
-    const snipper = new Spinner(`Connecting to '${roomName}'...`);
+    const snipper = new CLI.Spinner(`Connecting to '${roomName}'...`);
     snipper.start();
     
     // Start peering connection

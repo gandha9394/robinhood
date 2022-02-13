@@ -6,7 +6,6 @@ import { loginUser } from "rh/cli/auth.js";
 import { initializeDaemon, killDaemon, restartDaemon } from "rh/cli/daemon.js";
 import { connectToDonor, listDonors } from "./cli/consumer";
 import { SUPPORTED_IMAGES } from "./config";
-
 const program = new Command();
 
 program
