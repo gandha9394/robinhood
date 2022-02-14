@@ -71,7 +71,7 @@ const sendMetrics = async () => {
             devLogger.info("Metrics sent")
         })
         .catch((err) => {
-            devLogger.error("Failed to push metrics")
+            devLogger.error(`Failed to push metrics to ${url}`)
             console.log(err)
         })
 }

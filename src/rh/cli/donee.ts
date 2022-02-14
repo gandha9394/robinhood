@@ -37,6 +37,7 @@ const listRooms = async () => {
 
 const chooseFromAvailableRooms = async (roomsMeta: any[]) => {
   const SEPARATOR = "∘";
+  console.log(magenta(LIST_DONORS_ENDPOINT))
   const donorSelectionList: any[] = roomsMeta.map((donor: any) => {
     const timeDiff = Math.round(
       (new Date().getTime() - new Date(donor.lastUpdated).getTime()) / 1000
