@@ -1,21 +1,25 @@
-
 export interface ContainerMetric {
-    Name: string;
-    [key: string]: string;
+  Name: string;
+  [key: string]: string;
 }
 
 export interface MetricRequest {
-    roomName: string;
-    availableCpu: string;
-    availableMemory: string;
-    availableDisk: string;
-    containers?: {
-        [key: string]: ContainerMetric
-    }
+  roomName: string;
+  availableCpu: string;
+  availableMemory: string;
+  availableDisk: string;
+  containers?: {
+    [key: string]: ContainerMetric;
+  };
 }
 
 export interface Metric extends MetricRequest {
-    lastUpdated: string;
-    containerHistory: ContainerMetric[]
+  lastUpdated: string;
+  containerHistory: ContainerMetric[];
 }
-
+export interface MetricStore {
+  [key: string]: Metric
+}
+  export interface CommanderImageAnswer {
+    image: "ubuntu" | "debian" | "fedora";
+  }

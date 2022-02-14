@@ -1,9 +1,7 @@
-import pty, { IPty } from "node-pty";
-import readline from "readline";
-import logger from "./log.js";
+import { IPty } from "node-pty";
+import readline from "node:readline";
 
 interface TerminalConfig {
-  devtest?: boolean;
   ptyProcess?: IPty;
 }
 interface STDOUTdata {
@@ -23,20 +21,11 @@ export const clearANSIFormatting = (str: string) => {
 }
 
 export class Terminal {
-  /**
-   * JOB: take input via method call, execute and send output through callback (another method)
-   * but NEVER print
-   */
-  static PAUSE = "\x13";
-  static RESUME = "\x11";
   _pty?: IPty;
   history: Array<Command> = [];
 
-  constructor({ devtest, ptyProcess }: TerminalConfig = {}) {
-    if (devtest) this.devtest();
-    else {
+  constructor({ ptyProcess }: TerminalConfig) {
       this._pty = ptyProcess;
-    }
   }
 
   //https://github.com/microsoft/node-pty/issues/429
@@ -96,33 +85,12 @@ export class Terminal {
     this.history.push(data);
     this._pty!.write(data.data);
   }
-
-  pause() {
-    this._pty!.write(Terminal.PAUSE);
-  }
-  resume() {
-    this._pty!.write(Terminal.RESUME);
-  }
-  devtest() {
-    return;
-  }
-}
-interface PseudoTerminalConfig {
-  customPrinter?: (result: CommandResult) => void;
-  devtest?: boolean;
 }
 export class PseudoTerminal {
-  /**
-   * JOB: take input and print --> === === --> take output and print
-   * but NEVER Execute
-   */
-  customPrinter: PseudoTerminalConfig["customPrinter"];
   history: Array<Command> = [];
   rl: readline.Interface;
 
-  constructor({ devtest, customPrinter }: PseudoTerminalConfig = {}) {
-    if (devtest) this.devtest();
-    this.customPrinter = customPrinter;
+  constructor() {
     this.rl = readline.createInterface({
       input: process.stdin,
       prompt: "",
@@ -138,15 +106,8 @@ export class PseudoTerminal {
       this.history.push(command);
     });
   }
-  set onclose(onClose: (data: any) => void) {
-    onClose(this.history);
-  }
 
   print(result: CommandResult) {
-    if (this.customPrinter) this.customPrinter(result);
-    else process.stdout.write(result.data);
-  }
-  devtest() {
-    return;
+    process.stdout.write(result.data);
   }
 }

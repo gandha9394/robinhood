@@ -1,7 +1,7 @@
-import readline from "readline";
+import readline from "node:readline";
 
 type Interval = ReturnType<typeof setInterval>;
-export default function spinner(msg: string, waitForSeconds?: number, callback?: (i: Interval) => void) {
+export default function spinner(msg: string, waitForSeconds?: number, callback?: (i: Interval) => undefined) {
     console.log("\\033[2J");
     for (let i = 0; i < process.stdout.getWindowSize()[1]; i++) console.log("\r\n");
     let frame = 0;

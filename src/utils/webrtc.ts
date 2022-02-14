@@ -1,11 +1,14 @@
 import { pipe } from "ramda";
-import { WebSocket, ErrorEvent} from "ws";
+import { WebSocket, ErrorEvent } from "ws";
 import pkg from "wrtc";
-const { RTCPeerConnection, RTCSessionDescription, RTCIceCandidate } = pkg;
+const { RTCPeerConnection, RTCSessionDescription, RTCIceCandidate }: any = pkg;
 import logger from "./log.js";
 
 /**--------CONFIG & SETUP--------------------- */
-
+type RTCDataChannel = any;
+type RTCPeerConnection = any;
+type RTCIceCandidate = any;
+type RTCSessionDescription = any;
 type SocketId = string;
 type EventName = string;
 type StrictConfig = {
@@ -124,11 +127,11 @@ class Peer {
   register(socket: WebSocket | null) {
     socket &&
       socket.send(
-        JSON.stringify({ 
-          eventName: "join_room", 
+        JSON.stringify({
+          eventName: "join_room",
           data: {
-            room: this.config.roomName
-          } 
+            room: this.config.roomName,
+          },
         })
       );
     return socket;
@@ -136,27 +139,30 @@ class Peer {
 
   //category:util
   handleError(socket: WebSocket | null) {
-    if (socket) socket.onerror = (err:ErrorEvent) => {
-      logger.error(err);
-      console.error("Failed to connect to socket. Check channel server configuration")
-      process.exit(1)
-    }
+    if (socket)
+      socket.onerror = (err: ErrorEvent) => {
+        logger.error(err);
+        console.error(
+          "Failed to connect to socket. Check channel server configuration"
+        );
+        process.exit(1);
+      };
     return socket;
   }
 
   //category:util
-  handleClose = (socket: WebSocket | null) =>{
+  handleClose = (socket: WebSocket | null) => {
     if (socket)
       socket.onclose = () => {
         //TODO: destructor and cleanup
         logger.warn(
           "Socket closed, Peer killed. I will no longer listen to any commands or REST API calls"
         );
-        console.error("Socket server closed connection.")
-        process.exit(1)
+        console.error("Socket server closed connection.");
+        process.exit(1);
       };
     return socket;
-  }
+  };
   //category:util
   getSocketIdForPeerConnection(peerConnection: RTCPeerConnection) {
     for (let socketId in this.peerConnections)
@@ -237,7 +243,10 @@ class RTCPeer extends Peer {
   }
 
   createPeerHandle(socketId: SocketId) {
-    const peerConnection = this.createRTCPeerConnection(socketId, this._["isDonor"]);
+    const peerConnection = this.createRTCPeerConnection(
+      socketId,
+      this._["isDonor"]
+    );
     return { socketId, peerConnection };
   }
 
@@ -283,13 +292,12 @@ class RTCPeer extends Peer {
   sendAnswer(socketId: SocketId) {
     this.sendSdp(socketId);
   }
-  createRTCPeerConnection(socketId: SocketId, isDonor: boolean ) {
-    
+  createRTCPeerConnection(socketId: SocketId, isDonor: boolean) {
     if (socketId in this.peerConnections) {
       logger.debug("RTCPeerConnection already exists for socketID:" + socketId);
       return;
     }
-    const donorConnection =[
+    const donorConnection = [
       {
         urls: `${this.config.iceServer}`,
       },
@@ -299,13 +307,13 @@ class RTCPeer extends Peer {
         credential: "6UM588cb3ZTRfsn",
       },
     ];
-    const doneeConnection =[
+    const doneeConnection = [
       {
         urls: `${this.config.iceServer}`,
       },
     ];
     const pc = (this.peerConnections[socketId] = new RTCPeerConnection({
-      iceServers: isDonor?donorConnection:doneeConnection
+      iceServers: isDonor ? donorConnection : doneeConnection,
     }));
     pipe(
       this.peerConnectionOnDataChannel,
@@ -403,8 +411,8 @@ class RTCPeer extends Peer {
   }
 
   close() {
-    if(this.config.close) {
-      this.config.close(this)
+    if (this.config.close) {
+      this.config.close(this);
     } else {
       this.peerHandle!.dataChannel!.close();
     }
@@ -461,12 +469,13 @@ export class RTCDoneePeer extends RTCPeer {
       if (this.config.trickle) this.sendAnswer(data.socketId);
     });
     this.on("get_peers", (data: Command.getPeers) => {
-      
       if (data.connections.length > 1) {
         logger.error(
           "Looks like someone else joined the room. Only Donor and me(Donee) were supposed to be there. Exiting..."
         );
-        console.error("Looks like someone else is already connected to the peer. Exiting...");
+        console.error(
+          "Looks like someone else is already connected to the peer. Exiting..."
+        );
         process.exit(1);
       }
       if (data.connections.length === 1) {

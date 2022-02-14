@@ -1,3 +1,4 @@
+import ora from "ora";
 import { createLogger, format, transports } from "winston";
 const { combine, printf } = format;
 
@@ -6,7 +7,7 @@ const logFormat = printf(({ level, message, stack }) => {
 });
 
 const logger = createLogger({
-    level: "silly",
+    level: "info",
     silent: false, //set this to true later
     // format: combine(format.errors({ stack: true }), format.colorize({ all: true }), logFormat),
     format: combine(format.errors({ stack: true }), logFormat),
@@ -20,14 +21,6 @@ export const devLogger = createLogger({
     format: combine(format.errors({ stack: true }), format.colorize({ all: true }), logFormat),
     transports: [new transports.Console()],
 });
-export default logger;
+export const Spinner = ora();
 
-export class Deferred {
-    promise: Promise<null>;
-    resolve: Function = () => logger.debug("The Watchdog of the underworld");
-    constructor() {
-        this.promise = new Promise((res) => {
-            this.resolve = res;
-        });
-    }
-}
+export default logger;

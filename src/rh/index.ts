@@ -1,12 +1,13 @@
-#!/usr/bin/env node
 import { Command, InvalidArgumentError, Option } from "commander";
 import figlet from "figlet";
 import { yellowBright, bold } from "colorette";
-import { loginUser } from "rh/cli/auth.js";
-import { initializeDaemon, killDaemon, restartDaemon } from "rh/cli/daemon.js";
-import { connectToDonor, listDonors } from "./cli/consumer";
-import { SUPPORTED_IMAGES } from "./config";
-import InitBroker from "signaling_server";
+import { loginUser } from "../utils/auth.js";
+import { DonorActions } from "./cli/donor.js";
+import { DoneeActions } from "./cli/donee.js";
+import { BrokerActions } from "./cli/broker.js";
+
+import { SUPPORTED_IMAGES } from "./config.js";
+import { andThen, pipe } from "ramda";
 const program = new Command();
 
 program
@@ -15,7 +16,7 @@ program
   .version("0.1.0");
 
 ///////////////////////
-// Auth commands
+// Auth commands // NOT IMPLEMENTED
 ///////////////////////
 program
   .command("login")
@@ -24,7 +25,7 @@ program
   .action(loginUser);
 
 ///////////////////////
-// Daemon commands
+// Donor Commands
 ///////////////////////
 program
   .command("init")
@@ -32,16 +33,16 @@ program
   .option("--max-memory <percent>", "Max Memory % to allocate")
   .option("--max-disk <size>", "Max disk space to allocate")
   .description("Initialize rh daemon")
-  .action((options: any, ...args: any) => {
-    initializeDaemon(options.maxCpu, options.maxMemory, options.maxDisk);
+  .action((options: any, _: any) => {
+    DonorActions.init(options.maxCpu, options.maxMemory, options.maxDisk);
   });
 
-program.command("kill").description("Kill rh daemon").action(killDaemon);
+program.command("kill").description("Kill rh daemon").action(DonorActions.stop);
 
 program
   .command("restart")
   .description("Restart rh daemon")
-  .action(restartDaemon);
+  .action(DonorActions.restart);
 
 ///////////////////////
 // Consumer commands
@@ -49,24 +50,36 @@ program
 program
   .command("list")
   .description("List donors to connect")
-  .action(()=>listDonors());
+  .action(async () => {
+    pipe(
+      DoneeActions.listRooms,
+      andThen(DoneeActions.chooseFromAvailableRooms),
+      andThen(DoneeActions.checkRoomAvailability),
+      andThen(DoneeActions.obtainImageName)
+    )().then(([roomName, image]) => DoneeActions.connect(roomName, image));
+  });
 
 program
   .command("connect")
-  .argument("[donorName]", "Donor name to connect")
+  .argument("[roomName]", "Donor name to connect")
   .addOption(
     new Option("-o, --os <image>", "OS to run on donor").choices(
       SUPPORTED_IMAGES
     )
   )
   .description("Connect to a donor")
-  .action((donorName, options) => {
-    if (donorName) {
-      connectToDonor(donorName, options.os);
+  .action(async (roomName, { os }) => {
+    if (roomName) {
+      DoneeActions.connect(roomName, os); // os means image
     } else {
-      listDonors(options.os);
+      pipe(
+        DoneeActions.listRooms,
+        andThen(DoneeActions.chooseFromAvailableRooms),
+        andThen(DoneeActions.checkRoomAvailability)
+      )().then((roomName) => DoneeActions.connect(roomName, os));
     }
   });
+
 program
   .command("init-broker", { hidden: true })
   .addOption(
@@ -76,7 +89,7 @@ program
   )
   .description("Start the WebRTC signaling server")
   .action((options) => {
-    InitBroker(options.port);
+    BrokerActions.startServer(options.port);
   });
 
 function parsePort(port: string, _: number): number {
