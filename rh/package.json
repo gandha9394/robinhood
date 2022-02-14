@@ -1,19 +1,15 @@
 {
-  "name": "robinhood-cli",
-  "version": "1.0.0",
-  "description": "terminal sharing from wherever, whenever",
+  "name": "setu-robinhood",
+  "version": "0.1.1",
+  "description": "Share your machine resources with the ones who need them",
   "main": "./dist/index.js",
   "type": "module",
   "bin": {
     "rh": "./dist/index.js"
   },
-  "scripts": {
-    "test": "./test.sh",
-    "start": "concurrently \"tsc -w\" \"nodemon dist\"",
-    "dev": "npx tsc && node dist",
-    "package": "pkg . --targets node14-macos-x64 --output rh",
-    "distribute": "npx tsc && npm i -g ."
-  },
+  "files" : [
+    "dist"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/gandha9394/robinhood.git"
@@ -25,12 +21,19 @@
     "webrtc",
     "sockets"
   ],
-  "author": "Dhiraj Bhakta",
+  "author": "dhruvmisra@live.com",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/gandha9394/robinhood/issues"
   },
   "homepage": "https://github.com/gandha9394/robinhood#readme",
+  "scripts": {
+    "test": "./test.sh",
+    "start": "concurrently \"tsc -w\" \"nodemon dist\"",
+    "dev": "npx tsc && node dist",
+    "distribute:local": "npx tsc && npm i -g .",
+    "distribute:npm": "npx tsc && npm publish"
+  },
   "dependencies": {
     "@types/ramda": "^0.27.64",
     "autobind": "^1.0.3",
@@ -62,7 +65,6 @@
     "@types/ws": "^8.2.2",
     "concurrently": "^7.0.0",
     "nodemon": "^2.0.15",
-    "pkg": "^5.5.2",
     "typescript": "^4.5.5"
   }
 }

@@ -2,7 +2,7 @@
 import { Command, Option } from "commander";
 import figlet from "figlet";
 import { yellowBright, bold } from "colorette";
-import { loginUser } from "./cli/auth.js";
+import { loginUser, logoutCurrentUser } from "./cli/auth.js";
 import { initializeDaemon, killDaemon, restartDaemon } from "./cli/daemon.js";
 import { connectToDonor, listDonors } from "./cli/consumer.js";
 import { SUPPORTED_IMAGES } from "./config.js";
@@ -11,8 +11,8 @@ const program = new Command();
 
 program
     .name("rh")
-    .description("Share your resources through Robinhood")
-    .version("0.1.0");
+    .description("Share your machine resources with the ones who need them")
+    .version("0.1.1");
 
 ///////////////////////
 // Auth commands
@@ -22,6 +22,11 @@ program
     .argument("<email>", "Email of the user")
     .description("Login to rh")
     .action(loginUser);
+
+program
+    .command("logout")
+    .description("Logout current user")
+    .action(logoutCurrentUser);
 
 ///////////////////////
 // Daemon commands

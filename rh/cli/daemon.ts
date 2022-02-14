@@ -11,11 +11,13 @@ import {
 } from "../config.js";
 import { connectToPM2, PM2Process, PM2Error } from "./process.js";
 import inquirer, { Answers, Question } from "inquirer";
-import { red, magenta } from "colorette";
+import { red, magenta, green, bold } from "colorette";
 import { ProcessDescription } from "pm2";
 import { generateName } from "./name-generator.js";
+import { checkAuthToken } from "./auth.js";
 
 export const initializeDaemon = async (maxCpu: string, maxMemory: string, maxDisk: string) => {
+    checkAuthToken()
     return new Promise<void>(async (resolve, reject) => {
         const pm2: any = await connectToPM2();
 
@@ -86,6 +88,7 @@ export const initializeDaemon = async (maxCpu: string, maxMemory: string, maxDis
         daemonProcess
             .start()
             .then(() => {
+                console.log(green("Name: " + bold(daemonProcess.roomName)))
                 pm2.disconnect();
                 resolve();
             })
@@ -94,6 +97,7 @@ export const initializeDaemon = async (maxCpu: string, maxMemory: string, maxDis
 };
 
 export const restartDaemon = async () => {
+    checkAuthToken()
     return new Promise<void>(async (resolve, reject) => {
         await killDaemon()
         const { maxCpu: savedMaxCpu, maxMemory: savedMaxMemory, maxDisk: savedMaxDisk } = getDonorPreferences();
@@ -103,6 +107,7 @@ export const restartDaemon = async () => {
 };
 
 export const killDaemon = async () => {
+    checkAuthToken()
     return new Promise<void>(async (resolve, reject) => {
         const pm2: any = await connectToPM2();
         const existingDaemonProcess = new DaemonProcess(pm2);

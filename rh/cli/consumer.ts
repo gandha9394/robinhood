@@ -6,10 +6,12 @@ import { RTCDoneePeer } from "../utils/webrtc.js";
 import { getConsumerPreferences, setConsumerPreferences, CENTRAL_SERVER, SIGNALING_SERVER, SUPPORTED_IMAGES } from "../config.js";
 import { Metric } from "./metric-types.js";
 import CLI from "clui";
+import { checkAuthToken } from "./auth.js";
 const { Spinner } = CLI;
 
 
 export const listDonors = async (image?: string) => {
+    checkAuthToken()
     return new Promise<void>(async (resolve, reject) => {
         const snipper = new Spinner(`Fetching list of avaiable donors...`);
         snipper.start();
@@ -40,7 +42,7 @@ export const listDonors = async (image?: string) => {
         const SEPARATOR = "∘"
         const donorSelectionList: any[] = donors.map(donor => {
             const timeDiff = Math.round((new Date().getTime() - new Date(donor.lastUpdated).getTime()) / 1000);
-            const specs = `${bold(donor.roomName)} \n  CPU: ${donor.availableCpu} ${SEPARATOR} Memory: ${donor.availableMemory} ${SEPARATOR} Disk: ${donor.availableDisk} ${SEPARATOR} Udated ${timeDiff} seconds ago \n`;
+            const specs = `${bold(donor.roomName)} \n  CPU: ${donor.availableCpu}% ${SEPARATOR} Memory: ${donor.availableMemory}% ${SEPARATOR} Disk: ${donor.availableDisk} ${SEPARATOR} Udated ${timeDiff} seconds ago \n`;
             return { name: specs, value: donor.roomName }
         })
 
@@ -72,6 +74,7 @@ export const listDonors = async (image?: string) => {
 };
 
 export const connectToDonor = async (roomName: string, image?: string) => {
+    checkAuthToken()
     return new Promise<void>(async (resolve, reject) => {
         const snipper = new Spinner(`Verifying '${roomName}'...`);
         snipper.start();

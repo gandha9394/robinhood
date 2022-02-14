@@ -24,8 +24,8 @@ export const CONTAINER_PREFIX = "rh_container";
 
 export const SUPPORTED_IMAGES = ["ubuntu", "debian", "fedora"]
 
-// export const CENTRAL_SERVER = process.env.CENTRAL_SERVER || "34.133.251.43:8080"
-export const CENTRAL_SERVER = process.env.CENTRAL_SERVER || "localhost:8080"
+export const CENTRAL_SERVER = process.env.CENTRAL_SERVER || "34.133.251.43:8080"
+// export const CENTRAL_SERVER = process.env.CENTRAL_SERVER || "localhost:8080"
 export const SIGNALING_SERVER = `ws://${CENTRAL_SERVER}`
 
 //////////////////////////////////
@@ -45,6 +45,19 @@ export const getAuthToken = (email: string): string => {
 export const deleteAuthToken = (email: string): void => {
     persistedConfig.delete(`tokens.${email}`);
 };
+
+export const setCurrentUser = (email: string): void => {
+    persistedConfig.set(`user.current`, email);
+};
+
+export const getCurrentUser = (): string => {
+    return persistedConfig.get(`user.current`) as string;
+};
+
+export const deleteCurrentUser = (): void => {
+    persistedConfig.delete(`user.current`);
+};
+
 
 // Donor preferences
 export const setDonorPreferences = (maxCpu: string, maxMemory: string, maxDisk: string): void => {
