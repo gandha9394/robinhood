@@ -1,5 +1,5 @@
 import { DefaultSession } from "next-auth";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import {
     Button,
@@ -30,7 +30,77 @@ const BlinkingCursor = () => {
     );
 };
 
+interface User {
+    name: string;
+    stats: {
+        cpu: number[];
+        ram: number[];
+        ssd: number[];
+        isp: number[]; 
+    }
+}
+
 const RequestsHome = ({session = {}}: { session: DefaultSession }) => {
+    const [users, setUsers] = useState<User[]>([
+        // {
+        //     name: "dhiraj@setu.co",
+        //     stats: {
+        //         cpu: [1,10,100,90,56,38,30,100,93,87],
+        //         ram: [31,20,96,75,56,8,90,64,73,56],
+        //         ssd: [1,40,40,40,70,70,70,80,56,45],
+        //         isp: [1,30,30,20,75,12,76,80,56,95],
+        //     }
+        // },
+        {
+            name: "gb@setu.co",
+            stats: {
+                cpu: [1,10,100,90,56,38,30,100,93,87],
+                ram: [1,34,23,54,12,76,98,23,12,12],
+                ssd: [1,23,12,54,70,56,84,80,56,23],
+                isp: [12,43,30,76,56,87,76,87,60,60],
+            }
+        },
+        // {
+        //     name: "sujan@setu.co",
+        //     stats: {
+        //         cpu: [29,21,43,88,64,4,30,83,66,89],
+        //         ram: [65,16,51,63,55,60,20,72,2,33],
+        //         ssd: [57,25,27,90,17,84,69,77,68,27],
+        //         isp: [2,53,67,32,82,80,55,65,3,34],
+        //     }
+        // },
+    ]);
+
+    useEffect(() => {
+        setInterval(updateStats, 1500)
+    }, [])
+
+    const getRandom = (a: number, b: number) => {
+        return a + Math.floor(b*Math.random());
+    }
+
+    const updateStats = () => {
+        let newUsers = [];
+        for(let user of users) {
+            let newCPU = getRandom(0, 100)
+            let newRAM = getRandom(0, 100)
+            let newSSD = getRandom(0, 100)
+            let newISP = getRandom(0, 100)
+
+            user.stats.cpu.shift()
+            user.stats.cpu.push(newCPU)
+            user.stats.ram.shift()
+            user.stats.ram.push(newRAM)
+            user.stats.ssd.shift()
+            user.stats.ssd.push(newSSD)
+            user.stats.isp.shift()
+            user.stats.isp.push(newISP)
+            newUsers.push(user)
+        }
+        setUsers(newUsers)
+    }
+
+
     return (
         <IndexStyled>
             <Element as="header" id="page-header">
@@ -103,256 +173,62 @@ const RequestsHome = ({session = {}}: { session: DefaultSession }) => {
                     <HRule kind="secondary" margin="none" />
 
                     {/*  USER CARD  ....................................... */}
-                    <Element as="div" className="user-card" id="user-01">
-                        <Element
-                            as="header"
-                            className="user-subpanel vertically-centre-items push-to-ends"
-                            paddingLeft="micro" paddingTop="nano" paddingBottom="nano"
-                        >
-                            <Heading as="h5" weight="700">D.01 / dhiraj0</Heading>
-
+                    {users.map((user, i) => (
+                        <Element as="div" className="user-card" id="user-01">
                             <Element
-                                as="div" className="user-actions"
-                                paddingRight="micro"
+                                as="header"
+                                className="user-subpanel vertically-centre-items push-to-ends"
+                                paddingLeft="micro" paddingTop="nano" paddingBottom="nano"
                             >
-                                <Text className="resource-action">[x] Kick</Text>
-                            </Element>
-                        </Element>
+                                <Heading as="h5" weight="700">D.0{i+1} / {user.name}</Heading>
 
-                        <Element as="main" className="panel-wrapper">
-                            <Element as="div" className="data-subpanel">
-                                <Text margin="nano" className="panel-label">CPU</Text>
-                                <Element as="div" className="dataviz-panel cpu-panel">
-                                    <Element as="div" className="usage-indicator" />
-                                    <Element as="div" className="usage-indicator" />
-                                    <Element as="div" className="usage-indicator" />
-                                    <Element as="div" className="usage-indicator" />
-                                    <Element as="div" className="usage-indicator" />
-                                    <Element as="div" className="usage-indicator" />
-                                    <Element as="div" className="usage-indicator" />
-                                    <Element as="div" className="usage-indicator" />
-                                    <Element as="div" className="usage-indicator" />
-                                    <Element as="div" className="usage-indicator" />
+                                <Element
+                                    as="div" className="user-actions"
+                                    paddingRight="micro"
+                                >
+                                    <Text className="resource-action">[x] Kick</Text>
                                 </Element>
                             </Element>
 
-                            <Element as="div" className="data-subpanel">
-                                <Text margin="nano" className="panel-label">RAM</Text>
-                                <Element as="div" className="dataviz-panel ram-panel">
-                                    <Element as="div" className="usage-indicator" />
-                                    <Element as="div" className="usage-indicator" />
-                                    <Element as="div" className="usage-indicator" />
-                                    <Element as="div" className="usage-indicator" />
-                                    <Element as="div" className="usage-indicator" />
-                                    <Element as="div" className="usage-indicator" />
-                                    <Element as="div" className="usage-indicator" />
-                                    <Element as="div" className="usage-indicator" />
-                                    <Element as="div" className="usage-indicator" />
-                                    <Element as="div" className="usage-indicator" />
+                            <Element as="main" className="panel-wrapper">
+                                <Element as="div" className="data-subpanel">
+                                    <Text margin="nano" className="panel-label">CPU</Text>
+                                    <Element as="div" className="dataviz-panel cpu-panel">
+                                        {user.stats.cpu.map(stat => (
+                                            <Element as="div" className="usage-indicator" style={{ transform: `scaleY(${stat})` }} />
+                                        ))}
+                                    </Element>
                                 </Element>
-                            </Element>
 
-                            <Element as="div" className="data-subpanel">
-                                <Text margin="nano" className="panel-label">SSD</Text>
-                                <Element as="div" className="dataviz-panel ssd-panel">
-                                    <Element as="div" className="usage-indicator" />
-                                    <Element as="div" className="usage-indicator" />
-                                    <Element as="div" className="usage-indicator" />
-                                    <Element as="div" className="usage-indicator" />
-                                    <Element as="div" className="usage-indicator" />
-                                    <Element as="div" className="usage-indicator" />
-                                    <Element as="div" className="usage-indicator" />
-                                    <Element as="div" className="usage-indicator" />
-                                    <Element as="div" className="usage-indicator" />
-                                    <Element as="div" className="usage-indicator" />
+                                <Element as="div" className="data-subpanel">
+                                    <Text margin="nano" className="panel-label">RAM</Text>
+                                    <Element as="div" className="dataviz-panel ram-panel">
+                                        {user.stats.ram.map(stat => (
+                                            <Element as="div" className="usage-indicator" style={{ transform: `scaleY(${stat})` }} />
+                                        ))}
+                                    </Element>
                                 </Element>
-                            </Element>
 
-                            <Element as="div" className="data-subpanel">
-                                <Text margin="nano" className="panel-label">ISP</Text>
-                                <Element as="div" className="dataviz-panel isp-panel">
-                                    <Element as="div" className="usage-indicator" />
-                                    <Element as="div" className="usage-indicator" />
-                                    <Element as="div" className="usage-indicator" />
-                                    <Element as="div" className="usage-indicator" />
-                                    <Element as="div" className="usage-indicator" />
-                                    <Element as="div" className="usage-indicator" />
-                                    <Element as="div" className="usage-indicator" />
-                                    <Element as="div" className="usage-indicator" />
-                                    <Element as="div" className="usage-indicator" />
-                                    <Element as="div" className="usage-indicator" />
+                                <Element as="div" className="data-subpanel">
+                                    <Text margin="nano" className="panel-label">SSD</Text>
+                                    <Element as="div" className="dataviz-panel ssd-panel">
+                                        {user.stats.ssd.map(stat => (
+                                            <Element as="div" className="usage-indicator" style={{ transform: `scaleY(${stat})` }} />
+                                        ))}
+                                    </Element>
+                                </Element>
+
+                                <Element as="div" className="data-subpanel">
+                                    <Text margin="nano" className="panel-label">ISP</Text>
+                                    <Element as="div" className="dataviz-panel isp-panel">
+                                        {user.stats.isp.map(stat => (
+                                            <Element as="div" className="usage-indicator" style={{ transform: `scaleY(${stat})` }} />
+                                        ))}
+                                    </Element>
                                 </Element>
                             </Element>
                         </Element>
-                    </Element>
-
-                    {/*  USER CARD  ....................................... */}
-                    <Element as="div" className="user-card" id="user-02">
-                        <Element
-                            as="header"
-                            className="user-subpanel vertically-centre-items push-to-ends"
-                            paddingLeft="micro" paddingTop="nano" paddingBottom="nano"
-                        >
-                            <Heading as="h5" weight="700">D.02 / gb</Heading>
-
-                            <Element
-                                as="div" className="user-actions"
-                                paddingRight="micro"
-                            >
-                                <Text className="resource-action">[x] Kick</Text>
-                            </Element>
-                        </Element>
-
-                        <Element as="main" className="panel-wrapper">
-                            <Element as="div" className="data-subpanel">
-                                <Text margin="nano" className="panel-label">CPU</Text>
-                                <Element as="div" className="dataviz-panel cpu-panel">
-                                    <Element as="div" className="usage-indicator" />
-                                    <Element as="div" className="usage-indicator" />
-                                    <Element as="div" className="usage-indicator" />
-                                    <Element as="div" className="usage-indicator" />
-                                    <Element as="div" className="usage-indicator" />
-                                    <Element as="div" className="usage-indicator" />
-                                    <Element as="div" className="usage-indicator" />
-                                    <Element as="div" className="usage-indicator" />
-                                    <Element as="div" className="usage-indicator" />
-                                    <Element as="div" className="usage-indicator" />
-                                </Element>
-                            </Element>
-
-                            <Element as="div" className="data-subpanel">
-                                <Text margin="nano" className="panel-label">RAM</Text>
-                                <Element as="div" className="dataviz-panel ram-panel">
-                                    <Element as="div" className="usage-indicator" />
-                                    <Element as="div" className="usage-indicator" />
-                                    <Element as="div" className="usage-indicator" />
-                                    <Element as="div" className="usage-indicator" />
-                                    <Element as="div" className="usage-indicator" />
-                                    <Element as="div" className="usage-indicator" />
-                                    <Element as="div" className="usage-indicator" />
-                                    <Element as="div" className="usage-indicator" />
-                                    <Element as="div" className="usage-indicator" />
-                                    <Element as="div" className="usage-indicator" />
-                                </Element>
-                            </Element>
-
-                            <Element as="div" className="data-subpanel">
-                                <Text margin="nano" className="panel-label">SSD</Text>
-                                <Element as="div" className="dataviz-panel ssd-panel">
-                                    <Element as="div" className="usage-indicator" />
-                                    <Element as="div" className="usage-indicator" />
-                                    <Element as="div" className="usage-indicator" />
-                                    <Element as="div" className="usage-indicator" />
-                                    <Element as="div" className="usage-indicator" />
-                                    <Element as="div" className="usage-indicator" />
-                                    <Element as="div" className="usage-indicator" />
-                                    <Element as="div" className="usage-indicator" />
-                                    <Element as="div" className="usage-indicator" />
-                                    <Element as="div" className="usage-indicator" />
-                                </Element>
-                            </Element>
-
-                            <Element as="div" className="data-subpanel">
-                                <Text margin="nano" className="panel-label">ISP</Text>
-                                <Element as="div" className="dataviz-panel isp-panel">
-                                    <Element as="div" className="usage-indicator" />
-                                    <Element as="div" className="usage-indicator" />
-                                    <Element as="div" className="usage-indicator" />
-                                    <Element as="div" className="usage-indicator" />
-                                    <Element as="div" className="usage-indicator" />
-                                    <Element as="div" className="usage-indicator" />
-                                    <Element as="div" className="usage-indicator" />
-                                    <Element as="div" className="usage-indicator" />
-                                    <Element as="div" className="usage-indicator" />
-                                    <Element as="div" className="usage-indicator" />
-                                </Element>
-                            </Element>
-                        </Element>
-                    </Element>
-
-                    {/*  USER CARD  ....................................... */}
-                    <Element as="div" className="user-card" id="user-03">
-                        <Element
-                            as="header"
-                            className="user-subpanel vertically-centre-items push-to-ends"
-                            paddingLeft="micro" paddingTop="nano" paddingBottom="nano"
-                        >
-                            <Heading as="h5" weight="700">D.02 / sujan</Heading>
-
-                            <Element
-                                as="div" className="user-actions"
-                                paddingRight="micro"
-                            >
-                                <Text className="resource-action">[x] Kick</Text>
-                            </Element>
-                        </Element>
-
-                        <Element as="main" className="panel-wrapper">
-                            <Element as="div" className="data-subpanel">
-                                <Text margin="nano" className="panel-label">CPU</Text>
-                                <Element as="div" className="dataviz-panel cpu-panel">
-                                    <Element as="div" className="usage-indicator" />
-                                    <Element as="div" className="usage-indicator" />
-                                    <Element as="div" className="usage-indicator" />
-                                    <Element as="div" className="usage-indicator" />
-                                    <Element as="div" className="usage-indicator" />
-                                    <Element as="div" className="usage-indicator" />
-                                    <Element as="div" className="usage-indicator" />
-                                    <Element as="div" className="usage-indicator" />
-                                    <Element as="div" className="usage-indicator" />
-                                    <Element as="div" className="usage-indicator" />
-                                </Element>
-                            </Element>
-
-                            <Element as="div" className="data-subpanel">
-                                <Text margin="nano" className="panel-label">RAM</Text>
-                                <Element as="div" className="dataviz-panel ram-panel">
-                                    <Element as="div" className="usage-indicator" />
-                                    <Element as="div" className="usage-indicator" />
-                                    <Element as="div" className="usage-indicator" />
-                                    <Element as="div" className="usage-indicator" />
-                                    <Element as="div" className="usage-indicator" />
-                                    <Element as="div" className="usage-indicator" />
-                                    <Element as="div" className="usage-indicator" />
-                                    <Element as="div" className="usage-indicator" />
-                                    <Element as="div" className="usage-indicator" />
-                                    <Element as="div" className="usage-indicator" />
-                                </Element>
-                            </Element>
-
-                            <Element as="div" className="data-subpanel">
-                                <Text margin="nano" className="panel-label">SSD</Text>
-                                <Element as="div" className="dataviz-panel ssd-panel">
-                                    <Element as="div" className="usage-indicator" />
-                                    <Element as="div" className="usage-indicator" />
-                                    <Element as="div" className="usage-indicator" />
-                                    <Element as="div" className="usage-indicator" />
-                                    <Element as="div" className="usage-indicator" />
-                                    <Element as="div" className="usage-indicator" />
-                                    <Element as="div" className="usage-indicator" />
-                                    <Element as="div" className="usage-indicator" />
-                                    <Element as="div" className="usage-indicator" />
-                                    <Element as="div" className="usage-indicator" />
-                                </Element>
-                            </Element>
-
-                            <Element as="div" className="data-subpanel">
-                                <Text margin="nano" className="panel-label">ISP</Text>
-                                <Element as="div" className="dataviz-panel isp-panel">
-                                    <Element as="div" className="usage-indicator" />
-                                    <Element as="div" className="usage-indicator" />
-                                    <Element as="div" className="usage-indicator" />
-                                    <Element as="div" className="usage-indicator" />
-                                    <Element as="div" className="usage-indicator" />
-                                    <Element as="div" className="usage-indicator" />
-                                    <Element as="div" className="usage-indicator" />
-                                    <Element as="div" className="usage-indicator" />
-                                    <Element as="div" className="usage-indicator" />
-                                    <Element as="div" className="usage-indicator" />
-                                </Element>
-                            </Element>
-                        </Element>
-                    </Element>
+                    ))}
                 </Element>
             </Element>
 

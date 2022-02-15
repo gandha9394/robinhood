@@ -120,6 +120,7 @@ export const IndexStyled = styled.article`
 
     .usage-indicator {
         height           : 1px;
+        width            : 96%;
         display          : flex;
         align-self       : flex-end;
         background-color : ${darken(0.24, defaultColours.green)};
@@ -177,114 +178,6 @@ export const IndexStyled = styled.article`
             .usage-indicator:nth-child(8) { transform : scaleY(40) }
             .usage-indicator:nth-child(9) { transform : scaleY(1) }
             .usage-indicator:nth-child(10) { transform : scaleY(1) }
-        }
-    }
-
-    #user-02 {
-        .cpu-panel {
-            .usage-indicator:nth-child(1) { transform : scaleY(1) }
-            .usage-indicator:nth-child(2) { transform : scaleY(34) }
-            .usage-indicator:nth-child(3) { transform : scaleY(43) }
-            .usage-indicator:nth-child(4) { transform : scaleY(65) }
-            .usage-indicator:nth-child(5) { transform : scaleY(38) }
-            .usage-indicator:nth-child(6) { transform : scaleY(78) }
-            .usage-indicator:nth-child(7) { transform : scaleY(48) }
-            .usage-indicator:nth-child(8) { transform : scaleY(22) }
-            .usage-indicator:nth-child(9) { transform : scaleY(86) }
-            .usage-indicator:nth-child(10) { transform : scaleY(36) }
-        }
-
-        .ram-panel {
-            .usage-indicator:nth-child(1) { transform : scaleY(100) }
-            .usage-indicator:nth-child(2) { transform : scaleY(45) }
-            .usage-indicator:nth-child(3) { transform : scaleY(83) }
-            .usage-indicator:nth-child(4) { transform : scaleY(82) }
-            .usage-indicator:nth-child(5) { transform : scaleY(95) }
-            .usage-indicator:nth-child(6) { transform : scaleY(22) }
-            .usage-indicator:nth-child(7) { transform : scaleY(26) }
-            .usage-indicator:nth-child(8) { transform : scaleY(82) }
-            .usage-indicator:nth-child(9) { transform : scaleY(48) }
-            .usage-indicator:nth-child(10) { transform : scaleY(91) }
-        }
-
-        .ssd-panel {
-            .usage-indicator:nth-child(1) { transform : scaleY(40) }
-            .usage-indicator:nth-child(2) { transform : scaleY(06) }
-            .usage-indicator:nth-child(3) { transform : scaleY(06) }
-            .usage-indicator:nth-child(4) { transform : scaleY(06) }
-            .usage-indicator:nth-child(5) { transform : scaleY(06) }
-            .usage-indicator:nth-child(6) { transform : scaleY(08) }
-            .usage-indicator:nth-child(7) { transform : scaleY(08) }
-            .usage-indicator:nth-child(8) { transform : scaleY(08) }
-            .usage-indicator:nth-child(9) { transform : scaleY(08) }
-            .usage-indicator:nth-child(10) { transform : scaleY(08) }
-        }
-
-        .isp-panel {
-            .usage-indicator:nth-child(1) { transform : scaleY(10) }
-            .usage-indicator:nth-child(2) { transform : scaleY(04) }
-            .usage-indicator:nth-child(3) { transform : scaleY(10) }
-            .usage-indicator:nth-child(4) { transform : scaleY(10) }
-            .usage-indicator:nth-child(5) { transform : scaleY(03) }
-            .usage-indicator:nth-child(6) { transform : scaleY(1) }
-            .usage-indicator:nth-child(7) { transform : scaleY(1) }
-            .usage-indicator:nth-child(8) { transform : scaleY(06) }
-            .usage-indicator:nth-child(9) { transform : scaleY(12) }
-            .usage-indicator:nth-child(10) { transform : scaleY(19) }
-        }
-    }
-
-    #user-03 {
-        .cpu-panel {
-            .usage-indicator:nth-child(1) { transform : scaleY(39) }
-            .usage-indicator:nth-child(2) { transform : scaleY(67) }
-            .usage-indicator:nth-child(3) { transform : scaleY(32) }
-            .usage-indicator:nth-child(4) { transform : scaleY(00) }
-            .usage-indicator:nth-child(5) { transform : scaleY(23) }
-            .usage-indicator:nth-child(6) { transform : scaleY(28) }
-            .usage-indicator:nth-child(7) { transform : scaleY(83) }
-            .usage-indicator:nth-child(8) { transform : scaleY(62) }
-            .usage-indicator:nth-child(9) { transform : scaleY(71) }
-            .usage-indicator:nth-child(10) { transform : scaleY(77) }
-        }
-
-        .ram-panel {
-            .usage-indicator:nth-child(1) { transform : scaleY(100) }
-            .usage-indicator:nth-child(2) { transform : scaleY(45) }
-            .usage-indicator:nth-child(3) { transform : scaleY(83) }
-            .usage-indicator:nth-child(4) { transform : scaleY(82) }
-            .usage-indicator:nth-child(5) { transform : scaleY(95) }
-            .usage-indicator:nth-child(6) { transform : scaleY(22) }
-            .usage-indicator:nth-child(7) { transform : scaleY(00) }
-            .usage-indicator:nth-child(8) { transform : scaleY(00) }
-            .usage-indicator:nth-child(9) { transform : scaleY(48) }
-            .usage-indicator:nth-child(10) { transform : scaleY(91) }
-        }
-
-        .ssd-panel {
-            .usage-indicator:nth-child(1) { transform : scaleY(40) }
-            .usage-indicator:nth-child(2) { transform : scaleY(06) }
-            .usage-indicator:nth-child(3) { transform : scaleY(06) }
-            .usage-indicator:nth-child(4) { transform : scaleY(06) }
-            .usage-indicator:nth-child(5) { transform : scaleY(34) }
-            .usage-indicator:nth-child(6) { transform : scaleY(67) }
-            .usage-indicator:nth-child(7) { transform : scaleY(78) }
-            .usage-indicator:nth-child(8) { transform : scaleY(34) }
-            .usage-indicator:nth-child(9) { transform : scaleY(08) }
-            .usage-indicator:nth-child(10) { transform : scaleY(08) }
-        }
-
-        .isp-panel {
-            .usage-indicator:nth-child(1) { transform : scaleY(94) }
-            .usage-indicator:nth-child(2) { transform : scaleY(72) }
-            .usage-indicator:nth-child(3) { transform : scaleY(33) }
-            .usage-indicator:nth-child(4) { transform : scaleY(96) }
-            .usage-indicator:nth-child(5) { transform : scaleY(51) }
-            .usage-indicator:nth-child(6) { transform : scaleY(62) }
-            .usage-indicator:nth-child(7) { transform : scaleY(67) }
-            .usage-indicator:nth-child(8) { transform : scaleY(32) }
-            .usage-indicator:nth-child(9) { transform : scaleY(78) }
-            .usage-indicator:nth-child(10) { transform : scaleY(24) }
         }
     }
 
