@@ -2,7 +2,7 @@ import inquirer from "inquirer";
 import { red } from "colorette";
 import { either } from "ramda";
 import { ProcessDescription } from "pm2";
-import {magenta} from "colorette";
+import { magenta } from "colorette";
 import {
   DAEMON_CONFIG,
   DEFAULT_MAX_CPU,
@@ -13,12 +13,14 @@ import {
   setDonorPreferences,
 } from "../config.js";
 import pm2 from "../../utils/daemon.js";
+import logger from "../../utils/log.js";
 export const initializeDaemonsAndDetach = async (
   maxCpu: string,
   maxMemory: string,
   maxDisk: string
 ) => {
-  await pm2.connect("Dummy");
+  logger.verbose("Requested to 'c o n n e c t");
+  // why?????
   if (await isAnyDaemonRunning()) {
     console.log(
       red(
@@ -28,38 +30,40 @@ export const initializeDaemonsAndDetach = async (
     process.exit(1);
   }
   try {
-    const answers = await inquirer.prompt([
-      !maxCpu && {
-        type: "input",
-        name: "maxCpu",
-        message: "How much CPU do you wish to allocate?",
-        default: getDonorPreferences().savedMaxCpu || DEFAULT_MAX_CPU,
-        validate(value: any) {
-          const valid = !isNaN(parseFloat(value)) && value > 0 && value < 100;
-          return (
-            valid || "Please enter a number between 0 and 100 (non-inclusive)"
-          );
+    const answers = await inquirer.prompt(
+      [
+        !maxCpu && {
+          type: "input",
+          name: "maxCpu",
+          message: "How much CPU do you wish to allocate?",
+          default: getDonorPreferences().savedMaxCpu || DEFAULT_MAX_CPU,
+          validate(value: any) {
+            const valid = !isNaN(parseFloat(value)) && value > 0 && value < 100;
+            return (
+              valid || "Please enter a number between 0 and 100 (non-inclusive)"
+            );
+          },
         },
-      },
-      !maxMemory && {
-        type: "input",
-        name: "maxMemory",
-        message: "How much memory do you wish to allocate?",
-        default: getDonorPreferences().savedMaxMemory || DEFAULT_MAX_MEMORY,
-        validate(value: any) {
-          const valid = !isNaN(parseFloat(value)) && value > 0 && value < 100;
-          return (
-            valid || "Please enter a number between 0 and 100 (non-inclusive)"
-          );
+        !maxMemory && {
+          type: "input",
+          name: "maxMemory",
+          message: "How much memory do you wish to allocate?",
+          default: getDonorPreferences().savedMaxMemory || DEFAULT_MAX_MEMORY,
+          validate(value: any) {
+            const valid = !isNaN(parseFloat(value)) && value > 0 && value < 100;
+            return (
+              valid || "Please enter a number between 0 and 100 (non-inclusive)"
+            );
+          },
         },
-      },
-      !maxDisk && {
-        type: "input",
-        name: "maxDisk",
-        message: "How much disk do you wish to allocate?",
-        default: getDonorPreferences().savedMaxDisk || DEFAULT_MAX_DISK,
-      },
-    ]);
+        !maxDisk && {
+          type: "input",
+          name: "maxDisk",
+          message: "How much disk do you wish to allocate?",
+          default: getDonorPreferences().savedMaxDisk || DEFAULT_MAX_DISK,
+        },
+      ].filter(Boolean)
+    );
     setDonorPreferences(
       maxCpu || answers.maxCpu,
       maxMemory || answers.maxMemory,
@@ -70,10 +74,11 @@ export const initializeDaemonsAndDetach = async (
     process.exit(1);
   }
   await startBothDaemons();
+  pm2.detach();
 };
 
 export const restartDaemon = async () => {
-  await killDaemon();
+  await pm2.killAll();
   const {
     maxCpu: savedMaxCpu,
     maxMemory: savedMaxMemory,
@@ -82,16 +87,11 @@ export const restartDaemon = async () => {
   await initializeDaemonsAndDetach(savedMaxCpu, savedMaxMemory, savedMaxDisk);
 };
 
-export const killDaemon = async () => {
-  await pm2.connect("Existing");
-  await deleteBothDaemons();
-  await pm2.disconnect();
-};
-
-const startBothDaemons = () => {
+const startBothDaemons = async () => {
   const newRoomName = generateName();
-  console.log(magenta("Creating room:"+newRoomName))
-  return Promise.all([
+  console.log(magenta("Creating room:" + newRoomName));
+  logger.verbose("Requested to 's t a r t");
+  await Promise.all([
     pm2.start({
       script: "node",
       name: DAEMON_CONFIG.master.name,
@@ -159,6 +159,6 @@ const isDaemonMetrics = (pd: ProcessDescription) =>
 
 export const DonorActions = {
   init: initializeDaemonsAndDetach,
-  stop: killDaemon,
+  killAll: pm2.killAll,
   restart: restartDaemon,
 };

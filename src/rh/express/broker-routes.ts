@@ -1,5 +1,6 @@
 import { Metric, MetricRequest } from "@types";
 import express from "express";
+import logger from "../../utils/log.js";
 import { metricStore } from "../config.js";
 const router = express.Router();
 
@@ -16,13 +17,16 @@ const isAvailable = (metric: Metric) => {
 // List available
 router.get("/available", (req, res) => {
     try {
+        logger.verbose("API hit")
         let metrics = metricStore.list();
         let avaiableDonors = metrics.filter(isAvailable)
         const response = {
             metrics: avaiableDonors,
         };
+        logger.verbose("response:", response);
         return res.json(response);
     } catch (err: any) {
+        logger.error(err)
         return res.status(500).json({ error: err.message });
     }
 });

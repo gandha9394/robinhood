@@ -42,7 +42,9 @@ export const SIGNALING_SERVER = `ws://${CENTRAL_SERVER}`;
 export const LIST_DONORS_ENDPOINT = `http://${CENTRAL_SERVER}/metrics/available`;
 export const DONOR_HEARTBEAT_ENDPOINT = (roomName: string) =>
   `http://${CENTRAL_SERVER}/metrics/${roomName}`;
+export const RANDOM_ANIME_QUOTES = 'https://animechan.vercel.app/api/random';
 //////////////////////////////////
+
 // Persisted config
 //////////////////////////////////
 const persistedConfig = new Conf({ projectName: "robinhood-cli" });
@@ -100,7 +102,7 @@ export const deleteConsumerPreferences = (): void => {
 
 const MAX_CONTAINER_METRICS_TO_STORE = 10;
 class Store{
-    _store: MetricStore
+    _store: MetricStore = {}
 
     set = (metricReq: MetricRequest): boolean => {
         const existingMetric = this._store[metricReq.roomName];

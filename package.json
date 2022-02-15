@@ -9,10 +9,10 @@
     },
     "scripts": {
         "clean": "rm -rf dist",
-        "set-executable":"chmod 711 ./dist/rh/index.js",
+        "set-executable": "chmod 711 ./dist/rh/index.js",
         "build": "tsc && npm run set-executable",
         "run": "npx . init",
-        "shebang":"echo '#!/usr/bin/env node\n' | cat - ./dist/rh/index.js > temp && mv temp ./dist/rh/index.js && npm run set-executable",
+        "shebang": "echo '#!/usr/bin/env node\n' | cat - ./dist/rh/index.js > temp && mv temp ./dist/rh/index.js && npm run set-executable",
         "distribute": "npm run build && npm run shebang && npm install -g .",
         "help": "echo  Note: running \\( npx . \\) with an intention of running this module DOES NOT WORK. First run \\(npm test\\) | rainbow -r '.*'",
         "prepare": "husky install"
@@ -35,6 +35,7 @@
     },
     "homepage": "https://github.com/gandha9394/robinhood#readme",
     "dependencies": {
+        "boxen": "^6.2.1",
         "clui": "^0.3.6",
         "colorette": "^2.0.16",
         "commander": "^9.0.0",
