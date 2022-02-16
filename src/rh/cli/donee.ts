@@ -109,15 +109,6 @@ const connect = async (roomName: string, image: string) => {
   const rl = createInterface({
     input: process.stdin,
   });
-  // rl.on("line", (line) =>
-  //   peer.send(
-  //     JSON.stringify({
-  //       eventName: "command",
-  //       data: { type: "CMD", data: line },
-  //     })
-  //   )
-  // );
-
 
   peer.on("connection_established", () => {
     // snipper.stop();
@@ -134,13 +125,13 @@ const connect = async (roomName: string, image: string) => {
       logger.verbose("DONEE: recvd result" + commandResult);
       const commandResultJSON = JSON.parse(commandResult);
       ptyTerminal.print(commandResultJSON);
-      // if (clearANSIFormatting(commandResultJSON.data).trim() == "exit") {
-      //   terminateProcess(peer);
-      // }
+      if (clearANSIFormatting(commandResultJSON.data).trim() == "exit") {
+        terminateProcess(peer);
+      }
     };
 
     ////Observe how we set callbacks everytime `connection_established` gets fired///
-    // process.on("SIGINT", () => confirmBeforeTerminate(peer));
+    process.on("SIGINT", () => confirmBeforeTerminate(peer));
     //////Immediately send container creation command////////////////////////////////
     peer.send(
       JSON.stringify({ eventName: "create_container", data: { image: image } })
