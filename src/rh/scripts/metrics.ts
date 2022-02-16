@@ -1,7 +1,6 @@
 import fetch from "isomorphic-fetch"
 import pty from "node-pty";
 import minimist from "minimist"
-import { devLogger } from "../../utils/log.js";
 import { CENTRAL_SERVER, CONTAINER_PREFIX } from "../config.js";
 import { ContainerMetric } from "@types";
 
@@ -54,8 +53,6 @@ const sendMetrics = async () => {
         "containers": containers
     }
     
-    devLogger.info("Sending metrics...")
-    devLogger.debug(body)
     
     fetch(url, { 
         method: "POST", 
@@ -68,10 +65,8 @@ const sendMetrics = async () => {
             if(res.status != 200) {
                 throw new Error(JSON.stringify(res))
             }
-            devLogger.info("Metrics sent")
         })
         .catch((err) => {
-            devLogger.error(`Failed to push metrics to ${url}`)
             console.log(err)
         })
 }

@@ -1,5 +1,5 @@
 import minimist from "minimist";
-import { devLogger } from "../../utils/log.js";
+import logger from "../../utils/log.js";
 import { Terminal } from "../../utils/pty.js";
 import { RTCDonorPeer } from "../../utils/webrtc.js";
 import { CONTAINER_PREFIX, SIGNALING_SERVER } from "../config.js";
@@ -8,15 +8,12 @@ import pty, { IPty } from "node-pty";
  * This "Daemon" script runs only on the donor side
  */
 const argv = minimist(process.argv.slice(2));
-devLogger.debug("Arguments: " + JSON.stringify(argv));
 
 ///////// RescourceLimits Not Implemented//////
 // const MAX_CPU = argv["max-cpu"]
 // const MAX_MEMORY = argv["max-memory"]
 // const MAX_DISK = argv["max-disk"]
 const ROOM_NAME = argv["room-name"]
-
-devLogger.warn(`Starting daemon with room name: ${ROOM_NAME}`);
 
 const peer = new RTCDonorPeer({
     roomName: ROOM_NAME,
@@ -37,12 +34,10 @@ const restartContainer = async (dockerRestartCommand: string) => {
 
 
 peer.on("connection_established", () => {
-    process.stdout.write("Connected to peer!")
-    
     let dockerPtyTerminal: Terminal | null = null;
-
+    logger.verbose("connection established at donor's end. but wait till the container is created!")
     peer.onmessage = async (message: string) => {
-        console.log(message)
+        logger.verbose("\n\n\ndonor: recvd this mssg:"+message)
         const messageObj = JSON.parse(message);
         
         if (messageObj.eventName == "create_container") {
@@ -64,20 +59,19 @@ peer.on("connection_established", () => {
                 ptyProcess = pty.spawn("docker", dockerRunCommand.split(" ").slice(1), {});
                 containerCreated = true;
             }
+            ptyProcess.onExit(ex => logger.verbose("Lol donor exited so randomlyy"))
             
             dockerPtyTerminal = new Terminal({ ptyProcess: ptyProcess });
             
             // Listeners
             dockerPtyTerminal.onoutput = (commandResult) => {
+                logger.verbose("donor: calculated and sending results:"+commandResult)
                 peer.send(JSON.stringify(commandResult));
-            };
-            dockerPtyTerminal.onclose = (ev) => {
-                devLogger.debug(ev);
-                peer.close();
             };
         }
 
         if (messageObj.eventName == "command") {
+            logger.verbose("new command arrived!:", JSON.stringify(messageObj))
             const commandJSON = messageObj.data; 
             if(dockerPtyTerminal) {
                 dockerPtyTerminal.write(commandJSON);

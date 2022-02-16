@@ -1,6 +1,6 @@
 import fetch from "isomorphic-fetch";
 import inquirer from "inquirer";
-import { red, green, bold, magenta } from "colorette";
+import { red, green, bold, magenta, redBright } from "colorette";
 import { clearANSIFormatting, PseudoTerminal } from "../../utils/pty.js";
 import { RTCDoneePeer } from "../../utils/webrtc.js";
 import {
@@ -13,8 +13,9 @@ import {
 } from "../config.js";
 import { Command } from "../../utils/pty.js";
 import logger from "../../utils/log.js";
-import {Spinner} from "../../utils/log.js";
+import { Spinner } from "../../utils/log.js";
 import { CommanderImageAnswer } from "@types";
+import { createInterface } from "readline";
 
 const listRooms = async () => {
   const snipper = Spinner.start(`Fetching list of avaiable donors...`);
@@ -26,10 +27,9 @@ const listRooms = async () => {
     process.exit(1);
   }
   const roomsMeta = (await response.json()).metrics;
+  console.log(roomsMeta);
   if (!roomsMeta.length) {
-    console.log(
-      magenta("No Donors available at the moment. Please try again later.")
-    );
+    logger.error("No resources available ...onboard someone to Robinhood :P");
     process.exit(1);
   }
   return roomsMeta;
@@ -37,7 +37,6 @@ const listRooms = async () => {
 
 const chooseFromAvailableRooms = async (roomsMeta: any[]) => {
   const SEPARATOR = "∘";
-  console.log(magenta(LIST_DONORS_ENDPOINT))
   const donorSelectionList: any[] = roomsMeta.map((donor: any) => {
     const timeDiff = Math.round(
       (new Date().getTime() - new Date(donor.lastUpdated).getTime()) / 1000
@@ -100,38 +99,55 @@ const obtainImageName = async (roomName: string) => {
   }
 };
 
-const connect = (roomName: string, image: string) => {
-  const snipper = Spinner.start(`Connecting to '${roomName}'...`);
+const connect = async (roomName: string, image: string) => {
+  // const snipper = Spinner.start(`Connecting to '${roomName}'...`);
   const peer = new RTCDoneePeer({
     roomName: roomName,
     signalingServer: SIGNALING_SERVER,
   });
   const ptyTerminal = new PseudoTerminal();
+  const rl = createInterface({
+    input: process.stdin,
+  });
+  // rl.on("line", (line) =>
+  //   peer.send(
+  //     JSON.stringify({
+  //       eventName: "command",
+  //       data: { type: "CMD", data: line },
+  //     })
+  //   )
+  // );
+
 
   peer.on("connection_established", () => {
-    snipper.stop();
+    // snipper.stop();
     ptyTerminal.print({
       type: "RSLT",
       data: "Connected to peer! \n\n",
     });
     ////Observe how we set callbacks everytime `connection_established` gets fired///
+    ptyTerminal.onType((command) => {
+      logger.verbose("DONEE: sending command!:" + JSON.stringify(command));
+      return peer.send(JSON.stringify({eventName:'command', data:command}));
+    });
     peer.onmessage = (commandResult: string) => {
+      logger.verbose("DONEE: recvd result" + commandResult);
       const commandResultJSON = JSON.parse(commandResult);
       ptyTerminal.print(commandResultJSON);
-      if (clearANSIFormatting(commandResultJSON.data).trim() == "exit") {
-        terminateProcess(peer);
-      }
+      // if (clearANSIFormatting(commandResultJSON.data).trim() == "exit") {
+      //   terminateProcess(peer);
+      // }
     };
-    ////Observe how we set callbacks everytime `connection_established` gets fired///
-    ptyTerminal.oninput = (command: Command) => {
-      return peer.send(JSON.stringify({ eventName: "command", data: command }));
-    };
-    process.on("SIGINT", () => confirmBeforeTerminate(peer));
 
-    // Immediately send container creation command
+    ////Observe how we set callbacks everytime `connection_established` gets fired///
+    // process.on("SIGINT", () => confirmBeforeTerminate(peer));
+    //////Immediately send container creation command////////////////////////////////
     peer.send(
       JSON.stringify({ eventName: "create_container", data: { image: image } })
     );
+  });
+  await new Promise((res) => {
+    setTimeout(res, 1000 * 123);
   });
 };
 
@@ -156,7 +172,6 @@ const terminateProcess = (peer: RTCDoneePeer) => {
       },
     })
   );
-  peer.close();
   const stdin = process.openStdin();
   stdin.removeAllListeners();
   process.exit(1);

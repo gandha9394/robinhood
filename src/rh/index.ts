@@ -1,21 +1,16 @@
 import { Command, InvalidArgumentError, Option } from "commander";
 import figlet from "figlet";
-import {
-  bold,
-  magentaBright,
-  yellow,
-  blackBright,
-} from "colorette";
+import { bold, magentaBright, yellow, blackBright } from "colorette";
 import { loginUser } from "../utils/auth.js";
 import { DonorActions } from "./cli/donor.js";
 import { DoneeActions } from "./cli/donee.js";
 import { BrokerActions } from "./cli/broker.js";
 import fetch from "isomorphic-fetch";
 
-import { RANDOM_ANIME_QUOTES, SUPPORTED_IMAGES } from "./config.js";
+import { RANDOM_ANIME_QUOTES } from "./config.js";
 import { andThen, pipe } from "ramda";
 import boxen from "boxen";
-import { Spinner } from "../utils/log.js";
+import  { catchAllBrokerDeathWrapper, Spinner } from "../utils/log.js";
 const program = new Command();
 
 program
@@ -42,18 +37,15 @@ program
   .option("--max-disk <size>", "Max disk space to allocate")
   .description("Initialize rh daemon")
   .action(async (options: any, _: any) => {
-    DonorActions.init(options.maxCpu, options.maxMemory, options.maxDisk);
+    catchAllBrokerDeathWrapper(async () =>
+      DonorActions.init(options.maxCpu, options.maxMemory, options.maxDisk)
+    )(options.maxCpu, options.maxMemory, options.maxDisk);
   });
 
 program
   .command("kill")
   .description("Kill rh daemon")
-  .action(DonorActions.killAll);
-
-program
-  .command("restart")
-  .description("Restart rh daemon")
-  .action(DonorActions.restart);
+  .action(catchAllBrokerDeathWrapper(DonorActions.kill as any));
 
 ///////////////////////
 // Consumer commands
@@ -61,35 +53,18 @@ program
 program
   .command("list")
   .description("List donors to connect")
-  .action(async () => {
-    pipe(
-      DoneeActions.listRooms,
-      andThen(DoneeActions.chooseFromAvailableRooms),
-      andThen(DoneeActions.checkRoomAvailability),
-      andThen(DoneeActions.obtainImageName)
-    )().then(([roomName, image]) => DoneeActions.connect(roomName, image));
-  });
-
-program
-  .command("connect")
-  .argument("[roomName]", "Donor name to connect")
-  .addOption(
-    new Option("-o, --os <image>", "OS to run on donor").choices(
-      SUPPORTED_IMAGES
-    )
-  )
-  .description("Connect to a donor")
-  .action(async (roomName, { os }) => {
-    if (roomName) {
-      DoneeActions.connect(roomName, os); // os means image
-    } else {
+  .action(
+    catchAllBrokerDeathWrapper(() =>
       pipe(
         DoneeActions.listRooms,
         andThen(DoneeActions.chooseFromAvailableRooms),
-        andThen(DoneeActions.checkRoomAvailability)
-      )().then((roomName) => DoneeActions.connect(roomName, os));
-    }
-  });
+        andThen(DoneeActions.checkRoomAvailability),
+        andThen(DoneeActions.obtainImageName)
+      )().then(
+        ([roomName, image]) => DoneeActions.connect(roomName, image) as any
+      )
+    )
+  );
 
 program
   .command("init-broker", { hidden: true })
@@ -118,28 +93,38 @@ function parsePort(port: string, _: number): number {
 
 const init = async () => {
   Spinner.start(magentaBright("...Initializing"));
- const q = await fetch(RANDOM_ANIME_QUOTES).then((r) => r.json());
+  const q = await fetch(RANDOM_ANIME_QUOTES).then((r) => r.json());
   Spinner.stop();
   console.log(
     boxen(
-      '\n'+
-      bold(
-        yellow(
-          figlet.textSync("Robinhood", {
-            font: "Colossal",
-            horizontalLayout: "default",
-            verticalLayout: "default",
-            whitespaceBreak: true,
-            width:200,
-          })
-        )
-      ),
-      { borderStyle: "round",float:'center', title:"Resources for everyone...", titleAlignment:'center'}
+      "\n" +
+        bold(
+          yellow(
+            figlet.textSync("Robinhood", {
+              font: "Colossal",
+              horizontalLayout: "default",
+              verticalLayout: "default",
+              whitespaceBreak: true,
+              width: 200,
+            })
+          )
+        ),
+      {
+        borderStyle: "round",
+        float: "center",
+        title: "Resources for everyone...",
+        titleAlignment: "center",
+      }
     )
   );
-  console.log(boxen(bold(blackBright(q.quote))+`                                                       -${q.character}(${q.anime})`,{float:'center',width:80})+'\n\n');
+  console.log(
+    boxen(
+      bold(blackBright(q.quote)) +
+        `                                                       -${q.character}(${q.anime})`,
+      { float: "center", width: 78 }
+    ) + "\n\n"
+  );
 };
-
 
 await init();
 program.parse();

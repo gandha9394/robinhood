@@ -39,6 +39,7 @@ export const CENTRAL_SERVER =
   process.env.CENTRAL_SERVER || "34.133.251.43:8080";
 export const SIGNALING_SERVER = `ws://${CENTRAL_SERVER}`;
 // endpoints on signalingserver
+export const IS_SIGNALING_SERVER_UP = `http://${CENTRAL_SERVER}/metrics/available`;
 export const LIST_DONORS_ENDPOINT = `http://${CENTRAL_SERVER}/metrics/available`;
 export const DONOR_HEARTBEAT_ENDPOINT = (roomName: string) =>
   `http://${CENTRAL_SERVER}/metrics/${roomName}`;

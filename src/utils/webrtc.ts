@@ -17,7 +17,6 @@ type StrictConfig = {
   roomName: string;
   trickle: boolean;
   isDonor: boolean;
-  close: (p: Peer) => void;
 };
 type Config = Partial<StrictConfig>;
 type PeerHandle = {
@@ -218,6 +217,7 @@ class RTCPeer extends Peer {
       this.peerConnectionOnDataChannel.bind(this);
   }
   send(jsonStringified: string) {
+    logger.verbose("Peer attempting a sendd:"+jsonStringified)
     if (
       !this.peerHandle ||
       !this.peerHandle.dataChannel ||
@@ -255,7 +255,6 @@ class RTCPeer extends Peer {
       logger.error("You fucked up the flow. Gon kill myself. Bye...");
       process.exit(1);
     }
-    logger.debug("Received an ICE candidate from:" + socketId);
     const rtcIceCandidate = new RTCIceCandidate(candidate);
     const pc = this.peerConnections[socketId];
     if (pc.remoteDescription) pc.addIceCandidate(rtcIceCandidate);
@@ -366,7 +365,6 @@ class RTCPeer extends Peer {
     peerConnection.onicecandidate = ({ candidate }) => {
       if (candidate) this.sendIceCandidate(socketId, candidate);
       else {
-        logger.debug('ICE "Gathering" done!..');
         if (!this.config.trickle) {
           if (peerConnection !== this.peerHandle?.peerConnection)
             logger.error(
@@ -390,11 +388,13 @@ class RTCPeer extends Peer {
   }
   dataChannelOnMessage(dataChannel: RTCDataChannel) {
     dataChannel.onmessage = ({ data }) => {
+
       logger.info(`DataChannel recv msg:${data}`);
       if (data) this.fire("recv", data);
     };
     if (typeof this._["onmessage"] === "function") {
       dataChannel.onmessage = ({ data }) => {
+        logger.verbose("donee fired!");
         if (data) {
           this.fire("recv", data);
           this._["onmessage"](data);
@@ -408,14 +408,6 @@ class RTCPeer extends Peer {
     dataChannel.onerror = (err: any) =>
       logger.error(`DataChannel error:${err.toString()}`);
     return dataChannel;
-  }
-
-  close() {
-    if (this.config.close) {
-      this.config.close(this);
-    } else {
-      this.peerHandle!.dataChannel!.close();
-    }
   }
 }
 

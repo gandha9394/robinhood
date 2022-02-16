@@ -1,5 +1,6 @@
 import { IPty } from "node-pty";
-import readline from "node:readline";
+import readline from "readline";
+import logger from "./log.js";
 
 interface TerminalConfig {
   ptyProcess?: IPty;
@@ -17,15 +18,18 @@ export interface CommandResult extends STDOUTdata {
 
 // https://stackoverflow.com/questions/25245716/remove-all-ansi-colors-styles-from-strings/29497680
 export const clearANSIFormatting = (str: string) => {
-  return str.replace(/[\u001b\u009b][[()#;?]*(?:[0-9]{1,4}(?:;[0-9]{0,4})*)?[0-9A-ORZcf-nqry=><]/g, "")
-}
+  return str.replace(
+    /[\u001b\u009b][[()#;?]*(?:[0-9]{1,4}(?:;[0-9]{0,4})*)?[0-9A-ORZcf-nqry=><]/g,
+    ""
+  );
+};
 
 export class Terminal {
   _pty?: IPty;
   history: Array<Command> = [];
 
   constructor({ ptyProcess }: TerminalConfig) {
-      this._pty = ptyProcess;
+    this._pty = ptyProcess;
   }
 
   //https://github.com/microsoft/node-pty/issues/429
@@ -43,25 +47,25 @@ export class Terminal {
       (along with any carriage returns)
     */
 
-    let _1 = cmdStr
-    let _2 = [...this.history].pop()?.data.trim()
+    let _1 = cmdStr;
+    let _2 = [...this.history].pop()?.data.trim();
 
-    if(_2) {
+    if (_2) {
       // Remove last command from the beginning
-      if(_1.indexOf(_2) === 0) {
-        _1 = _1.replace(_2, "")
-        cmdStr = cmdStr.replace(_2, "")
+      if (_1.indexOf(_2) === 0) {
+        _1 = _1.replace(_2, "");
+        cmdStr = cmdStr.replace(_2, "");
       }
 
       // Remove any combination of carriage returns from the beginning
-      if(_1.indexOf("\r\n") === 0) {
-        _1 = _1.replace("\r\n", "")
+      if (_1.indexOf("\r\n") === 0) {
+        _1 = _1.replace("\r\n", "");
       }
-      if(_1.indexOf("\r") === 0) {
-        _1 = _1.replace("\r", "")
+      if (_1.indexOf("\r") === 0) {
+        _1 = _1.replace("\r", "");
       }
-      if(_1.indexOf("\n") === 0) {
-        _1 = _1.replace("\n", "")
+      if (_1.indexOf("\n") === 0) {
+        _1 = _1.replace("\n", "");
       }
     }
     return _1;
@@ -86,25 +90,36 @@ export class Terminal {
     this._pty!.write(data.data);
   }
 }
+
 export class PseudoTerminal {
   history: Array<Command> = [];
   rl: readline.Interface;
 
   constructor() {
+    console.log("creating interfacce");
     this.rl = readline.createInterface({
       input: process.stdin,
-      prompt: "",
+      // output:process.stdout,
+      prompt: ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>",
     });
   }
-  set oninput(onInput: (command: Command) => void) {
+  onType(onInput: (command: Command) => void) {
+    // console.log('this is:',this)
     this.rl.on("line", (line) => {
+      console.log("line fired");
+      logger.verbose(
+        "line event fired::seems that the user is typeiing is hass out"
+      );
       const command: Command = {
         type: "CMD",
         data: line + "\n",
       };
       onInput(command);
       this.history.push(command);
+
+      console.log(this.rl.listenerCount("line"));
     });
+    logger.verbose("this.rl.paused:"+this.rl['paused']);
   }
 
   print(result: CommandResult) {

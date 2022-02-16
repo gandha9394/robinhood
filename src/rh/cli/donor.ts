@@ -10,22 +10,22 @@ import {
   DEFAULT_MAX_MEMORY,
   generateName,
   getDonorPreferences,
+  IS_SIGNALING_SERVER_UP,
   setDonorPreferences,
 } from "../config.js";
 import pm2 from "../../utils/daemon.js";
 import logger from "../../utils/log.js";
+import _fetch from "isomorphic-fetch";
 export const initializeDaemonsAndDetach = async (
   maxCpu: string,
   maxMemory: string,
   maxDisk: string
 ) => {
-  logger.verbose("Requested to 'c o n n e c t");
-  // why?????
+  ////////statping signaling server ////////////////////
+  await _fetch(IS_SIGNALING_SERVER_UP, {method:'HEAD'});
   if (await isAnyDaemonRunning()) {
-    console.log(
-      red(
-        "Daemon already running. Please kill existing daemon using `rh kill` command."
-      )
+    logger.error(
+      "Daemon already running. Please kill existing daemon using `rh kill` command."
     );
     process.exit(1);
   }
@@ -77,15 +77,6 @@ export const initializeDaemonsAndDetach = async (
   pm2.detach();
 };
 
-export const restartDaemon = async () => {
-  await pm2.killAll();
-  const {
-    maxCpu: savedMaxCpu,
-    maxMemory: savedMaxMemory,
-    maxDisk: savedMaxDisk,
-  } = getDonorPreferences();
-  await initializeDaemonsAndDetach(savedMaxCpu, savedMaxMemory, savedMaxDisk);
-};
 
 const startBothDaemons = async () => {
   const newRoomName = generateName();
@@ -128,25 +119,6 @@ const startBothDaemons = async () => {
 };
 
 ////////////Not used/////////////////
-const restartBothDaemons = () =>
-  Promise.all([
-    pm2.restart(DAEMON_CONFIG.master.name),
-    pm2.restart(DAEMON_CONFIG.metrics.name),
-  ]);
-
-////////////Not used/////////////////
-const stopBothDaemons = () =>
-  Promise.all([
-    pm2.stop(DAEMON_CONFIG.master.name),
-    pm2.stop(DAEMON_CONFIG.metrics.name),
-  ]);
-
-const deleteBothDaemons = () =>
-  Promise.all([
-    pm2.delete(DAEMON_CONFIG.master.name),
-    pm2.delete(DAEMON_CONFIG.metrics.name),
-  ]);
-
 const isAnyDaemonRunning = async () =>
   (await pm2.list())
     .filter(either(isDaemon, isDaemonMetrics))
@@ -159,6 +131,5 @@ const isDaemonMetrics = (pd: ProcessDescription) =>
 
 export const DonorActions = {
   init: initializeDaemonsAndDetach,
-  killAll: pm2.killAll,
-  restart: restartDaemon,
+  kill: pm2.kill
 };
