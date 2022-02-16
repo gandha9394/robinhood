@@ -9,8 +9,7 @@ import fetch from "isomorphic-fetch";
 
 import { RANDOM_ANIME_QUOTES } from "./config.js";
 import { andThen, pipe } from "ramda";
-import boxen from "boxen";
-import  { catchAllBrokerDeathWrapper, Spinner } from "../utils/log.js";
+import { catchAllBrokerDeathWrapper, Spinner } from "../utils/log.js";
 const program = new Command();
 
 program
@@ -92,6 +91,7 @@ function parsePort(port: string, _: number): number {
 }
 
 const init = async () => {
+  const { default: boxen } = await import("boxen");
   Spinner.start(magentaBright("...Initializing"));
   const q = await fetch(RANDOM_ANIME_QUOTES).then((r) => r.json());
   Spinner.stop();
@@ -124,7 +124,7 @@ const init = async () => {
       { float: "center", width: 78 }
     ) + "\n\n"
   );
+  program.parse();
 };
 
-await init();
-program.parse();
+init();

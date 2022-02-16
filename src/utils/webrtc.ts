@@ -1,7 +1,8 @@
 import { pipe } from "ramda";
 import { WebSocket, ErrorEvent } from "ws";
-import pkg from "wrtc";
-const { RTCPeerConnection, RTCSessionDescription, RTCIceCandidate }: any = pkg;
+import { createRequire } from "module";
+const require = createRequire(import.meta.url);
+const { RTCPeerConnection, RTCSessionDescription, RTCIceCandidate }: any = require('wrtc')
 import logger from "./log.js";
 
 /**--------CONFIG & SETUP--------------------- */

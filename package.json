@@ -3,7 +3,6 @@
     "version": "1.0.0",
     "description": "terminal sharing from wherever, whenever",
     "main": "./dist/rh/index.js",
-    "type": "module",
     "bin": {
         "rh": "./dist/rh/index.js"
     },
@@ -35,6 +34,8 @@
     },
     "homepage": "https://github.com/gandha9394/robinhood#readme",
     "dependencies": {
+        "@rollup/plugin-commonjs": "^21.0.1",
+        "@rollup/plugin-typescript": "^8.3.0",
         "boxen": "^6.2.1",
         "clui": "^0.3.6",
         "colorette": "^2.0.16",
