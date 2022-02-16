@@ -2,18 +2,16 @@
     "name": "robinhood-cli",
     "version": "1.0.0",
     "description": "terminal sharing from wherever, whenever",
-    "main": "./dist/rh/index.js",
+    "main": "./.bin/index.js",
+    "type":"module",
     "bin": {
-        "rh": "./dist/rh/index.js"
+        "rh": "./.bin/index.js"
     },
     "scripts": {
-        "clean": "rm -rf dist",
-        "set-executable": "chmod 711 ./dist/rh/index.js",
-        "build": "tsc && npm run set-executable",
-        "run": "npx . init",
-        "shebang": "echo '#!/usr/bin/env node\n' | cat - ./dist/rh/index.js > temp && mv temp ./dist/rh/index.js && npm run set-executable",
-        "distribute": "npm run build && npm run shebang && npm install -g .",
-        "help": "echo  Note: running \\( npx . \\) with an intention of running this module DOES NOT WORK. First run \\(npm test\\) | rainbow -r '.*'",
+        "clean": "rm -rf .bin",
+        "build": "npx rollup -c",
+        "sanitize":"sed -i~ -e '2,$b' -e '/^$/d' .bin/index.js",
+        "distribute": "npm run build && npm run sanitize && npm install -g .",
         "prepare": "husky install"
     },
     "repository": {

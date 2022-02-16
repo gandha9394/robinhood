@@ -8,13 +8,14 @@ const resolveBinaryPlugin = () => ({
 			return false;
 		}
 		return null;
-	}
+	},
+	banner:'#!/usr/bin/env node'
 });
 
 export default {
 	input: 'src/rh/index.ts',
 	output: {
-		file: 'dist/index.mjs',
+		file: '.bin/index.js',
 		format: 'es'
 	},
 	plugins: [
