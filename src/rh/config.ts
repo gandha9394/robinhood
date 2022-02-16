@@ -3,8 +3,8 @@ import Conf from "conf";
 import dotenv from "dotenv";
 import { dirname } from "node:path";
 import { fileURLToPath } from "node:url";
+import { ping } from "../utils/async.js";
 dotenv.config();
-
 
 //////////////////////////////////
 // Global config
@@ -19,13 +19,13 @@ const pwd = dirname(fileURLToPath(import.meta.url));
 
 export const DAEMON_CONFIG = {
   master: {
-    name: "rh-master", 
-    absolutePathToScript:`${pwd}/scripts/master.js`
+    name: "rh-master",
+    absolutePathToScript: `${pwd}/scripts/master.js`,
     // absolutePathToScript: `${pwd}/scripts/master.js`,
   },
   metrics: {
     name: "rh-metrics",
-    absolutePathToScript:`${pwd}/scripts/metrics.js`
+    absolutePathToScript: `${pwd}/scripts/metrics.js`,
     // absolutePathToScript: `${pwd}/scripts/metrics.js`,
   },
 };
@@ -36,14 +36,16 @@ export const SUPPORTED_IMAGES = ["ubuntu", "debian", "fedora"];
 
 // export const CENTRAL_SERVER = process.env.CENTRAL_SERVER || "34.133.251.43:8080"
 export const CENTRAL_SERVER =
-  process.env.CENTRAL_SERVER || "34.133.251.43:8080";
+  process.env.CENTRAL_SERVER || ping()
+    ? "localhost:8080"
+    : "34.133.251.43:8080";
 export const SIGNALING_SERVER = `ws://${CENTRAL_SERVER}`;
 // endpoints on signalingserver
 export const IS_SIGNALING_SERVER_UP = `http://${CENTRAL_SERVER}/metrics/available`;
 export const LIST_DONORS_ENDPOINT = `http://${CENTRAL_SERVER}/metrics/available`;
 export const DONOR_HEARTBEAT_ENDPOINT = (roomName: string) =>
   `http://${CENTRAL_SERVER}/metrics/${roomName}`;
-export const RANDOM_ANIME_QUOTES = 'https://animechan.vercel.app/api/random';
+export const RANDOM_ANIME_QUOTES = "https://animechan.vercel.app/api/random";
 //////////////////////////////////
 
 // Persisted config
@@ -102,34 +104,42 @@ export const deleteConsumerPreferences = (): void => {
 };
 
 const MAX_CONTAINER_METRICS_TO_STORE = 10;
-class Store{
-    _store: MetricStore = {}
+class Store {
+  _store: MetricStore = {};
 
-    set = (metricReq: MetricRequest): boolean => {
-        const existingMetric = this._store[metricReq.roomName];
-        let containerHistory = existingMetric ? [...existingMetric.containerHistory, ...Object.values(metricReq.containers || [])] : [...Object.values(metricReq.containers || [])]
+  set = (metricReq: MetricRequest): boolean => {
+    const existingMetric = this._store[metricReq.roomName];
+    let containerHistory = existingMetric
+      ? [
+          ...existingMetric.containerHistory,
+          ...Object.values(metricReq.containers || []),
+        ]
+      : [...Object.values(metricReq.containers || [])];
 
-        if(containerHistory.length > MAX_CONTAINER_METRICS_TO_STORE) {
-            containerHistory.splice(MAX_CONTAINER_METRICS_TO_STORE, containerHistory.length - MAX_CONTAINER_METRICS_TO_STORE)
-        }
-
-        let metric: Metric = {
-            ...metricReq,
-            containerHistory: containerHistory,
-            lastUpdated: new Date().toISOString(),
-        }
-
-        this._store[metric.roomName] = metric
-        return true
+    if (containerHistory.length > MAX_CONTAINER_METRICS_TO_STORE) {
+      containerHistory.splice(
+        MAX_CONTAINER_METRICS_TO_STORE,
+        containerHistory.length - MAX_CONTAINER_METRICS_TO_STORE
+      );
     }
-    
-    get = (roomName: string): Metric => {
-        return this._store[roomName]
-    }
-    
-    list = (): Metric[] => {
-        return Object.values(this._store)
-    }
+
+    let metric: Metric = {
+      ...metricReq,
+      containerHistory: containerHistory,
+      lastUpdated: new Date().toISOString(),
+    };
+
+    this._store[metric.roomName] = metric;
+    return true;
+  };
+
+  get = (roomName: string): Metric => {
+    return this._store[roomName];
+  };
+
+  list = (): Metric[] => {
+    return Object.values(this._store);
+  };
 }
 export const metricStore = new Store();
 

@@ -7,15 +7,14 @@ const logFormat = printf(({ level, message, stack }) => {
 });
 
 const logger = createLogger({
-  level: "silly",
+  level: "info",
   silent: false, //set this to true later
-  // format: combine(format.errors({ stack: true }), format.colorize({ all: true }), logFormat),
-  format: combine(format.errors({ stack: true }), logFormat),
+  format: combine(format.errors({ stack: true }), format.colorize({ all: true }), logFormat),
   transports: [
-    // new transports.Console({
-    //   level: "info",
-    //   format: format.colorize({ all: true }),
-    // }),
+    new transports.Console({
+      level: "info",
+      format: format.colorize({ all: true }),
+    }),
     new transports.File({ filename: "combined.log" }),
   ],
 });
@@ -42,6 +41,10 @@ export const catchAllBrokerDeathWrapper =
       process.exit(1);
     }
   };
-export const Spinner = ora({stream:process.stdout, spinner:"mindblown", discardStdin:false});
+
+//CORRECT USAGE:  https://github.com/sindresorhus/ora/blob/main/example.js
+//PR: https://github.com/sindresorhus/ora/pull/112
+//ISSUE: https://github.com/sindresorhus/ora/issues/97
+export const Spinner = ora({discardStdin:false});
 
 export default logger;

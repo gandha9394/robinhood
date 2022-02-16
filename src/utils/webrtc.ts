@@ -415,10 +415,6 @@ export class RTCDonorPeer extends RTCPeer {
     super(config);
     this._["isDonor"] = true;
     this.on("new_peer_connected", async (data: any) => {
-      // if (++this.count > 1) {
-      //   logger.error("This Donor supports only single Donee. Exiting..");
-      //   process.exit(1);
-      // }
       this.peerHandle = this.createPeerHandle(data.socketId);
       this.peerHandle.dataChannel = this.createDataChannel(data.socketId);
       const offer = await this.peerHandle.peerConnection.createOffer();

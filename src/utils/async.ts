@@ -6,6 +6,8 @@
  * @returns functionThatGivesAPromise
  */
 
+import { connect } from "net";
+
 export function promisifyNullary(
   functionThatTakesCallback: (
     cb: (...args: Array<unknown>) => unknown
@@ -16,4 +18,14 @@ export function promisifyNullary(
       functionThatTakesCallback(rej);
     });
   };
+}
+
+
+export function ping(host='localhost',port=8080){
+  try{
+    connect(port, host);
+    return true
+  }catch{
+    return false;
+  }
 }

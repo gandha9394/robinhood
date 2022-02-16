@@ -106,35 +106,31 @@ const connect = async (roomName: string, image: string) => {
 
   peer.on("connection_established", () => {
     Spinner.succeed(Spinner.text);
-    process.nextTick((isSpinning) => {
-      ptyTerminal.print({
-        type: "RSLT",
-        data: isSpinning + "Connected to peer! \n\n",
-      });
-      ////Observe how we set callbacks everytime `connection_established` gets fired///
-      ptyTerminal.onType((command) => {
-        return peer.send(
-          JSON.stringify({ eventName: "command", data: command })
-        );
-      });
-      peer.onmessage = (commandResult: string) => {
-        const commandResultJSON = JSON.parse(commandResult);
-        ptyTerminal.print(commandResultJSON);
-        if (clearANSIFormatting(commandResultJSON.data).trim() == "exit") {
-          terminateProcess(peer);
-        }
-      };
+    ptyTerminal.print({
+      type: "RSLT",
+      data: "Connected to peer! \n\n",
+    });
+    ////Observe how we set callbacks everytime `connection_established` gets fired///
+    ptyTerminal.onType((command) => {
+      return peer.send(JSON.stringify({ eventName: "command", data: command }));
+    });
+    peer.onmessage = (commandResult: string) => {
+      const commandResultJSON = JSON.parse(commandResult);
+      ptyTerminal.print(commandResultJSON);
+      if (clearANSIFormatting(commandResultJSON.data).trim() == "exit") {
+        terminateProcess(peer);
+      }
+    };
 
-      ////Observe how we set callbacks everytime `connection_established` gets fired///
-      process.on("SIGINT", () => confirmBeforeTerminate(peer));
-      //////Immediately send container creation command////////////////////////////////
-      peer.send(
-        JSON.stringify({
-          eventName: "create_container",
-          data: { image: image },
-        })
-      );
-    },Spinner.isSpinning);
+    ////Observe how we set callbacks everytime `connection_established` gets fired///
+    process.on("SIGINT", () => confirmBeforeTerminate(peer));
+    //////Immediately send container creation command////////////////////////////////
+    peer.send(
+      JSON.stringify({
+        eventName: "create_container",
+        data: { image: image },
+      })
+    );
   });
   await new Promise((res) => {
     setTimeout(res, 1000 * 123);
