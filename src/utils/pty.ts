@@ -1,6 +1,5 @@
 import { IPty } from "node-pty";
 import readline from "readline";
-import logger from "./log.js";
 
 interface TerminalConfig {
   ptyProcess?: IPty;
@@ -96,30 +95,19 @@ export class PseudoTerminal {
   rl: readline.Interface;
 
   constructor() {
-    console.log("creating interfacce");
     this.rl = readline.createInterface({
       input: process.stdin,
-      // output:process.stdout,
-      prompt: ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>",
     });
   }
   onType(onInput: (command: Command) => void) {
-    // console.log('this is:',this)
     this.rl.on("line", (line) => {
-      console.log("line fired");
-      logger.verbose(
-        "line event fired::seems that the user is typeiing is hass out"
-      );
       const command: Command = {
         type: "CMD",
         data: line + "\n",
       };
       onInput(command);
       this.history.push(command);
-
-      console.log(this.rl.listenerCount("line"));
     });
-    logger.verbose("this.rl.paused:"+this.rl['paused']);
   }
 
   print(result: CommandResult) {

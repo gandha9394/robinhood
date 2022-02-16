@@ -81,7 +81,6 @@ export const initializeDaemonsAndDetach = async (
 const startBothDaemons = async () => {
   const newRoomName = generateName();
   console.log(magenta("Creating room:" + newRoomName));
-  logger.verbose("Requested to 's t a r t");
   await Promise.all([
     pm2.start({
       script: "node",

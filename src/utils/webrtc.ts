@@ -217,7 +217,6 @@ class RTCPeer extends Peer {
       this.peerConnectionOnDataChannel.bind(this);
   }
   send(jsonStringified: string) {
-    logger.verbose("Peer attempting a sendd:"+jsonStringified)
     if (
       !this.peerHandle ||
       !this.peerHandle.dataChannel ||
@@ -394,7 +393,6 @@ class RTCPeer extends Peer {
     };
     if (typeof this._["onmessage"] === "function") {
       dataChannel.onmessage = ({ data }) => {
-        logger.verbose("donee fired!");
         if (data) {
           this.fire("recv", data);
           this._["onmessage"](data);

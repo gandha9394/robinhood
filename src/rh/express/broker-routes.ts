@@ -17,13 +17,11 @@ const isAvailable = (metric: Metric) => {
 // List available
 router.get("/available", (req, res) => {
     try {
-        logger.verbose("API hit")
         let metrics = metricStore.list();
         let avaiableDonors = metrics.filter(isAvailable)
         const response = {
             metrics: avaiableDonors,
         };
-        logger.verbose("response:", response);
         return res.json(response);
     } catch (err: any) {
         logger.error(err)

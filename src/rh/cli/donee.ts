@@ -11,23 +11,20 @@ import {
   LIST_DONORS_ENDPOINT,
   DONOR_HEARTBEAT_ENDPOINT,
 } from "../config.js";
-import { Command } from "../../utils/pty.js";
 import logger from "../../utils/log.js";
 import { Spinner } from "../../utils/log.js";
 import { CommanderImageAnswer } from "@types";
-import { createInterface } from "readline";
 
 const listRooms = async () => {
-  const snipper = Spinner.start(`Fetching list of avaiable donors...`);
+  Spinner.start(`Fetching list of avaiable donors...`);
   const response = await fetch(LIST_DONORS_ENDPOINT);
-  snipper.stop();
+  Spinner.stop();
   if (response.status !== 200) {
     logger.error("List Donors API call failure");
     console.log(red("Could not establish connection. Please try again later"));
     process.exit(1);
   }
   const roomsMeta = (await response.json()).metrics;
-  console.log(roomsMeta);
   if (!roomsMeta.length) {
     logger.error("No resources available ...onboard someone to Robinhood :P");
     process.exit(1);
@@ -65,9 +62,9 @@ const chooseFromAvailableRooms = async (roomsMeta: any[]) => {
 };
 
 const checkRoomAvailability = async (roomName: string) => {
-  const snipper = Spinner.start(`Verifying '${roomName}'...`);
+  Spinner.start(`Verifying '${roomName}'...`);
   const response = await fetch(DONOR_HEARTBEAT_ENDPOINT(roomName));
-  snipper.stop();
+  Spinner.stop();
   if (response.status !== 200) {
     console.log(
       red(
@@ -100,42 +97,44 @@ const obtainImageName = async (roomName: string) => {
 };
 
 const connect = async (roomName: string, image: string) => {
-  // const snipper = Spinner.start(`Connecting to '${roomName}'...`);
+  Spinner.start(`Connecting to '${roomName}'...`);
   const peer = new RTCDoneePeer({
     roomName: roomName,
     signalingServer: SIGNALING_SERVER,
   });
   const ptyTerminal = new PseudoTerminal();
-  const rl = createInterface({
-    input: process.stdin,
-  });
 
   peer.on("connection_established", () => {
-    // snipper.stop();
-    ptyTerminal.print({
-      type: "RSLT",
-      data: "Connected to peer! \n\n",
-    });
-    ////Observe how we set callbacks everytime `connection_established` gets fired///
-    ptyTerminal.onType((command) => {
-      logger.verbose("DONEE: sending command!:" + JSON.stringify(command));
-      return peer.send(JSON.stringify({eventName:'command', data:command}));
-    });
-    peer.onmessage = (commandResult: string) => {
-      logger.verbose("DONEE: recvd result" + commandResult);
-      const commandResultJSON = JSON.parse(commandResult);
-      ptyTerminal.print(commandResultJSON);
-      if (clearANSIFormatting(commandResultJSON.data).trim() == "exit") {
-        terminateProcess(peer);
-      }
-    };
+    Spinner.succeed(Spinner.text);
+    process.nextTick((isSpinning) => {
+      ptyTerminal.print({
+        type: "RSLT",
+        data: isSpinning + "Connected to peer! \n\n",
+      });
+      ////Observe how we set callbacks everytime `connection_established` gets fired///
+      ptyTerminal.onType((command) => {
+        return peer.send(
+          JSON.stringify({ eventName: "command", data: command })
+        );
+      });
+      peer.onmessage = (commandResult: string) => {
+        const commandResultJSON = JSON.parse(commandResult);
+        ptyTerminal.print(commandResultJSON);
+        if (clearANSIFormatting(commandResultJSON.data).trim() == "exit") {
+          terminateProcess(peer);
+        }
+      };
 
-    ////Observe how we set callbacks everytime `connection_established` gets fired///
-    process.on("SIGINT", () => confirmBeforeTerminate(peer));
-    //////Immediately send container creation command////////////////////////////////
-    peer.send(
-      JSON.stringify({ eventName: "create_container", data: { image: image } })
-    );
+      ////Observe how we set callbacks everytime `connection_established` gets fired///
+      process.on("SIGINT", () => confirmBeforeTerminate(peer));
+      //////Immediately send container creation command////////////////////////////////
+      peer.send(
+        JSON.stringify({
+          eventName: "create_container",
+          data: { image: image },
+        })
+      );
+    },Spinner.isSpinning);
   });
   await new Promise((res) => {
     setTimeout(res, 1000 * 123);

@@ -42,6 +42,6 @@ export const catchAllBrokerDeathWrapper =
       process.exit(1);
     }
   };
-export const Spinner = ora();
+export const Spinner = ora({stream:process.stdout, spinner:"mindblown", discardStdin:false});
 
 export default logger;

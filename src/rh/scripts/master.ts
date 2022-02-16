@@ -35,9 +35,7 @@ const restartContainer = async (dockerRestartCommand: string) => {
 
 peer.on("connection_established", () => {
     let dockerPtyTerminal: Terminal | null = null;
-    logger.verbose("connection established at donor's end. but wait till the container is created!")
     peer.onmessage = async (message: string) => {
-        logger.verbose("\n\n\ndonor: recvd this mssg:"+message)
         const messageObj = JSON.parse(message);
         
         if (messageObj.eventName == "create_container") {
@@ -59,19 +57,16 @@ peer.on("connection_established", () => {
                 ptyProcess = pty.spawn("docker", dockerRunCommand.split(" ").slice(1), {});
                 containerCreated = true;
             }
-            ptyProcess.onExit(ex => logger.verbose("Lol donor exited so randomlyy"))
             
             dockerPtyTerminal = new Terminal({ ptyProcess: ptyProcess });
             
             // Listeners
             dockerPtyTerminal.onoutput = (commandResult) => {
-                logger.verbose("donor: calculated and sending results:"+commandResult)
                 peer.send(JSON.stringify(commandResult));
             };
         }
 
         if (messageObj.eventName == "command") {
-            logger.verbose("new command arrived!:", JSON.stringify(messageObj))
             const commandJSON = messageObj.data; 
             if(dockerPtyTerminal) {
                 dockerPtyTerminal.write(commandJSON);
